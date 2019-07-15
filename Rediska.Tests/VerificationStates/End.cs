@@ -1,4 +1,5 @@
 ﻿using System;
+using Rediska.Tests.Checks;
 
 namespace Rediska.Tests.VerificationStates
 {
@@ -10,5 +11,6 @@ namespace Rediska.Tests.VerificationStates
         public override State Write(byte[] array) => throw new InvalidOperationException("Element already completed");
         public override State Write(long integer) => throw new InvalidOperationException("Element already completed");
         public override State WriteCRLF() => throw new InvalidOperationException("Element already completed");
+        public override bool IsTerminal => true;
     }
 }

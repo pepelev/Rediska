@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rediska.Tests
+namespace Rediska.Tests.Checks
 {
     public struct Magic : IEquatable<Magic>
     {

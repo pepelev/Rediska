@@ -1,4 +1,6 @@
-﻿namespace Rediska.Tests.VerificationStates
+﻿using Rediska.Tests.Checks;
+
+namespace Rediska.Tests.VerificationStates
 {
     public abstract class State
     {
@@ -6,5 +8,6 @@
         public abstract State Write(byte[] array);
         public abstract State Write(long integer);
         public abstract State WriteCRLF();
+        public abstract bool IsTerminal { get; }
     }
 }

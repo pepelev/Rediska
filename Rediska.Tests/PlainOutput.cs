@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Rediska.Tests.Checks;
 
 namespace Rediska.Tests
 {
@@ -25,6 +25,12 @@ namespace Rediska.Tests
 
         public override void Write(long integer)
         {
+            if (integer == 0)
+            {
+                content[Position++] = (byte)'0';
+                return;
+            }
+
             if (integer < 0)
             {
                 content[Position++] = (byte) '-';

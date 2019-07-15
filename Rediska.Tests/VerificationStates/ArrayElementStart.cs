@@ -1,4 +1,5 @@
 ﻿using System;
+using Rediska.Tests.Checks;
 
 namespace Rediska.Tests.VerificationStates
 {
@@ -38,19 +39,13 @@ namespace Rediska.Tests.VerificationStates
         }
 
         public override State Write(byte[] array) => throw new InvalidOperationException("You must write magic at first");
-
         public override State Write(long integer) => throw new InvalidOperationException("You must write magic at first");
-
-        public override State WriteCRLF()
-        {
-            if (!AtEnd())
-                throw new InvalidOperationException("Array length does not correspond actual items count");
-
-            return outerState;
-        }
-
+        public override State WriteCRLF() => throw new InvalidOperationException("You must write magic at first");
+        public override bool IsTerminal => false;
         private bool AtEnd() => items == length;
 
-        private ArrayElementStart Next => new ArrayElementStart(outerState, items + 1, length);
+        private State Next => items + 1 == length
+            ? outerState
+            : new ArrayElementStart(outerState, items + 1, length);
     }
 }

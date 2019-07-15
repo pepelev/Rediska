@@ -1,4 +1,5 @@
 ﻿using System;
+using Rediska.Tests.Checks;
 
 namespace Rediska.Tests.VerificationStates
 {
@@ -15,5 +16,6 @@ namespace Rediska.Tests.VerificationStates
         public override State Write(byte[] array) => throw new InvalidOperationException("Number expected");
         public override State Write(long integer) => new IntegerEnd(outerState);
         public override State WriteCRLF() => throw new InvalidOperationException("Number expected");
+        public override bool IsTerminal => false;
     }
 }

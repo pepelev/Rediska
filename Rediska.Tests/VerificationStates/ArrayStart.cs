@@ -1,4 +1,5 @@
 ﻿using System;
+using Rediska.Tests.Checks;
 
 namespace Rediska.Tests.VerificationStates
 {
@@ -30,5 +31,7 @@ namespace Rediska.Tests.VerificationStates
         {
             throw new InvalidOperationException("Array length expected");
         }
+
+        public override bool IsTerminal => false;
     }
 }

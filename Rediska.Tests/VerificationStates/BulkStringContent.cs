@@ -1,15 +1,16 @@
 ﻿using System;
+using Rediska.Tests.Checks;
 
 namespace Rediska.Tests.VerificationStates
 {
     public sealed class BulkStringContent : State
     {
+        private readonly long length;
         private readonly State outerState;
         private readonly long written;
-        private readonly long length;
 
-        public BulkStringContent(State outerState, long integer)
-            : this(outerState, 0, integer)
+        public BulkStringContent(State outerState, long length)
+            : this(outerState, 0, length)
         {
         }
 
@@ -19,6 +20,8 @@ namespace Rediska.Tests.VerificationStates
             this.length = length;
             this.written = written;
         }
+
+        public override bool IsTerminal => false;
 
         public override State Write(Magic magic)
         {

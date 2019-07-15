@@ -1,4 +1,6 @@
-﻿namespace Rediska.Tests
+﻿using Rediska.Tests.Checks;
+
+namespace Rediska.Tests
 {
     public sealed class Integer : DataType
     {

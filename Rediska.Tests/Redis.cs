@@ -24,17 +24,25 @@ namespace Rediska.Tests
 
         public async Task<T> ExecuteAsync<T>(Command<T> command)
         {
-            var bytes = new byte[1024];
-            var request = new PlainOutput(bytes);
-            command.Write(request);
-            await stream.WriteAsync(bytes, 0, request.Position).ConfigureAwait(false);
-            using (var response = await ReadResponseAsync(stream).ConfigureAwait(false))
+            var bulkWriteStream = new BulkWriteStream(
+                stream,
+                new MemoryStream()
+            );
+            var output = new CompoundOutput(
+                new VerifyingOutput(),
+                new StreamOutput(
+                    bulkWriteStream
+                )
+            );
+            command.Write(output);
+            await bulkWriteStream.FlushAsync().ConfigureAwait(false);
+            using (var response = await ReadResponseAsync().ConfigureAwait(false))
             {
                 return command.Read(response);
             }
         }
 
-        private async Task<Resource<Input>> ReadResponseAsync(NetworkStream stream)
+        private async Task<Resource<Input>> ReadResponseAsync()
         {
             var buffer = new byte[1024];
             var count = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);

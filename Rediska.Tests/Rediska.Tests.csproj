@@ -53,12 +53,38 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Array.cs" />
+    <Compile Include="ArrayShould.cs" />
     <Compile Include="BulkString.cs" />
     <Compile Include="BulkStringResponse.cs" />
     <Compile Include="BulkStringResponseExtensions.cs" />
+    <Compile Include="BulkWriteStream.cs" />
+    <Compile Include="Checks\Check.cs" />
+    <Compile Include="Checks\CheckException.cs" />
+    <Compile Include="Checks\CompositeCheck.cs" />
+    <Compile Include="Checks\CRLFCheck.cs" />
+    <Compile Include="Checks\IntegerCheck.cs" />
+    <Compile Include="Checks\SimpleStringCheck.cs" />
     <Compile Include="ChunkList.cs" />
+    <Compile Include="CompoundOutput.cs" />
     <Compile Include="Content.cs" />
-    <Compile Include="Magic.cs" />
+    <Compile Include="Error.cs" />
+    <Compile Include="Checks\Magic.cs" />
+    <Compile Include="Checks\MagicCheck.cs" />
+    <Compile Include="RandomContent.cs" />
+    <Compile Include="Reading\ArrayLength.cs" />
+    <Compile Include="Reading\ArrayStart.cs" />
+    <Compile Include="Reading\BulkString.cs" />
+    <Compile Include="Reading\BulkStringStart.cs" />
+    <Compile Include="Reading\End.cs" />
+    <Compile Include="Reading\Seek.cs" />
+    <Compile Include="Reading\SimpleString.cs" />
+    <Compile Include="Reading\Sizes.cs" />
+    <Compile Include="Reading\Start.cs" />
+    <Compile Include="Reading\State.cs" />
+    <Compile Include="SimpleString.cs" />
+    <Compile Include="StreamOutput.cs" />
+    <Compile Include="TemporaryResponse.cs" />
+    <Compile Include="TemporaryResponseShould.cs" />
     <Compile Include="TrashTests.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="DataType.cs" />
@@ -78,6 +104,7 @@
     <Compile Include="StackExtensions.cs" />
     <Compile Include="VerificationStates\ArrayElementStart.cs" />
     <Compile Include="VerificationStates\BulkStringContent.cs" />
+    <Compile Include="VerificationStates\BulkStringLengthEnd.cs" />
     <Compile Include="VerificationStates\BulkStringStart.cs" />
     <Compile Include="VerificationStates\End.cs" />
     <Compile Include="VerificationStates\IntegerEnd.cs" />

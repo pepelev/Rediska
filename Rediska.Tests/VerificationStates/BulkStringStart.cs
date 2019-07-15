@@ -1,4 +1,5 @@
 ﻿using System;
+using Rediska.Tests.Checks;
 
 namespace Rediska.Tests.VerificationStates
 {
@@ -13,7 +14,8 @@ namespace Rediska.Tests.VerificationStates
 
         public override State Write(Magic magic) => throw new InvalidOperationException("BulkString length expected");
         public override State Write(byte[] array) => throw new InvalidOperationException("BulkString length expected");
-        public override State Write(long integer) => new BulkStringContent(outerState, integer);
+        public override State Write(long integer) => new BulkStringLengthEnd(outerState, integer);
         public override State WriteCRLF() => throw new InvalidOperationException("BulkString length expected");
+        public override bool IsTerminal => false;
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
+using Rediska.Tests.Checks;
 
 namespace Rediska.Tests
 {
@@ -26,7 +28,6 @@ namespace Rediska.Tests
                 var currentChar = reader.ReadByte();
                 if (currentChar == '\r')
                 {
-                    reader.ReadByte();
                     return result.ToString();
                 }
 
@@ -49,7 +50,6 @@ namespace Rediska.Tests
 
                 if (currentChar == '\r')
                 {
-                    reader.ReadByte();
                     return positive 
                         ? result
                         : -result;
@@ -62,13 +62,21 @@ namespace Rediska.Tests
         public override BulkStringResponse ReadBulkString()
         {
             var length = ReadInteger();
+            ReadCRLF();
             if (length < 0)
                 return BulkStringResponse.Null;
 
             var content = reader.ReadBytes(checked((int) length));
-            reader.ReadByte(); // CR
-            reader.ReadByte(); // LF
             return new BulkString(content);
+        }
+
+        public override void ReadCRLF()
+        {
+            var @byte = reader.ReadByte();
+            if (@byte == '\r')
+                reader.ReadByte();
+            else if (@byte != '\n')
+                throw new InvalidOperationException();
         }
 
         private sealed class BulkString : BulkStringResponse
