@@ -1,4 +1,6 @@
-﻿namespace Rediska.Commands.Hashes
+﻿using Rediska.Protocol.Responses;
+
+namespace Rediska.Commands.Hashes
 {
     public abstract class HashEntry
     {

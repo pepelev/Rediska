@@ -1,4 +1,7 @@
-﻿namespace Rediska.Commands.Hashes
+﻿using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
+
+namespace Rediska.Commands.Hashes
 {
     public sealed class HSET : Command<HSET.Response>
     {
@@ -7,6 +10,8 @@
             NewFieldAdded,
             OldFieldUpdated
         }
+
+        private static readonly BulkString name = new BulkString("HSET");
 
         private readonly Key field;
         private readonly Key key;
@@ -20,7 +25,7 @@
         }
 
         public override DataType Request => new Array(
-            new BulkString("HSET"),
+            name,
             key.ToBulkString(),
             field.ToBulkString(),
             value

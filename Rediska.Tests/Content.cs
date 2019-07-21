@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using Rediska.Tests.Protocol.Requests;
+using Rediska.Protocol;
+using Rediska.Protocol.Requests;
 
 namespace Rediska.Tests
 {

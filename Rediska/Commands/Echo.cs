@@ -1,4 +1,7 @@
-﻿namespace Rediska.Commands
+﻿using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
+
+namespace Rediska.Commands
 {
     public sealed class ECHO : Command<string>
     {

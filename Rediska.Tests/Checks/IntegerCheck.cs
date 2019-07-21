@@ -1,4 +1,6 @@
-﻿namespace Rediska.Tests.Checks
+﻿using Rediska.Protocol;
+
+namespace Rediska.Tests.Checks
 {
     public sealed class IntegerCheck : Check
     {

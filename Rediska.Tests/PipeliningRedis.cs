@@ -5,6 +5,9 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Rediska.Commands;
+using Rediska.Protocol;
+using Rediska.Utils;
 
 namespace Rediska.Tests
 {

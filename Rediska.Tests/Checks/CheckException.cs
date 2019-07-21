@@ -1,4 +1,5 @@
 ﻿using System;
+using Rediska.Protocol;
 
 namespace Rediska.Tests.Checks
 {

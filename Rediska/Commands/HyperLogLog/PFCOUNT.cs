@@ -1,4 +1,9 @@
-﻿namespace Rediska.Commands.HyperLogLog
+﻿using System.Collections.Generic;
+using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
+using Rediska.Utils;
+
+namespace Rediska.Commands.HyperLogLog
 {
     public sealed class PFCOUNT : Command<long>
     {

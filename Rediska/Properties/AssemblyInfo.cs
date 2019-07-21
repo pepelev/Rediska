@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Rediska")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("SKB Kontur")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Rediska")]
-[assembly: AssemblyCopyright("Copyright © SKB Kontur 2018")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,3 +34,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+#if !FINAL
+[assembly: InternalsVisibleTo("Rediska.Tests")]
+#endif

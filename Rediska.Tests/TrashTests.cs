@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Rediska.Commands;
 using Rediska.Commands.Sets;
+using Rediska.Protocol;
+using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
 using Rediska.Tests.Checks;
-using Rediska.Tests.Protocol.Requests;
-using Rediska.Tests.Protocol.Responses.Visitors;
-using Array = Rediska.Tests.Protocol.Requests.Array;
+using Array = Rediska.Protocol.Requests.Array;
 
 namespace Rediska.Tests
 {
@@ -20,7 +21,7 @@ namespace Rediska.Tests
         public async Task Test()
         {
             var connection = new SimpleConnection();
-            Key key = "set-test";
+            Rediska.Key key = "set-test";
             var add = new SADD(
                 key,
                 new[]
@@ -41,14 +42,14 @@ namespace Rediska.Tests
         [TestCase("bosya:12", ExpectedResult = "think")]
         public async Task<object> GetString(string key)
         {
-            var redis = new Redis();
+            var redis = new SimpleConnection();
             return await redis.ExecuteAsync(new GET(key)).ConfigureAwait(false);
         }
 
         [Test]
         public async Task EchoTest()
         {
-            var redis = new Redis();
+            var redis = new SimpleConnection();
             var foobar = await redis.ExecuteAsync(new ECHO("foobar")).ConfigureAwait(false);
             Console.WriteLine(foobar);
         }
@@ -56,7 +57,7 @@ namespace Rediska.Tests
         [Test]
         public async Task Bosyata2()
         {
-            var redis = new Redis();
+            var redis = new SimpleConnection();
             await redis.ExecuteAsync(new Add()).ConfigureAwait(false);
             var stopwatch = new Stopwatch();
             stopwatch.Start();

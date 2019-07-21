@@ -1,4 +1,7 @@
-﻿using Rediska.Utils;
+﻿using System.Collections.Generic;
+using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
+using Rediska.Utils;
 
 namespace Rediska.Commands.HyperLogLog
 {

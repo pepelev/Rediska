@@ -1,5 +1,7 @@
-﻿using BulkString = Rediska.Tests.Protocol.Responses.BulkString;
-using DataType = Rediska.Tests.Protocol.Requests.DataType;
+﻿using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
+using BulkString = Rediska.Protocol.Responses.BulkString;
+using DataType = Rediska.Protocol.Requests.DataType;
 
 namespace Rediska.Commands.Sets
 {

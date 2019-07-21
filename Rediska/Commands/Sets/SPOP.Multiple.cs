@@ -1,6 +1,9 @@
-﻿using System.Globalization;
-using Array = Rediska.Tests.Protocol.Requests.Array;
-using DataType = Rediska.Tests.Protocol.Requests.DataType;
+﻿using System.Collections.Generic;
+using System.Globalization;
+using Rediska.Protocol.Responses;
+using Rediska.Protocol.Responses.Visitors;
+using Array = Rediska.Protocol.Requests.Array;
+using DataType = Rediska.Protocol.Requests.DataType;
 
 namespace Rediska.Commands.Sets
 {

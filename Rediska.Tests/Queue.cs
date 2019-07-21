@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Rediska.Protocol;
 
 namespace Rediska.Tests
 {

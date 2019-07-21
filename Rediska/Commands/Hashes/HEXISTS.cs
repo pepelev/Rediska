@@ -1,4 +1,7 @@
-﻿namespace Rediska.Commands.Hashes
+﻿using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
+
+namespace Rediska.Commands.Hashes
 {
     public sealed class HEXISTS : Command<HEXISTS.Response>
     {

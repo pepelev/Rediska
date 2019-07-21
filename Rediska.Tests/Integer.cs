@@ -1,5 +1,6 @@
-﻿using Rediska.Tests.Checks;
-using Rediska.Tests.Protocol.Requests;
+﻿using Rediska.Protocol;
+using Rediska.Protocol.Requests;
+using Rediska.Tests.Checks;
 
 namespace Rediska.Tests
 {

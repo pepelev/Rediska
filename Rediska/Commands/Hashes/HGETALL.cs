@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Array = Rediska.Tests.Protocol.Requests.Array;
+using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
+using Array = Rediska.Protocol.Requests.Array;
 
 namespace Rediska.Commands.Hashes
 {

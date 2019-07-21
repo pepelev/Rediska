@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
+using Rediska.Protocol;
 using Rediska.Tests.Checks;
 
 namespace Rediska.Tests
@@ -18,7 +19,7 @@ namespace Rediska.Tests
         private static readonly Magic[] AllowedMagics =
         {
             Magic.Array,
-            Magic.Integer, 
+            Magic.Integer,
             Magic.BulkString
         };
 

@@ -1,6 +1,8 @@
-﻿using Array = Rediska.Tests.Protocol.Requests.Array;
-using BulkString = Rediska.Tests.Protocol.Requests.BulkString;
-using DataType = Rediska.Tests.Protocol.Requests.DataType;
+﻿using Rediska.Protocol.Responses;
+using Rediska.Protocol.Responses.Visitors;
+using Array = Rediska.Protocol.Requests.Array;
+using BulkString = Rediska.Protocol.Requests.BulkString;
+using DataType = Rediska.Protocol.Requests.DataType;
 
 namespace Rediska.Commands
 {
@@ -18,6 +20,9 @@ namespace Rediska.Commands
             new BulkString(key)
         );
 
-        public override Visitor<Protocol.Responses.BulkString> ResponseStructure => new ConstVisitor<Protocol.Responses.BulkString>(new PlainBulkString(new byte[0]));
+        // todo
+        public override Visitor<Protocol.Responses.BulkString> ResponseStructure => new ConstVisitor<Protocol.Responses.BulkString>(
+            new PlainBulkString(new byte[0])
+        );
     }
 }

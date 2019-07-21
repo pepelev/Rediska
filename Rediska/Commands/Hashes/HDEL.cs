@@ -1,4 +1,9 @@
-﻿namespace Rediska.Commands.Hashes
+﻿using System.Collections.Generic;
+using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
+using Rediska.Utils;
+
+namespace Rediska.Commands.Hashes
 {
     public sealed class HDEL : Command<long>
     {

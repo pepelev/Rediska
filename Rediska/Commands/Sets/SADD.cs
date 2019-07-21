@@ -1,7 +1,14 @@
-﻿namespace Rediska.Commands.Sets
+﻿using System.Collections.Generic;
+using Rediska.Protocol.Requests;
+using Rediska.Protocol.Responses.Visitors;
+using Rediska.Utils;
+
+namespace Rediska.Commands.Sets
 {
     public sealed class SADD : Command<long>
     {
+        private static readonly BulkString name = new BulkString("SADD");
+
         private readonly Key key;
         private readonly IReadOnlyCollection<BulkString> members;
 
@@ -15,7 +22,7 @@
             new ConcatCollection<DataType>(
                 new DataType[]
                 {
-                    new BulkString("SADD"),
+                    name,
                     key.ToBulkString()
                 },
                 members
