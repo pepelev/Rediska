@@ -1,4 +1,4 @@
-﻿namespace Rediska.Tests
+﻿namespace Rediska.Tests.Protocol.Requests
 {
     public abstract class DataType
     {

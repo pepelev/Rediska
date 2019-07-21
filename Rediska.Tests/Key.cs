@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Rediska.Tests
+﻿namespace Rediska.Tests
 {
     public abstract partial class Key
     {

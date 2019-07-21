@@ -1,4 +1,5 @@
 ﻿using Rediska.Tests.Checks;
+using Rediska.Tests.Protocol.Responses;
 
 namespace Rediska.Tests
 {
@@ -7,7 +8,6 @@ namespace Rediska.Tests
         public abstract Magic ReadMagic();
         public abstract string ReadSimpleString();
         public abstract long ReadInteger();
-        public abstract BulkStringResponse ReadBulkString();
-        public abstract void ReadCRLF();
+        public abstract BulkString ReadBulkString();
     }
 }

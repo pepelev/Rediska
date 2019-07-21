@@ -2,14 +2,14 @@
 using System.Text;
 using Rediska.Tests.Checks;
 
-namespace Rediska.Tests
+namespace Rediska.Tests.Protocol.Requests
 {
-    public sealed class Error : DataType
+    public sealed class SimpleString : DataType
     {
-        private static readonly char[] CRLF = { '\r', '\n' };
+        private static readonly char[] CRLF = {'\r', '\n'};
         private readonly string content;
 
-        public Error(string content)
+        public SimpleString(string content)
         {
             if (content.IndexOfAny(CRLF) >= 0)
                 throw new ArgumentException("Content must not contain CRLF");
@@ -19,7 +19,7 @@ namespace Rediska.Tests
 
         public override void Write(Output output)
         {
-            output.Write(Magic.Error);
+            output.Write(Magic.SimpleString);
             var bytes = Encoding.ASCII.GetBytes(content);
             output.Write(bytes);
             output.WriteCRLF();

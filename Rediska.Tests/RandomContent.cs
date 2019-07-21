@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Rediska.Tests.Protocol.Requests;
+using Array = Rediska.Tests.Protocol.Requests.Array;
 
 namespace Rediska.Tests
 {

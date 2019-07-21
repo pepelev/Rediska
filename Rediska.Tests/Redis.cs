@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Rediska.Tests
@@ -34,28 +35,31 @@ namespace Rediska.Tests
                     bulkWriteStream
                 )
             );
-            command.Write(output);
+            command.Request.Write(output);
             await bulkWriteStream.FlushAsync().ConfigureAwait(false);
             using (var response = await ReadResponseAsync().ConfigureAwait(false))
             {
-                return command.Read(response);
+                //return command.Read(response);
+                throw new NotImplementedException();
             }
         }
 
         private async Task<Resource<Input>> ReadResponseAsync()
         {
-            var buffer = new byte[1024];
-            var count = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
-            var binaryReader = new BinaryReader(
-                new MemoryStream(buffer, 0, count),
-                Encoding.ASCII
-            );
-            return new Resource<Input>(
-                new PlainInput(
-                    binaryReader
-                ),
-                binaryReader
-            );
+            var response = new TemporaryResponse();
+            var buffer = new byte[1024 * 80];
+            while (true)
+            {
+                var count = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+                var inputs = response.Feed(new ArraySegment<byte>(buffer, 0, count));
+                if (inputs.Count > 0)
+                {
+                    return new Resource<Input>(
+                        inputs.Single(),
+                        new MemoryStream()
+                    );
+                }
+            }
         }
     }
 }

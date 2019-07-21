@@ -1,29 +1,29 @@
-﻿using System.Text;
-using Rediska.Tests.Checks;
+﻿using System.IO;
+using System.Text;
 
 namespace Rediska.Tests
 {
-    public sealed class BulkString : DataType
+    public abstract partial class Key
     {
-        private readonly byte[] content;
-
-        public BulkString(string content)
-            : this(Encoding.ASCII.GetBytes(content))
+        public sealed class BulkString : Key
         {
-        }
+            private readonly Protocol.Responses.BulkString content;
 
-        public BulkString(byte[] content)
-        {
-            this.content = content;
-        }
+            public BulkString(Protocol.Responses.BulkString content)
+            {
+                this.content = content;
+            }
 
-        public override void Write(Output output)
-        {
-            output.Write(Magic.BulkString);
-            output.Write(content.Length);
-            output.WriteCRLF();
-            output.Write(content);
-            output.WriteCRLF();
+            public override byte[] ToBytes()
+            {
+                using (var stream = new MemoryStream())
+                {
+                    content.Write(stream);
+                    return stream.ToArray();
+                }
+            }
+
+            public override string ToString() => Encoding.UTF8.GetString(ToBytes());
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Rediska.Tests.Checks;
 
-namespace Rediska.Tests
+namespace Rediska.Tests.Protocol.Requests
 {
     public sealed class Array : DataType
     {
@@ -27,6 +27,8 @@ namespace Rediska.Tests
             foreach (var element in elements)
                 element.Write(output);
         }
+
+        public override string ToString() => string.Join(" ", elements);
 
         private sealed class NullArray : DataType
         {

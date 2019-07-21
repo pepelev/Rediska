@@ -1,4 +1,4 @@
-﻿namespace Rediska
+﻿namespace Rediska.Old
 {
     public sealed class Heap : ArrayPool
     {

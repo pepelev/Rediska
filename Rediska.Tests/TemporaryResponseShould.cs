@@ -5,6 +5,8 @@ using System.Text;
 using FluentAssertions;
 using NUnit.Framework;
 using Rediska.Tests.Checks;
+using Rediska.Tests.Protocol.Requests;
+using Array = Rediska.Tests.Protocol.Requests.Array;
 
 namespace Rediska.Tests
 {

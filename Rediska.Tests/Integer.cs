@@ -1,4 +1,5 @@
 ﻿using Rediska.Tests.Checks;
+using Rediska.Tests.Protocol.Requests;
 
 namespace Rediska.Tests
 {

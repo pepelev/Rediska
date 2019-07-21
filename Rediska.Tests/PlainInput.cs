@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using Rediska.Tests.Checks;
+using Rediska.Tests.Protocol.Responses;
 
 namespace Rediska.Tests
 {
@@ -28,6 +29,7 @@ namespace Rediska.Tests
                 var currentChar = reader.ReadByte();
                 if (currentChar == '\r')
                 {
+                    reader.ReadByte();
                     return result.ToString();
                 }
 
@@ -42,48 +44,46 @@ namespace Rediska.Tests
             while (true)
             {
                 var currentChar = reader.ReadByte();
-
                 if (currentChar == '-')
                 {
                     positive = false;
                 }
-
-                if (currentChar == '\r')
+                else if (currentChar == '\r')
                 {
+                    reader.ReadByte();
                     return positive 
                         ? result
                         : -result;
                 }
-
-                result = result * 10 + currentChar - '0';
+                else
+                {
+                    result = result * 10 + currentChar - '0';
+                }
             }
         }
 
-        public override BulkStringResponse ReadBulkString()
+        public override BulkString ReadBulkString()
         {
             var length = ReadInteger();
-            ReadCRLF();
             if (length < 0)
-                return BulkStringResponse.Null;
+                return BulkString.Null;
 
             var content = reader.ReadBytes(checked((int) length));
-            return new BulkString(content);
+            ReadCRLF();
+            return new PlainBulkString(content);
         }
 
-        public override void ReadCRLF()
+        private void ReadCRLF()
         {
-            var @byte = reader.ReadByte();
-            if (@byte == '\r')
-                reader.ReadByte();
-            else if (@byte != '\n')
-                throw new InvalidOperationException();
+            reader.ReadByte();
+            reader.ReadByte();
         }
 
-        private sealed class BulkString : BulkStringResponse
+        private sealed class BulkStrings : BulkStringResponse
         {
             private readonly byte[] content;
 
-            public BulkString(byte[] content)
+            public BulkStrings(byte[] content)
             {
                 this.content = content;
             }

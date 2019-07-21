@@ -1,4 +1,6 @@
-﻿namespace Rediska.Tests.Checks
+﻿using System;
+
+namespace Rediska.Tests.Checks
 {
     public sealed class CRLFCheck : Check
     {
@@ -6,7 +8,7 @@
 
         public override void Verify(Input input)
         {
-            input.ReadCRLF();
+            throw new Exception("Kill CRLFCheck");
         }
     }
 }
