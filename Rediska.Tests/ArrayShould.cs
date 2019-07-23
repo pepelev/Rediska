@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using Rediska.Protocol;
-using Rediska.Protocol.Requests;
+using Rediska.Protocol.Outputs;
 
 namespace Rediska.Tests
 {
@@ -10,8 +10,8 @@ namespace Rediska.Tests
         [Test]
         public void BeVerified()
         {
-            var array = new Array(
-                new BulkString("bosya"),
+            var array = new PlainArray(
+                new PlainBulkString("bosya"),
                 new Integer(500)
             );
 

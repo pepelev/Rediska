@@ -5,7 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using Rediska.Protocol;
-using Rediska.Protocol.Requests;
+using Rediska.Protocol.Inputs;
+using Rediska.Protocol.Outputs;
 using Rediska.Utils;
 
 namespace Rediska

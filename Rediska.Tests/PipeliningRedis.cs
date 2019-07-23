@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Rediska.Commands;
 using Rediska.Protocol;
+using Rediska.Protocol.Inputs;
+using Rediska.Protocol.Outputs;
 using Rediska.Utils;
 
 namespace Rediska.Tests

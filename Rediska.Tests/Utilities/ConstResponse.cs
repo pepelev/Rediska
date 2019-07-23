@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Rediska.Protocol.Responses;
+using Rediska.Protocol;
 
 namespace Rediska.Tests.Utilities
 {

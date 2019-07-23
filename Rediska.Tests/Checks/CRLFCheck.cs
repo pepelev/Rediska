@@ -1,5 +1,6 @@
 ﻿using System;
 using Rediska.Protocol;
+using Rediska.Protocol.Inputs;
 
 namespace Rediska.Tests.Checks
 {

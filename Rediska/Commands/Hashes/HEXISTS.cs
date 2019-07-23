@@ -1,5 +1,5 @@
-﻿using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
+﻿using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands.Hashes
 {
@@ -11,7 +11,7 @@ namespace Rediska.Commands.Hashes
             KeyOrFieldNotExists
         }
 
-        private static readonly BulkString name = new BulkString("HEXISTS");
+        private static readonly PlainBulkString name = new PlainBulkString("HEXISTS");
 
         private static readonly Visitor<Response> responseStructure = IntegerExpectation.Singleton
             .Then(
@@ -29,7 +29,7 @@ namespace Rediska.Commands.Hashes
             this.field = field;
         }
 
-        public override DataType Request => new Array(
+        public override DataType Request => new PlainArray(
             name,
             key.ToBulkString(),
             field.ToBulkString()

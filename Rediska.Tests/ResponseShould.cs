@@ -1,6 +1,7 @@
 ﻿using System;
 using FluentAssertions;
 using NUnit.Framework;
+using Rediska.Protocol;
 
 namespace Rediska.Tests
 {

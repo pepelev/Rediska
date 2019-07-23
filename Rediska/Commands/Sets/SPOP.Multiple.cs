@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using Rediska.Protocol.Responses;
-using Rediska.Protocol.Responses.Visitors;
-using Array = Rediska.Protocol.Requests.Array;
-using DataType = Rediska.Protocol.Requests.DataType;
+using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands.Sets
 {
@@ -25,10 +23,10 @@ namespace Rediska.Commands.Sets
                 this.count = count;
             }
 
-            public override DataType Request => new Array(
+            public override DataType Request => new PlainArray(
                 name,
                 key.ToBulkString(),
-                new Protocol.Requests.BulkString(count.ToString(CultureInfo.InvariantCulture))
+                new PlainBulkString(count.ToString(CultureInfo.InvariantCulture))
             );
 
             public override Visitor<IReadOnlyList<BulkString>> ResponseStructure => responseStructure;

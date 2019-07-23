@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Rediska.Protocol;
-using Rediska.Protocol.Responses;
+using Rediska.Protocol.Inputs;
 
 namespace Rediska
 {
@@ -39,7 +39,7 @@ namespace Rediska
             if (type == Magic.Integer)
             {
                 var value = input.ReadInteger();
-                return new Protocol.Responses.Integer(value);
+                return new Integer(value);
             }
 
             if (type == Magic.BulkString)

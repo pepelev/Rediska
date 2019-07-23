@@ -7,9 +7,9 @@ namespace Rediska
     {
         public sealed class BulkString : Rediska.Key
         {
-            private readonly Protocol.Responses.BulkString content;
+            private readonly Protocol.BulkString content;
 
-            public BulkString(Protocol.Responses.BulkString content)
+            public BulkString(Protocol.BulkString content)
             {
                 this.content = content;
             }
@@ -18,7 +18,7 @@ namespace Rediska
             {
                 using (var stream = new MemoryStream())
                 {
-                    content.Write(stream);
+                    content.WriteContent(stream);
                     return stream.ToArray();
                 }
             }

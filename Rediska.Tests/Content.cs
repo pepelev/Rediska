@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Rediska.Protocol;
-using Rediska.Protocol.Requests;
+using Rediska.Protocol.Outputs;
 
 namespace Rediska.Tests
 {
@@ -15,6 +15,7 @@ namespace Rediska.Tests
 
         public byte[] AsBytes()
         {
+            // todo fix
             var content = new byte[1024 * 1024 * 128];
             var plainOutput = new PlainOutput(content);
             data.Write(plainOutput);

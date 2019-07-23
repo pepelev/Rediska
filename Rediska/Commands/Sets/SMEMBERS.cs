@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using Rediska.Protocol.Responses;
-using Rediska.Protocol.Responses.Visitors;
-using Array = Rediska.Protocol.Requests.Array;
-using DataType = Rediska.Protocol.Requests.DataType;
+using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands.Sets
 {
     public sealed class SMEMBERS : Command<IReadOnlyList<BulkString>>
     {
-        private static readonly Protocol.Requests.BulkString name = new Protocol.Requests.BulkString("SMEMBERS");
+        private static readonly PlainBulkString name = new PlainBulkString("SMEMBERS");
 
         private static readonly ListVisitor<BulkString> responseStructure = new ListVisitor<BulkString>(
             ArrayExpectation.Singleton,
@@ -22,7 +20,7 @@ namespace Rediska.Commands.Sets
             this.key = key;
         }
 
-        public override DataType Request => new Array(
+        public override DataType Request => new PlainArray(
             name,
             key.ToBulkString()
         );

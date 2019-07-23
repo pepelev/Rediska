@@ -1,11 +1,11 @@
-﻿using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
+﻿using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands.Sets
 {
     public sealed class SCARD : Command<long>
     {
-        private static readonly BulkString name = new BulkString("SCARD");
+        private static readonly PlainBulkString name = new PlainBulkString("SCARD");
 
         private readonly Key key;
 
@@ -14,7 +14,7 @@ namespace Rediska.Commands.Sets
             this.key = key;
         }
 
-        public override DataType Request => new Array(
+        public override DataType Request => new PlainArray(
             name,
             key.ToBulkString()
         );

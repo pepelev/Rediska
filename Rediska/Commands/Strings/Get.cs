@@ -1,13 +1,12 @@
-﻿using Rediska.Protocol.Responses;
-using Rediska.Protocol.Responses.Visitors;
-using Array = Rediska.Protocol.Requests.Array;
-using BulkString = Rediska.Protocol.Requests.BulkString;
-using DataType = Rediska.Protocol.Requests.DataType;
+﻿using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands.Strings
 {
-    public sealed class GET : Command<Protocol.Responses.BulkString>
+    public sealed class GET : Command<BulkString>
     {
+        private static readonly PlainBulkString name = new PlainBulkString("GET");
+
         private readonly string key;
 
         public GET(string key)
@@ -15,14 +14,11 @@ namespace Rediska.Commands.Strings
             this.key = key;
         }
 
-        public override DataType Request => new Array(
-            new BulkString("GET"),
-            new BulkString(key)
+        public override DataType Request => new PlainArray(
+            name,
+            new PlainBulkString(key)
         );
 
-        // todo
-        public override Visitor<Protocol.Responses.BulkString> ResponseStructure => new ConstVisitor<Protocol.Responses.BulkString>(
-            new PlainBulkString(new byte[0])
-        );
+        public override Visitor<BulkString> ResponseStructure => BulkStringExpectation.Singleton;
     }
 }

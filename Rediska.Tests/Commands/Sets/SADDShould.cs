@@ -7,8 +7,8 @@ using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using Rediska.Commands.Keys;
 using Rediska.Commands.Sets;
-using Rediska.Protocol.Responses;
-using Rediska.Protocol.Responses.Visitors;
+using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 using Rediska.Tests.Utilities;
 using Array = System.Array;
 
@@ -40,7 +40,7 @@ namespace Rediska.Tests.Commands.Sets
         [Test]
         public async Task AddNoElements()
         {
-            var sut = new SADD(key, Array.Empty<Protocol.Requests.BulkString>());
+            var sut = new SADD(key, Array.Empty<BulkString>());
 
             var exception = Assert.ThrowsAsync<VisitException>(
                 () => connection.ExecuteAsync(sut)

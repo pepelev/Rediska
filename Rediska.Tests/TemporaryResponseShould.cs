@@ -5,10 +5,8 @@ using System.Text;
 using FluentAssertions;
 using NUnit.Framework;
 using Rediska.Protocol;
-using Rediska.Protocol.Requests;
 using Rediska.Tests.Checks;
 using Rediska.Utils;
-using Array = Rediska.Protocol.Requests.Array;
 
 namespace Rediska.Tests
 {
@@ -19,9 +17,9 @@ namespace Rediska.Tests
         [Test]
         public void Array()
         {
-            var array = new Array(
+            var array = new PlainArray(
                 Enumerable.Range(0, 1200)
-                    .Select(_ => new BulkString(new byte[1024]))
+                    .Select(_ => new PlainBulkString(new byte[1024]))
                     .ToArray()
             );
             var bytes = new Content(
@@ -81,8 +79,8 @@ namespace Rediska.Tests
         public void ReadArray()
         {
             var bytes = new Content(
-                new Array(
-                    new BulkString("key"),
+                new PlainArray(
+                    new PlainBulkString("key"),
                     new Integer(500)
                 )
             ).AsBytes();
@@ -142,16 +140,16 @@ namespace Rediska.Tests
         public void ReadNestedArray()
         {
             var bytes = new Content(
-                new Array(
-                    new BulkString("one"),
-                    new BulkString("two"),
-                    new BulkString("three"),
-                    new Array(
-                        new BulkString("three-one"),
-                        new BulkString("three-two"),
-                        new BulkString("three-three")
+                new PlainArray(
+                    new PlainBulkString("one"),
+                    new PlainBulkString("two"),
+                    new PlainBulkString("three"),
+                    new PlainArray(
+                        new PlainBulkString("three-one"),
+                        new PlainBulkString("three-two"),
+                        new PlainBulkString("three-three")
                     ),
-                    new BulkString("four")
+                    new PlainBulkString("four")
                 )
             ).AsBytes();
 
@@ -184,7 +182,7 @@ namespace Rediska.Tests
         public void ReadBulkString()
         {
             var bytes = new Content(
-                new BulkString(new byte[] {1,2,3,4})
+                new PlainBulkString(new byte[] {1,2,3,4})
             ).AsBytes();
 
             var sut = new TemporaryResponse();

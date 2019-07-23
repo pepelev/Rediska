@@ -1,34 +1,31 @@
 ﻿using System.Collections.Generic;
-using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
+using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 using Rediska.Utils;
 
 namespace Rediska.Commands.Hashes
 {
     public sealed class HDEL : Command<long>
     {
-        private static readonly BulkString name = new BulkString("HDEL");
+        private static readonly PlainBulkString name = new PlainBulkString("HDEL");
 
         private readonly Key key;
-        private readonly IReadOnlyCollection<Key> fields;
+        private readonly IReadOnlyList<Key> fields;
 
-        public HDEL(Key key, IReadOnlyCollection<Key> fields)
+        public HDEL(Key key, IReadOnlyList<Key> fields)
         {
             this.key = key;
             this.fields = fields;
         }
 
-        public override DataType Request => new Array(
-            new ConcatCollection<DataType>(
+        public override DataType Request => new PlainArray(
+            new ConcatList<DataType>(
                 new DataType[]
                 {
                     name,
                     key.ToBulkString()
                 },
-                new ProjectingCollection<Key, DataType>(
-                    fields,
-                    field => field.ToBulkString()
-                )
+                new KeyList(fields)
             )
         );
 

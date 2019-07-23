@@ -1,7 +1,5 @@
-﻿using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
-using BulkString = Rediska.Protocol.Responses.BulkString;
-using DataType = Rediska.Protocol.Requests.DataType;
+﻿using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands.Sets
 {
@@ -16,7 +14,7 @@ namespace Rediska.Commands.Sets
                 this.key = key;
             }
 
-            public override DataType Request => new Array(
+            public override DataType Request => new PlainArray(
                 name,
                 key.ToBulkString()
             );

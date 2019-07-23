@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
-using Array = Rediska.Protocol.Requests.Array;
+using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands.Hashes
 {
     public sealed class HGETALL : Command<IReadOnlyList<HashEntry>>
     {
-        private static readonly BulkString name = new BulkString("HGETALL");
+        private static readonly BulkString name = new PlainBulkString("HGETALL");
 
         private readonly Key key;
 
@@ -18,7 +17,7 @@ namespace Rediska.Commands.Hashes
             this.key = key;
         }
 
-        public override DataType Request => new Array(
+        public override DataType Request => new PlainArray(
             name,
             key.ToBulkString()
         );
@@ -28,9 +27,9 @@ namespace Rediska.Commands.Hashes
 
         private sealed class Response : IReadOnlyList<HashEntry>
         {
-            private readonly IReadOnlyList<Protocol.Responses.DataType> list;
+            private readonly IReadOnlyList<Protocol.DataType> list;
 
-            public Response(IReadOnlyList<Protocol.Responses.DataType> list)
+            public Response(IReadOnlyList<Protocol.DataType> list)
             {
                 this.list = list;
             }
@@ -54,19 +53,19 @@ namespace Rediska.Commands.Hashes
         {
             private readonly int index;
 
-            public HashEntry(int index, IReadOnlyList<Protocol.Responses.DataType> list)
+            public HashEntry(int index, IReadOnlyList<Protocol.DataType> list)
             {
                 this.index = index;
                 this.list = list;
             }
 
-            private readonly IReadOnlyList<Protocol.Responses.DataType> list;
+            private readonly IReadOnlyList<Protocol.DataType> list;
 
             public override Key Key => new Key.BulkString(
                 list[index * 2].Accept(BulkStringExpectation.Singleton)
             );
 
-            public override Protocol.Responses.BulkString Value => list[index * 2 + 1].Accept(
+            public override Protocol.BulkString Value => list[index * 2 + 1].Accept(
                 BulkStringExpectation.Singleton
             );
         }

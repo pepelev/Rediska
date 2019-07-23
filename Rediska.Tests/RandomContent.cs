@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Rediska.Protocol.Requests;
-using Array = Rediska.Protocol.Requests.Array;
+using Rediska.Protocol;
+using Array = Rediska.Protocol.Array;
 
 namespace Rediska.Tests
 {
@@ -38,7 +38,7 @@ namespace Rediska.Tests
                 if (count == -1)
                     return Array.Null;
 
-                return new Array(
+                return new PlainArray(
                     Enumerable
                         .Repeat(0, count)
                         .Select(_ => SubGenerate())
@@ -59,7 +59,7 @@ namespace Rediska.Tests
             if (item < 2 * chunk)
                 return new Integer(random.Next(int.MinValue, int.MaxValue));
             if (item < 3 * chunk)
-                return new BulkString(new byte[2]);
+                return new PlainBulkString(new byte[2]);
             return new Error("ERR");
         }
 

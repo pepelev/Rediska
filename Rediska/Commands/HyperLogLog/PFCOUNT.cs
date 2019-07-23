@@ -1,33 +1,30 @@
 ﻿using System.Collections.Generic;
-using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
+using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 using Rediska.Utils;
 
 namespace Rediska.Commands.HyperLogLog
 {
     public sealed class PFCOUNT : Command<long>
     {
-        private static readonly BulkString name = new BulkString("PFCOUNT");
+        private static readonly PlainBulkString name = new PlainBulkString("PFCOUNT");
 
-        private readonly IReadOnlyCollection<Key> keys;
+        private readonly IReadOnlyList<Key> keys;
 
-        public PFCOUNT(IReadOnlyCollection<Key> keys)
+        public PFCOUNT(params Key[] keys)
+            : this(keys as IReadOnlyList<Key>)
+        {
+        }
+
+        public PFCOUNT(IReadOnlyList<Key> keys)
         {
             this.keys = keys;
         }
 
-        public PFCOUNT(params Key[] keys)
-            : this(keys as IReadOnlyCollection<Key>)
-        {
-        }
-
-        public override DataType Request => new Array(
-            new PrefixedCollection<DataType>(
+        public override DataType Request => new PlainArray(
+            new PrefixedList<DataType>(
                 name,
-                new ProjectingCollection<Key, DataType>(
-                    keys,
-                    key => key.ToBulkString()
-                )
+                new KeyList(keys)
             )
         );
 

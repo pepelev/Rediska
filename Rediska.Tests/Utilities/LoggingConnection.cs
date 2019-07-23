@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Rediska.Protocol.Requests;
+using Rediska.Protocol;
 using Rediska.Utils;
 
 namespace Rediska.Tests.Utilities
@@ -36,14 +36,14 @@ namespace Rediska.Tests.Utilities
 
         public struct Entry
         {
-            public Entry(DataType request, Protocol.Responses.DataType response)
+            public Entry(DataType request, Protocol.DataType response)
             {
                 Request = request;
                 Response = response;
             }
 
             public DataType Request { get; }
-            public Protocol.Responses.DataType Response { get; }
+            public Protocol.DataType Response { get; }
         }
     }
 }

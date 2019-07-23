@@ -1,31 +1,30 @@
 ﻿using System.Collections.Generic;
-using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
+using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 using Rediska.Utils;
 
 namespace Rediska.Commands.Keys
 {
     public sealed class DEL : Command<long>
     {
-        private readonly IReadOnlyCollection<Key> keys;
+        private static readonly PlainBulkString name = new PlainBulkString("DEL");
+
+        private readonly IReadOnlyList<Key> keys;
 
         public DEL(params Key[] keys)
-            : this(keys as IReadOnlyCollection<Key>)
+            : this(keys as IReadOnlyList<Key>)
         {
         }
 
-        public DEL(IReadOnlyCollection<Key> keys)
+        public DEL(IReadOnlyList<Key> keys)
         {
             this.keys = keys;
         }
 
-        public override DataType Request => new Array(
-            new PrefixedCollection<DataType>(
-                new BulkString("DEL"),
-                new ProjectingCollection<Key, DataType>(
-                    keys,
-                    key => key.ToBulkString()
-                )
+        public override DataType Request => new PlainArray(
+            new PrefixedList<DataType>(
+                name,
+                new KeyList(keys)
             )
         );
 

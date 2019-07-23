@@ -1,4 +1,4 @@
-﻿using Rediska.Protocol.Responses;
+﻿using Rediska.Protocol;
 
 namespace Rediska.Commands.Hashes
 {

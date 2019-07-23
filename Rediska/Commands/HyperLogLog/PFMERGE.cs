@@ -1,37 +1,36 @@
 ﻿using System.Collections.Generic;
-using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
+using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 using Rediska.Utils;
 
 namespace Rediska.Commands.HyperLogLog
 {
     public sealed class PFMERGE : Command<None>
     {
-        private readonly Key destination;
-        private readonly IReadOnlyCollection<Key> sources;
+        private static readonly PlainBulkString name = new PlainBulkString("PFMERGE");
 
-        public PFMERGE(Key destination, IReadOnlyCollection<Key> sources)
+        private readonly Key destination;
+        private readonly IReadOnlyList<Key> sources;
+
+        public PFMERGE(Key destination, params Key[] sources)
+            : this(destination, sources as IReadOnlyList<Key>)
+        {
+        }
+
+        public PFMERGE(Key destination, IReadOnlyList<Key> sources)
         {
             this.destination = destination;
             this.sources = sources;
         }
 
-        public PFMERGE(Key destination, params Key[] sources)
-            : this(destination, sources as IReadOnlyCollection<Key>)
-        {
-        }
-
-        public override DataType Request => new Array(
-            new ConcatCollection<DataType>(
+        public override DataType Request => new PlainArray(
+            new ConcatList<DataType>(
                 new DataType[]
                 {
-                    new BulkString("PFMERGE"),
+                    name,
                     destination.ToBulkString()
                 },
-                new ProjectingCollection<Key, DataType>(
-                    sources,
-                    source => source.ToBulkString()
-                )
+                new KeyList(sources)
             )
         );
 

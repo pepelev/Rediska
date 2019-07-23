@@ -2,6 +2,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using Rediska.Protocol;
+using Rediska.Protocol.Outputs;
 using Rediska.Tests.Checks;
 
 namespace Rediska.Tests

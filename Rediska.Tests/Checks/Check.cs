@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using Rediska.Protocol;
+using Rediska.Protocol.Inputs;
 
 namespace Rediska.Tests.Checks
 {
@@ -35,7 +36,7 @@ namespace Rediska.Tests.Checks
 
             using (var stream = new MemoryStream())
             {
-                bulkString.Write(stream);
+                bulkString.WriteContent(stream);
                 var bulkStringContent = stream.ToArray();
                 if (!expected.SequenceEqual(bulkStringContent))
                     throw new CheckException("Different content", this, input, bulkString);

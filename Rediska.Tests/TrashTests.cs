@@ -9,10 +9,8 @@ using Rediska.Commands;
 using Rediska.Commands.Sets;
 using Rediska.Commands.Strings;
 using Rediska.Protocol;
-using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
-using Rediska.Tests.Checks;
-using Array = Rediska.Protocol.Requests.Array;
+using Rediska.Protocol.Inputs;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Tests
 {
@@ -27,10 +25,10 @@ namespace Rediska.Tests
                 key,
                 new[]
                 {
-                    new BulkString("one"),
-                    new BulkString("two"),
-                    new BulkString("three"),
-                    new BulkString("four")
+                    new PlainBulkString("one"),
+                    new PlainBulkString("two"),
+                    new PlainBulkString("three"),
+                    new PlainBulkString("four")
                 }
             );
             var added = await connection.ExecuteAsync(add).ConfigureAwait(false);
@@ -73,11 +71,11 @@ namespace Rediska.Tests
             {
                 get
                 {
-                    return new Array(
+                    return new PlainArray(
                         new DataType[]
                             {
-                                new BulkString("PFADD"),
-                                new BulkString("persik")
+                                new PlainBulkString("PFADD"),
+                                new PlainBulkString("persik")
                             }
                             .Concat(Generate())
                             .ToList()
@@ -87,7 +85,7 @@ namespace Rediska.Tests
                     {
                         for (var i = 0; i < 100_000; i++)
                         {
-                            yield return new BulkString(Guid.NewGuid().ToByteArray());
+                            yield return new PlainBulkString(Guid.NewGuid().ToByteArray());
                         }
                     }
                 }
@@ -100,28 +98,28 @@ namespace Rediska.Tests
         public void Bosyata()
         {
             var bytes = new Content(
-                new Array(
+                new PlainArray(
                     new Integer(40),
                     new Integer(50),
                     new Integer(60),
                     new Integer(70),
-                    new BulkString(@"bo\syata"),
-                    new Array(
+                    new PlainBulkString(@"bo\syata"),
+                    new PlainArray(
                         new Integer(40),
                         new Integer(50),
                         new Integer(60),
                         new Integer(70),
-                        new Array(
+                        new PlainArray(
                             new Integer(40),
                             new Integer(50),
                             new Integer(60),
                             new Integer(70),
-                            new Array(
+                            new PlainArray(
                                 new Integer(40),
                                 new Integer(50),
                                 new Integer(60),
                                 new Integer(70),
-                                new Array(
+                                new PlainArray(
                                     new Integer(40),
                                     new Integer(50),
                                     new Integer(60),

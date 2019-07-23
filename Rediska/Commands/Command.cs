@@ -1,5 +1,5 @@
-﻿using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
+﻿using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands
 {

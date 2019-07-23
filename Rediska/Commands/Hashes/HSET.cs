@@ -1,5 +1,5 @@
-﻿using Rediska.Protocol.Requests;
-using Rediska.Protocol.Responses.Visitors;
+﻿using Rediska.Protocol;
+using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands.Hashes
 {
@@ -11,7 +11,7 @@ namespace Rediska.Commands.Hashes
             OldFieldUpdated
         }
 
-        private static readonly BulkString name = new BulkString("HSET");
+        private static readonly PlainBulkString name = new PlainBulkString("HSET");
 
         private readonly Key field;
         private readonly Key key;
@@ -24,7 +24,7 @@ namespace Rediska.Commands.Hashes
             this.value = value;
         }
 
-        public override DataType Request => new Array(
+        public override DataType Request => new PlainArray(
             name,
             key.ToBulkString(),
             field.ToBulkString(),
