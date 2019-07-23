@@ -40,11 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Keys\DEL.cs" />
+    <Compile Include="Commands\Sets\SCARD.cs" />
+    <Compile Include="Commands\Sets\SDIFF.cs" />
+    <Compile Include="Commands\Sets\SMEMBERS.cs" />
+    <Compile Include="Commands\Sets\SREM.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Key.BulkString.cs" />
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Commands\Echo.cs" />
-    <Compile Include="Commands\Get.cs" />
+    <Compile Include="Commands\Strings\Get.cs" />
     <Compile Include="Commands\Hashes\HashEntry.cs" />
     <Compile Include="Commands\Hashes\HDEL.cs" />
     <Compile Include="Commands\Hashes\HEXISTS.cs" />
@@ -88,11 +93,15 @@
     <Compile Include="Protocol\Responses\Visitors\ArrayExpectation.cs" />
     <Compile Include="Protocol\Responses\Visitors\BulkStringExpectation.cs" />
     <Compile Include="Protocol\Responses\Visitors\ConstVisitor.cs" />
+    <Compile Include="Protocol\Responses\Visitors\Equality.cs" />
+    <Compile Include="Protocol\Responses\Visitors\HashCode.cs" />
     <Compile Include="Protocol\Responses\Visitors\Id.cs" />
     <Compile Include="Protocol\Responses\Visitors\IntegerExpectation.cs" />
     <Compile Include="Protocol\Responses\Visitors\ListVisitor.cs" />
     <Compile Include="Protocol\Responses\Visitors\OkExpectation.cs" />
+    <Compile Include="Protocol\Responses\Visitors\PrintVisitor.cs" />
     <Compile Include="Protocol\Responses\Visitors\ProjectingVisitor.cs" />
+    <Compile Include="Protocol\Responses\Visitors\VisitException.cs" />
     <Compile Include="Protocol\Responses\Visitors\Visitor.cs" />
     <Compile Include="Protocol\Responses\Visitors\VisitorExtensions.cs" />
     <Compile Include="Protocol\StreamOutput.cs" />

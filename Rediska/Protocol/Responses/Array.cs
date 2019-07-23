@@ -25,7 +25,7 @@ namespace Rediska.Protocol.Responses
 
             private sealed class Enumerator : IEnumerator<DataType>
             {
-                public static Enumerator Singleton { get; }= new Enumerator();
+                public static Enumerator Singleton { get; } = new Enumerator();
 
                 public void Dispose()
                 {

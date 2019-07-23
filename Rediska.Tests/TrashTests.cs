@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Rediska.Commands;
 using Rediska.Commands.Sets;
+using Rediska.Commands.Strings;
 using Rediska.Protocol;
 using Rediska.Protocol.Requests;
 using Rediska.Protocol.Responses.Visitors;

@@ -12,17 +12,21 @@ namespace Rediska
 {
     public sealed class SimpleConnection : Connection
     {
-        private TcpClient tcp;
-        private NetworkStream stream;
+        private readonly Stream stream;
 
         public SimpleConnection()
         {
-            tcp = new TcpClient
+            var tcp = new TcpClient
             {
                 NoDelay = true
             };
             tcp.Connect(IPAddress.Loopback, 6379);
             stream = tcp.GetStream();
+        }
+
+        public SimpleConnection(Stream stream)
+        {
+            this.stream = stream;
         }
 
         public override async Task<Resource<Response>> SendAsync(DataType command)

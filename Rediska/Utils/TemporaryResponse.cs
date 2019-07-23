@@ -19,6 +19,7 @@ namespace Rediska.Utils
             stream.Position = position;
 
             var result = new List<Input>();
+            // todo remove count
             var count = 0;
 
             while (true)
@@ -37,7 +38,6 @@ namespace Rediska.Utils
 
                 if (stream.Position == stream.Length)
                 {
-                    Console.WriteLine(count);
                     return result;
                 }
             }

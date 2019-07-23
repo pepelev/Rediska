@@ -4,7 +4,7 @@ using Array = Rediska.Protocol.Requests.Array;
 using BulkString = Rediska.Protocol.Requests.BulkString;
 using DataType = Rediska.Protocol.Requests.DataType;
 
-namespace Rediska.Commands
+namespace Rediska.Commands.Strings
 {
     public sealed class GET : Command<Protocol.Responses.BulkString>
     {
