@@ -190,6 +190,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Categories.cs" />
+    <Compile Include="Commands\Lists\BLPOPShould.cs" />
+    <Compile Include="Commands\Sets\RedisCollection.cs" />
     <Compile Include="Commands\Sets\SADDShould.cs" />
     <Compile Include="ConnectionExtensions.cs" />
     <Compile Include="ArrayShould.cs" />

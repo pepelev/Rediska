@@ -19,6 +19,7 @@ namespace Rediska.Commands
             new PlainBulkString(message)
         );
 
+        // todo
         public override Visitor<string> ResponseStructure => new ConstVisitor<string>("foo");
     }
 }

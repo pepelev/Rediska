@@ -40,11 +40,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Cursor.cs" />
     <Compile Include="Commands\Keys\DEL.cs" />
+    <Compile Include="Commands\Lists\BLPOP.cs" />
+    <Compile Include="Commands\ScanResult.cs" />
+    <Compile Include="Commands\Count.cs" />
+    <Compile Include="Commands\Match.cs" />
     <Compile Include="Commands\Sets\SCARD.cs" />
     <Compile Include="Commands\Sets\SDIFF.cs" />
+    <Compile Include="Commands\Sets\SDIFFSTORE.cs" />
+    <Compile Include="Commands\Sets\SINTER.cs" />
+    <Compile Include="Commands\Sets\SINTERSTORE.cs" />
+    <Compile Include="Commands\Sets\SISMEMBER.cs" />
     <Compile Include="Commands\Sets\SMEMBERS.cs" />
+    <Compile Include="Commands\Sets\SMOVE.cs" />
     <Compile Include="Commands\Sets\SREM.cs" />
+    <Compile Include="Commands\Sets\SSCAN.cs" />
+    <Compile Include="Commands\Transactions\EXEC.cs" />
+    <Compile Include="Commands\Transactions\MULTI.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Key.BulkString.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -86,6 +99,7 @@
     <Compile Include="Protocol\PlainBulkString.cs" />
     <Compile Include="Protocol\SimpleString.cs" />
     <Compile Include="Protocol\Visitors\ArrayExpectation.cs" />
+    <Compile Include="Protocol\Visitors\ArrayExpectation2.cs" />
     <Compile Include="Protocol\Visitors\BulkStringExpectation.cs" />
     <Compile Include="Protocol\Visitors\ConstVisitor.cs" />
     <Compile Include="Protocol\Visitors\Equality.cs" />
@@ -96,6 +110,7 @@
     <Compile Include="Protocol\Visitors\OkExpectation.cs" />
     <Compile Include="Protocol\Visitors\PrintVisitor.cs" />
     <Compile Include="Protocol\Visitors\ProjectingVisitor.cs" />
+    <Compile Include="Protocol\Visitors\ScanResultVisitor.cs" />
     <Compile Include="Protocol\Visitors\VisitException.cs" />
     <Compile Include="Protocol\Visitors\Visitor.cs" />
     <Compile Include="Protocol\Visitors\VisitorExtensions.cs" />
@@ -116,6 +131,7 @@
     <Compile Include="Utils\BulkWriteStream.cs" />
     <Compile Include="Utils\ConcatCollection.cs" />
     <Compile Include="Utils\ConcatList.cs" />
+    <Compile Include="Utils\EmptyEnumerator.cs" />
     <Compile Include="Utils\KeyList.cs" />
     <Compile Include="Utils\None.cs" />
     <Compile Include="Utils\PrefixedCollection.cs" />

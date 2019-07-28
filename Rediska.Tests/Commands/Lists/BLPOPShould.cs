@@ -2,28 +2,25 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using Rediska.Commands.Keys;
-using Rediska.Commands.Sets;
-using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
+using Rediska.Commands.Lists;
+using Rediska.Tests.Commands.Sets;
 using Rediska.Tests.Utilities;
-using Array = System.Array;
 
-namespace Rediska.Tests.Commands.Sets
+namespace Rediska.Tests.Commands.Lists
 {
     [Category("RealRedis")]
-    [TestFixtureSource(typeof(RedisCollection))]
-    public sealed class SADDShould
+    [TestFixtureSource(typeof(LocalRedis))]
+    public sealed class BLPOPShould
     {
         private readonly IPEndPoint endpoint;
         private LoggingConnection connection;
         private Key key;
         private TcpClient tcp;
 
-        public SADDShould(IPEndPoint endpoint)
+        public BLPOPShould(IPEndPoint endpoint)
         {
             this.endpoint = endpoint;
         }
@@ -40,20 +37,6 @@ namespace Rediska.Tests.Commands.Sets
                 new SimpleConnection(tcp.GetStream())
             );
             key = TestContext.CurrentContext.Test.Name + Guid.NewGuid();
-        }
-
-        [Test]
-        public async Task AddNoElements()
-        {
-            var sut = new SADD(key, Array.Empty<BulkString>());
-
-            var exception = Assert.ThrowsAsync<VisitException>(
-                () => connection.ExecuteAsync(sut)
-            );
-
-            exception.Subject.Should().Be(
-                new Error("ERR wrong number of arguments for 'sadd' command")
-            );
         }
 
         [TearDown]
@@ -84,6 +67,12 @@ namespace Rediska.Tests.Commands.Sets
                     index++;
                 }
             }
+        }
+
+        [Test]
+        public async Task Test()
+        {
+            var array = await connection.ExecuteAsync(new BLPOP(key)).ConfigureAwait(false);
         }
     }
 }

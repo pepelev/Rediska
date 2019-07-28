@@ -7,16 +7,16 @@ namespace Rediska.Commands.Strings
     {
         private static readonly PlainBulkString name = new PlainBulkString("GET");
 
-        private readonly string key;
+        private readonly Key key;
 
-        public GET(string key)
+        public GET(Key key)
         {
             this.key = key;
         }
 
         public override DataType Request => new PlainArray(
             name,
-            new PlainBulkString(key)
+            key.ToBulkString()
         );
 
         public override Visitor<BulkString> ResponseStructure => BulkStringExpectation.Singleton;

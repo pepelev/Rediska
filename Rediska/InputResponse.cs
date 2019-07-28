@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Rediska.Protocol;
 using Rediska.Protocol.Inputs;
+using Array = Rediska.Protocol.Array;
 
 namespace Rediska
 {
@@ -50,6 +51,9 @@ namespace Rediska
             if (type == Magic.Array)
             {
                 var count = input.ReadInteger();
+                if (count == -1)
+                    return Array.Null;
+
                 var items = new DataType[count];
                 for (var i = 0; i < items.Length; i++)
                 {
