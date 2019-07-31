@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-
-namespace Rediska.Commands.Sets
+﻿namespace Rediska.Commands.Sets
 {
+    using System.Collections.Generic;
+    using Protocol;
+    using Protocol.Visitors;
+
     public sealed class SMEMBERS : Command<IReadOnlyList<BulkString>>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SMEMBERS");

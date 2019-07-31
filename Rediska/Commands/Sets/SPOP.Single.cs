@@ -1,8 +1,8 @@
-﻿using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-
-namespace Rediska.Commands.Sets
+﻿namespace Rediska.Commands.Sets
 {
+    using Protocol;
+    using Protocol.Visitors;
+
     public static partial class SPOP
     {
         public sealed class Single : Command<BulkString>

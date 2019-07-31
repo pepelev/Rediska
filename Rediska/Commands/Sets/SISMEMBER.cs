@@ -1,12 +1,11 @@
-﻿using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-
-namespace Rediska.Commands.Sets
+﻿namespace Rediska.Commands.Sets
 {
+    using Protocol;
+    using Protocol.Visitors;
+
     public sealed class SISMEMBER : Command<bool>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SISMEMBER");
-
         private readonly Key key;
         private readonly BulkString member;
 

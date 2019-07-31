@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-using Rediska.Utils;
-
-namespace Rediska.Commands.Sets
+﻿namespace Rediska.Commands.Sets
 {
+    using System.Collections.Generic;
+    using Protocol;
+    using Protocol.Visitors;
+    using Utils;
+
     public sealed class SDIFFSTORE : Command<long>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SDIFFSTORE");
-
         private readonly Key destination;
         private readonly IReadOnlyList<Key> sources;
 

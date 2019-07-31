@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-using Rediska.Utils;
-
-namespace Rediska.Commands.Sets
+﻿namespace Rediska.Commands.Sets
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+    using Protocol;
+    using Protocol.Visitors;
+    using Utils;
+
     public sealed class SSCAN : Command<ScanResult>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SSCAN");

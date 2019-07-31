@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-using Rediska.Utils;
-
-namespace Rediska.Commands.Sets
+﻿namespace Rediska.Commands.Sets
 {
+    using System.Collections.Generic;
+    using Protocol;
+    using Protocol.Visitors;
+    using Utils;
+
     public sealed class SINTER : Command<IReadOnlyList<BulkString>>
     {
         private static readonly ListVisitor<BulkString> responseStructure = new ListVisitor<BulkString>(
@@ -13,7 +13,6 @@ namespace Rediska.Commands.Sets
         );
 
         private static readonly PlainBulkString name = new PlainBulkString("SINTER");
-
         private readonly IReadOnlyList<Key> keys;
 
         public SINTER(IReadOnlyList<Key> keys)

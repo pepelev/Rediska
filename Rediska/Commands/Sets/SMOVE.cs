@@ -1,12 +1,11 @@
-﻿using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-
-namespace Rediska.Commands.Sets
+﻿namespace Rediska.Commands.Sets
 {
+    using Protocol;
+    using Protocol.Visitors;
+
     public sealed class SMOVE : Command<long>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SMOVE");
-
         private readonly Key source;
         private readonly Key destination;
         private readonly BulkString member;

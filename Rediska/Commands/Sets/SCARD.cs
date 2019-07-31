@@ -1,12 +1,11 @@
-﻿using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-
-namespace Rediska.Commands.Sets
+﻿namespace Rediska.Commands.Sets
 {
+    using Protocol;
+    using Protocol.Visitors;
+
     public sealed class SCARD : Command<long>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SCARD");
-
         private readonly Key key;
 
         public SCARD(Key key)
