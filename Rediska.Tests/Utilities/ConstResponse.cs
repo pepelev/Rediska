@@ -12,9 +12,6 @@ namespace Rediska.Tests.Utilities
             this.value = value;
         }
 
-        public override Task<DataType> ReadAsync()
-        {
-            return Task.FromResult(value);
-        }
+        public override Task<DataType> ReadAsync() => Task.FromResult(value);
     }
 }

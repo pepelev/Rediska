@@ -40,11 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BulkConnection.cs" />
+    <Compile Include="Commands\Count.cs" />
     <Compile Include="Commands\Cursor.cs" />
     <Compile Include="Commands\Keys\DEL.cs" />
     <Compile Include="Commands\Lists\BLPOP.cs" />
     <Compile Include="Commands\ScanResult.cs" />
-    <Compile Include="Commands\Count.cs" />
+    <Compile Include="Commands\ScanCount.cs" />
     <Compile Include="Commands\Match.cs" />
     <Compile Include="Commands\Sets\SCARD.cs" />
     <Compile Include="Commands\Sets\SDIFF.cs" />
@@ -54,10 +56,18 @@
     <Compile Include="Commands\Sets\SISMEMBER.cs" />
     <Compile Include="Commands\Sets\SMEMBERS.cs" />
     <Compile Include="Commands\Sets\SMOVE.cs" />
+    <Compile Include="Commands\Sets\SRANDMEMBER.cs" />
+    <Compile Include="Commands\Sets\SRANDMEMBER.Single.cs" />
+    <Compile Include="Commands\Sets\SRANDMEMBER.Multiple.cs" />
     <Compile Include="Commands\Sets\SREM.cs" />
     <Compile Include="Commands\Sets\SSCAN.cs" />
+    <Compile Include="Commands\Sets\SUNION.cs" />
+    <Compile Include="Commands\Sets\SUNIONSTORE.cs" />
+    <Compile Include="Commands\Transactions\DISCARD.cs" />
     <Compile Include="Commands\Transactions\EXEC.cs" />
     <Compile Include="Commands\Transactions\MULTI.cs" />
+    <Compile Include="Commands\Transactions\UNWATCH.cs" />
+    <Compile Include="Commands\Transactions\WATCH.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="Key.BulkString.cs" />
     <Compile Include="Commands\Command.cs" />
@@ -75,6 +85,7 @@
     <Compile Include="Commands\Sets\SPOP.cs" />
     <Compile Include="Commands\Sets\SPOP.Multiple.cs" />
     <Compile Include="Commands\Sets\SPOP.Single.cs" />
+    <Compile Include="NoReplyConnection.cs" />
     <Compile Include="Protocol\Outputs\CompoundOutput.cs" />
     <Compile Include="Protocol\Inputs\Input.cs" />
     <Compile Include="InputResponse.cs" />
@@ -101,6 +112,7 @@
     <Compile Include="Protocol\Visitors\ArrayExpectation.cs" />
     <Compile Include="Protocol\Visitors\ArrayExpectation2.cs" />
     <Compile Include="Protocol\Visitors\BulkStringExpectation.cs" />
+    <Compile Include="Protocol\Visitors\CommandPrintVisitor.cs" />
     <Compile Include="Protocol\Visitors\ConstVisitor.cs" />
     <Compile Include="Protocol\Visitors\Equality.cs" />
     <Compile Include="Protocol\Visitors\HashCode.cs" />
@@ -134,6 +146,7 @@
     <Compile Include="Utils\EmptyEnumerator.cs" />
     <Compile Include="Utils\KeyList.cs" />
     <Compile Include="Utils\None.cs" />
+    <Compile Include="Utils\NullDisposable.cs" />
     <Compile Include="Utils\PrefixedCollection.cs" />
     <Compile Include="Utils\PrefixedList.cs" />
     <Compile Include="Utils\ProjectingCollection.cs" />

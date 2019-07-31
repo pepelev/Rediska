@@ -28,22 +28,21 @@ namespace Rediska.Tests.Utilities
                     dataType
                 )
             );
-            return new Resource<Response>(
-                new ConstResponse(dataType),
-                response
+            return response.Move<Response>(
+                new ConstResponse(dataType)
             );
         }
 
         public struct Entry
         {
-            public Entry(DataType request, Protocol.DataType response)
+            public Entry(DataType request, DataType response)
             {
                 Request = request;
                 Response = response;
             }
 
             public DataType Request { get; }
-            public Protocol.DataType Response { get; }
+            public DataType Response { get; }
         }
     }
 }

@@ -5,6 +5,8 @@ namespace Rediska.Commands.Transactions
 {
     public sealed class EXEC : Command<Array>
     {
+        public static EXEC Singleton { get; } = new EXEC();
+
         private static readonly PlainArray request = new PlainArray(
             new PlainBulkString("EXEC")
         );

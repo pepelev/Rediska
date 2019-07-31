@@ -4,15 +4,6 @@ namespace Rediska.Utils
 {
     public struct Resource<T> : IDisposable
     {
-        private sealed class NullDisposable : IDisposable
-        {
-            public static NullDisposable Singleton { get; } = new NullDisposable();
-
-            public void Dispose()
-            {
-            }
-        }
-
         public T Value { get; }
         private readonly IDisposable disposable;
 
@@ -26,6 +17,8 @@ namespace Rediska.Utils
             Value = value;
             this.disposable = disposable;
         }
+
+        public Resource<TAnother> Move<TAnother>(TAnother another) => new Resource<TAnother>(another, disposable);
 
         public void Dispose()
         {

@@ -12,9 +12,9 @@ namespace Rediska.Commands.Sets
         private readonly Key key;
         private readonly Cursor cursor;
         private readonly Match match;
-        private readonly Count count;
+        private readonly ScanCount count;
 
-        public SSCAN(Key key, Cursor cursor, Match match, Count count)
+        public SSCAN(Key key, Cursor cursor, Match match, ScanCount count)
         {
             this.key = key;
             this.cursor = cursor;

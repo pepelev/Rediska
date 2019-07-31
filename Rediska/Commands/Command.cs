@@ -7,6 +7,6 @@ namespace Rediska.Commands
     {
         public abstract DataType Request { get; }
         public abstract Visitor<T> ResponseStructure { get; }
-        public override string ToString() => Request.ToString();
+        public override string ToString() => Request.Accept(CommandPrintVisitor.Singleton);
     }
 }

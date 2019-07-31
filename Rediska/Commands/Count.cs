@@ -1,66 +1,68 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 using Rediska.Protocol;
-using Rediska.Utils;
 
 namespace Rediska.Commands
 {
-    public abstract class Count : IReadOnlyList<DataType>
+    public struct Count : IEquatable<Count>
     {
-        public static Count None { get; } = new NoneCount();
-        public static Count From(long count) => new PlainCount(count);
-        public static implicit operator Count(long count) => From(count);
+        public bool Equals(Count other) => Value == other.Value;
 
-        public abstract int Length { get; }
-        public abstract IEnumerator<DataType> GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        public abstract DataType this[int index] { get; }
-        int IReadOnlyCollection<DataType>.Count => Length;
-
-        private sealed class NoneCount : Count
+        public override bool Equals(object obj)
         {
-            public override int Length => 0;
-            public override IEnumerator<DataType> GetEnumerator() => EmptyEnumerator<DataType>.Singleton;
-            public override DataType this[int index] => throw new IndexOutOfRangeException();
+            if (ReferenceEquals(null, obj))
+                return false;
+
+            return obj is Count other && Equals(other);
         }
 
-        private sealed class PlainCount : Count
+        public override int GetHashCode() => Value.GetHashCode();
+        public static bool operator ==(Count left, Count right) => left.Equals(right);
+        public static bool operator !=(Count left, Count right) => !left.Equals(right);
+        public static implicit operator Count(long value) => new Count(value);
+
+        private const string ZeroCountIsMeaningless = "Zero count is meaningless";
+        public long Value { get; }
+
+        public Count(long value)
         {
-            private static readonly PlainBulkString keyword = new PlainBulkString("COUNT");
-
-            private readonly long value;
-
-            public PlainCount(long value)
-            {
-                this.value = value;
-            }
-
-            public override int Length => 2;
-            public override IEnumerator<DataType> GetEnumerator()
-            {
-                yield return keyword;
-                yield return Value;
-            }
-
-            public override DataType this[int index]
-            {
-                get
-                {
-                    switch (index)
-                    {
-                        case 0:
-                            return keyword;
-                        case 1:
-                            return Value;
-                        default:
-                            throw new IndexOutOfRangeException();
-                    }
-                }
-            }
-
-            private PlainBulkString Value => new PlainBulkString(value.ToString(CultureInfo.InvariantCulture));
+            Value = value;
         }
+
+        public static Count Distinct(long value)
+        {
+            if (value == 0)
+                throw new ArgumentException(ZeroCountIsMeaningless, nameof(value));
+
+            if (value < 0)
+            {
+                throw new ArgumentException(
+                    "Positive number expected, if you want to allow Redis to"
+                    + " return duplicates, use " + nameof(AllowRepeats) + " method",
+                    nameof(value)
+                );
+            }
+
+            return new Count(value);
+        }
+
+        public static Count AllowRepeats(long value)
+        {
+            if (value == 0)
+                throw new ArgumentException(ZeroCountIsMeaningless, nameof(value));
+
+            if (value < 0)
+            {
+                throw new ArgumentException(
+                    "Positive number expected, if you want to deny Redis to"
+                    + " return duplicates, use " + nameof(Distinct) + " method",
+                    nameof(value)
+                );
+            }
+
+            return new Count(checked(-value));
+        }
+
+        public BulkString ToBulkString() => new PlainBulkString(Value.ToString(CultureInfo.InvariantCulture));
     }
 }

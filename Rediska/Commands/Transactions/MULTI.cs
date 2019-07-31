@@ -10,6 +10,8 @@ namespace Rediska.Commands.Transactions
             new PlainBulkString("MULTI")
         );
 
+        public static MULTI Singleton { get; } = new MULTI();
+
         public override DataType Request => request;
         public override Visitor<None> ResponseStructure => OkExpectation.Singleton;
     }
