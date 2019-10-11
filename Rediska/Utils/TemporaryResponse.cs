@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Rediska.Protocol;
 using Rediska.Protocol.Inputs;
 using Rediska.Reading;
 

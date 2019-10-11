@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Rediska.Commands;
-
-namespace Rediska.Tests
+﻿namespace Rediska
 {
+    using System.Threading.Tasks;
+    using Commands;
+
     public static class ConnectionExtensions
     {
         public static async Task<T> ExecuteAsync<T>(this Connection connection, Command<T> command)

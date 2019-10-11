@@ -26,7 +26,7 @@
         {
             get
             {
-                if (match.Count == 0 && count.Length == 0)
+                if (match.Count == 0 && count.Count == 0)
                     return new PlainArray(Prefix);
 
                 if (match.Count == 0)
@@ -39,7 +39,7 @@
                     );
                 }
 
-                if (count.Length == 0)
+                if (count.Count == 0)
                 {
                     return new PlainArray(
                         new ConcatList<DataType>(

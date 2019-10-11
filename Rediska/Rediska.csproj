@@ -41,8 +41,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BulkConnection.cs" />
+    <Compile Include="Commands\AddResult.cs" />
     <Compile Include="Commands\Count.cs" />
     <Compile Include="Commands\Cursor.cs" />
+    <Compile Include="Commands\Geo\Distance.cs" />
+    <Compile Include="Commands\Geo\GEOADD.cs" />
+    <Compile Include="Commands\Geo\GEODIST.cs" />
+    <Compile Include="Commands\Geo\GeospatialItem.cs" />
+    <Compile Include="Commands\Lists\LPUSH.cs" />
+    <Compile Include="ConnectionExtensions.cs" />
+    <Compile Include="DataTypes\HyperLogLog.cs" />
+    <Compile Include="Utils\GeospatialItemList.cs" />
+    <Compile Include="Commands\Geo\Location.cs" />
+    <Compile Include="Commands\Geo\Unit.cs" />
     <Compile Include="Commands\Keys\DEL.cs" />
     <Compile Include="Commands\Lists\BLPOP.cs" />
     <Compile Include="Commands\ScanResult.cs" />

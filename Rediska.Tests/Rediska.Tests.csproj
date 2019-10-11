@@ -191,9 +191,12 @@
   <ItemGroup>
     <Compile Include="Categories.cs" />
     <Compile Include="Commands\Lists\BLPOPShould.cs" />
+    <Compile Include="Commands\Lists\LPUSHShould.cs" />
+    <Compile Include="Commands\Sets\ConnectionFixture.cs" />
+    <Compile Include="Commands\Sets\GuidKeyFixture.cs" />
+    <Compile Include="Commands\Sets\KeyFixture.cs" />
     <Compile Include="Commands\Sets\RedisCollection.cs" />
     <Compile Include="Commands\Sets\SADDShould.cs" />
-    <Compile Include="ConnectionExtensions.cs" />
     <Compile Include="ArrayShould.cs" />
     <Compile Include="BulkStringResponse.cs" />
     <Compile Include="BulkStringResponseExtensions.cs" />
@@ -205,6 +208,9 @@
     <Compile Include="Checks\IntegerCheck.cs" />
     <Compile Include="Checks\SimpleStringCheck.cs" />
     <Compile Include="ChunkList.cs" />
+    <Compile Include="Commands\Sets\SimpleConnectionFixture.cs" />
+    <Compile Include="Commands\Sets\StoringKeyFixture.cs" />
+    <Compile Include="Commands\Sets\TestNameKeyFixture.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="Checks\MagicCheck.cs" />
     <Compile Include="Performance\CallCost.cs" />

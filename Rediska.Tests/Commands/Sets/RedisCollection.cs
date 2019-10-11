@@ -40,15 +40,16 @@ namespace Rediska.Tests.Commands.Sets
             );
             return new[]
                 {
-                    new TestFixtureData(new IPEndPoint(IPAddress.Loopback, 6379)).SetArgDisplayNames("local"),
+                    new TestFixtureData(
+                        new SimpleConnectionFixture(
+                            new IPEndPoint(IPAddress.Loopback, 6379)
+                        )
+                    ).SetArgDisplayNames("local")
                 }
                 .AsEnumerable()
                 .GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
