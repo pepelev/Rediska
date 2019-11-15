@@ -8,11 +8,6 @@
     {
         public sealed class Multiple : Command<IReadOnlyList<BulkString>>
         {
-            private static readonly ListVisitor<BulkString> responseStructure = new ListVisitor<BulkString>(
-                ArrayExpectation.Singleton,
-                BulkStringExpectation.Singleton
-            );
-
             private readonly Key key;
             private readonly Count count;
 
@@ -28,7 +23,7 @@
                 count.ToBulkString()
             );
 
-            public override Visitor<IReadOnlyList<BulkString>> ResponseStructure => responseStructure;
+            public override Visitor<IReadOnlyList<BulkString>> ResponseStructure => CompositeVisitors.BulkStringList;
         }
     }
 }

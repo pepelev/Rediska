@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncLock.cs" />
     <Compile Include="BulkConnection.cs" />
     <Compile Include="Commands\AddResult.cs" />
     <Compile Include="Commands\Count.cs" />
@@ -48,9 +49,52 @@
     <Compile Include="Commands\Geo\GEOADD.cs" />
     <Compile Include="Commands\Geo\GEODIST.cs" />
     <Compile Include="Commands\Geo\GeospatialItem.cs" />
+    <Compile Include="Commands\Index.cs" />
+    <Compile Include="Commands\Keys\DUMP.cs" />
+    <Compile Include="Commands\Keys\EXISTS.cs" />
+    <Compile Include="Commands\Keys\EXPIRE.cs" />
+    <Compile Include="Commands\Keys\EXPIREAT.cs" />
+    <Compile Include="Commands\Keys\ExpireResult.cs" />
+    <Compile Include="Commands\Keys\KEYS.cs" />
+    <Compile Include="Commands\Keys\KeyType.cs" />
+    <Compile Include="Commands\Keys\TYPE.cs" />
+    <Compile Include="Commands\Keys\UNLINK.cs" />
+    <Compile Include="Commands\Lists\BRPOP.cs" />
+    <Compile Include="Commands\Lists\BRPOPLPUSH.cs" />
+    <Compile Include="Commands\Lists\LINDEX.cs" />
+    <Compile Include="Commands\Lists\LINSERT.cs" />
+    <Compile Include="Commands\Lists\LLEN.cs" />
+    <Compile Include="Commands\Lists\LPOP.cs" />
     <Compile Include="Commands\Lists\LPUSH.cs" />
+    <Compile Include="Commands\Lists\LPUSHX.cs" />
+    <Compile Include="Commands\Lists\LRANGE.cs" />
+    <Compile Include="Commands\Lists\LREM.cs" />
+    <Compile Include="Commands\Lists\LSET.cs" />
+    <Compile Include="Commands\Lists\LTRIM.cs" />
+    <Compile Include="Commands\Lists\PopResult.cs" />
+    <Compile Include="Commands\Lists\PopStatus.cs" />
+    <Compile Include="Commands\Lists\RPOP.cs" />
+    <Compile Include="Commands\Lists\RPOPLPUSH.cs" />
+    <Compile Include="Commands\Lists\RPUSH.cs" />
+    <Compile Include="Commands\Lists\RPUSHX.cs" />
+    <Compile Include="Commands\Lists\Timeout.cs" />
+    <Compile Include="Commands\PublishSubscribe\Channel.cs" />
+    <Compile Include="Commands\PublishSubscribe\ListeningConnection.cs" />
+    <Compile Include="Commands\PublishSubscribe\PUBLISH.cs" />
+    <Compile Include="Commands\PublishSubscribe\SUBSCRIBE.cs" />
+    <Compile Include="Commands\Server\CLIENT.cs" />
+    <Compile Include="Commands\Server\CLIENT.REPLY.cs" />
+    <Compile Include="Commands\Server\DBSIZE.cs" />
+    <Compile Include="Commands\UnixTimestamp.cs" />
+    <Compile Include="Commands\Utility\IgnoringResponse.cs" />
     <Compile Include="ConnectionExtensions.cs" />
+    <Compile Include="ConstResponse.cs" />
     <Compile Include="DataTypes\HyperLogLog.cs" />
+    <Compile Include="PipeliningConnection.cs" />
+    <Compile Include="Protocol\Extensions.cs" />
+    <Compile Include="Protocol\Inputs\InputExtensions.cs" />
+    <Compile Include="Protocol\Visitors\CompositeVisitors.cs" />
+    <Compile Include="Protocol\Visitors\SimpleStringExpectation.cs" />
     <Compile Include="Utils\GeospatialItemList.cs" />
     <Compile Include="Commands\Geo\Location.cs" />
     <Compile Include="Commands\Geo\Unit.cs" />
@@ -89,7 +133,7 @@
     <Compile Include="Commands\Hashes\HEXISTS.cs" />
     <Compile Include="Commands\Hashes\HGETALL.cs" />
     <Compile Include="Commands\Hashes\HSET.cs" />
-    <Compile Include="Commands\HyperLogLog\Pfadd.cs" />
+    <Compile Include="Commands\HyperLogLog\PFADD.cs" />
     <Compile Include="Commands\HyperLogLog\PFCOUNT.cs" />
     <Compile Include="Commands\HyperLogLog\PFMERGE.cs" />
     <Compile Include="Commands\Sets\SADD.cs" />
@@ -176,5 +220,6 @@
     <Compile Include="VerificationStates\Start.cs" />
     <Compile Include="VerificationStates\State.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

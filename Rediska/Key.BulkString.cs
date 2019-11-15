@@ -1,11 +1,11 @@
-﻿using System.IO;
-using System.Text;
-
-namespace Rediska
+﻿namespace Rediska
 {
+    using System.IO;
+    using System.Text;
+
     public abstract partial class Key
     {
-        public sealed class BulkString : Rediska.Key
+        public sealed class BulkString : Key
         {
             private readonly Protocol.BulkString content;
 

@@ -26,5 +26,6 @@ namespace Rediska.Utils
         }
 
         public static implicit operator T(Resource<T> disposable) => disposable.Value;
+        public static implicit operator Resource<T>(T value) => new Resource<T>(value);
     }
 }

@@ -191,7 +191,10 @@
   <ItemGroup>
     <Compile Include="Categories.cs" />
     <Compile Include="Commands\Lists\BLPOPShould.cs" />
+    <Compile Include="Commands\Lists\LINSERT_Should.cs" />
     <Compile Include="Commands\Lists\LPUSHShould.cs" />
+    <Compile Include="Commands\Playground.cs" />
+    <Compile Include="Commands\PublishSubscribe\Smoke.cs" />
     <Compile Include="Commands\Sets\ConnectionFixture.cs" />
     <Compile Include="Commands\Sets\GuidKeyFixture.cs" />
     <Compile Include="Commands\Sets\KeyFixture.cs" />
@@ -219,6 +222,7 @@
     <Compile Include="RandomContent.cs" />
     <Compile Include="TemporaryResponseShould.cs" />
     <Compile Include="Tests\ConnectionShould.cs" />
+    <Compile Include="Tests\PipeliningConnectionShould.cs" />
     <Compile Include="ToDo.cs" />
     <Compile Include="Transactions\Dosyara.cs" />
     <Compile Include="Transactions\SimpleTransaction.cs" />
@@ -229,7 +233,6 @@
     <Compile Include="Queue.cs" />
     <Compile Include="ResponseShould.cs" />
     <Compile Include="StackExtensions.cs" />
-    <Compile Include="Utilities\ConstResponse.cs" />
     <Compile Include="Utilities\LoggingConnection.cs" />
     <Compile Include="VerifyingOutputShould.cs" />
   </ItemGroup>

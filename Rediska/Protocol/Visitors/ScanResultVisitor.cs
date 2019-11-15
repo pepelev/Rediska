@@ -4,11 +4,6 @@ namespace Rediska.Protocol.Visitors
 {
     public sealed class ScanResultVisitor : Visitor<ScanResult>
     {
-        private static readonly ListVisitor<BulkString> itemsVisitor = new ListVisitor<BulkString>(
-            ArrayExpectation.Singleton,
-            BulkStringExpectation.Singleton
-        );
-
         public static ScanResultVisitor Singleton { get; } = new ScanResultVisitor();
 
         public override ScanResult Visit(Integer integer)
@@ -29,7 +24,7 @@ namespace Rediska.Protocol.Visitors
                 new Cursor(
                     array[0].Accept(IntegerExpectation.Singleton)
                 ),
-                array[1].Accept(itemsVisitor)
+                array[1].Accept(CompositeVisitors.BulkStringList)
             );
         }
 

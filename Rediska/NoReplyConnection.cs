@@ -6,6 +6,10 @@ using Rediska.Utils;
 
 namespace Rediska
 {
+    using System.Configuration;
+    using Commands;
+    using Commands.Utility;
+
     public sealed class NoReplyConnection : Connection
     {
         private readonly Response response;
@@ -31,7 +35,17 @@ namespace Rediska
             );
             command.Write(output);
             await bulkWriteStream.FlushAsync().ConfigureAwait(false);
-            return new Resource<Response>(response);
+            return response;
+        }
+    }
+
+    public static class NoReplyConnectionResponse
+    {
+        public static async Task FireAndForgetAsync<T>(this NoReplyConnection connection, Command<T> command)
+        {
+            await connection.ExecuteAsync(
+                new IgnoringResponse<T>(command)
+            ).ConfigureAwait(false);
         }
     }
 }

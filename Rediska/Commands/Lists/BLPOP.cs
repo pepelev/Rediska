@@ -1,24 +1,38 @@
-﻿using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-
-namespace Rediska.Commands.Lists
+﻿namespace Rediska.Commands.Lists
 {
-    public sealed class BLPOP : Command<Array>
-    {
-        private readonly Key key;
+    using System.Collections.Generic;
+    using Protocol;
+    using Protocol.Visitors;
+    using Utils;
 
-        public BLPOP(Key key)
+    public sealed class BLPOP : Command<PopResult>
+    {
+        private static readonly PlainBulkString name = new PlainBulkString("BLPOP");
+        private readonly IReadOnlyList<Key> keys;
+        private readonly Timeout timeout;
+
+        public BLPOP(Key key, Timeout timeout)
+            : this(new[] {key}, timeout)
         {
-            this.key = key;
         }
 
-        // todo
+        public BLPOP(IReadOnlyList<Key> keys, Timeout timeout)
+        {
+            this.keys = keys;
+            this.timeout = timeout;
+        }
+
         public override DataType Request => new PlainArray(
-            new PlainBulkString("BLPOP"),
-            key.ToBulkString(),
-            new PlainBulkString("1")
+            // todo специализированная версия листа с листом посередине
+            new ConcatList<DataType>(
+                new PrefixedList<DataType>(
+                    name,
+                    new KeyList(keys)
+                ),
+                new[] {timeout.ToBulkString()}
+            )
         );
 
-        public override Visitor<Array> ResponseStructure => ArrayExpectation2.Singleton;
+        public override Visitor<PopResult> ResponseStructure => CompositeVisitors.Pop;
     }
 }

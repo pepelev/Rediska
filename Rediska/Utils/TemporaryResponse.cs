@@ -15,6 +15,8 @@ namespace Rediska.Utils
         public IReadOnlyCollection<Input> Feed(ArraySegment<byte> segment)
         {
             var position = stream.Position;
+
+            // todo optimize copying
             stream.Write(segment.Array, segment.Offset, segment.Count);
             stream.Position = position;
 

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Globalization;
-using Rediska.Protocol;
-
-namespace Rediska.Commands
+﻿namespace Rediska.Commands
 {
-    public struct Count : IEquatable<Count>
+    using System;
+    using System.Globalization;
+    using Protocol;
+
+    public readonly struct Count : IEquatable<Count>
     {
         public bool Equals(Count other) => Value == other.Value;
 
@@ -20,7 +20,6 @@ namespace Rediska.Commands
         public static bool operator ==(Count left, Count right) => left.Equals(right);
         public static bool operator !=(Count left, Count right) => !left.Equals(right);
         public static implicit operator Count(long value) => new Count(value);
-
         private const string ZeroCountIsMeaningless = "Zero count is meaningless";
         public long Value { get; }
 
@@ -63,6 +62,7 @@ namespace Rediska.Commands
             return new Count(checked(-value));
         }
 
-        public BulkString ToBulkString() => new PlainBulkString(Value.ToString(CultureInfo.InvariantCulture));
+        public override string ToString() => Value.ToString(CultureInfo.InvariantCulture);
+        public BulkString ToBulkString() => Value.ToBulkString();
     }
 }

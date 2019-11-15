@@ -1,15 +1,14 @@
-﻿using System;
-using Rediska.Utils;
-
-namespace Rediska.Protocol.Visitors
+﻿namespace Rediska.Protocol.Visitors
 {
+    using Utils;
+
     public sealed class OkExpectation : Visitor<None>
     {
         public static OkExpectation Singleton { get; } = new OkExpectation();
 
         public override None Visit(Integer integer)
         {
-            throw new ArgumentException("OK expected");
+            throw new VisitException("OK expected", integer);
         }
 
         public override None Visit(SimpleString simpleString)
@@ -17,22 +16,22 @@ namespace Rediska.Protocol.Visitors
             if (simpleString.Content == "OK")
                 return new None();
 
-            throw new ArgumentException("OK expected");
+            throw new VisitException("OK expected", simpleString);
         }
 
         public override None Visit(Error error)
         {
-            throw new ArgumentException("OK expected");
+            throw new VisitException("OK expected", error);
         }
 
         public override None Visit(Array array)
         {
-            throw new ArgumentException("OK expected");
+            throw new VisitException("OK expected", array);
         }
 
         public override None Visit(BulkString bulkString)
         {
-            throw new ArgumentException("OK expected");
+            throw new VisitException("OK expected", bulkString);
         }
     }
 }

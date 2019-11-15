@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Rediska.Protocol;
-
-namespace Rediska.Tests.Utilities
+﻿namespace Rediska
 {
+    using System.Threading.Tasks;
+    using Protocol;
+
     public sealed class ConstResponse : Connection.Response
     {
         private readonly DataType value;

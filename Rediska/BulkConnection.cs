@@ -1,24 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Rediska.Protocol;
-using Rediska.Utils;
-
-namespace Rediska
+﻿namespace Rediska
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Protocol;
+    using Utils;
+
     public sealed class BulkConnection
     {
-        private struct Pair
-        {
-            public Pair(DataType request, Response response)
-            {
-                Request = request;
-                Response = response;
-            }
-
-            public DataType Request { get; }
-            public Response Response { get; }
-        }
-
         private readonly Connection connection;
         private TaskCompletionSource<bool> completionSource = new TaskCompletionSource<bool>();
         private readonly List<Pair> commands = new List<Pair>();
@@ -32,9 +20,7 @@ namespace Rediska
         {
             var response = new Response(completionSource);
             commands.Add(new Pair(command, response));
-            return new Resource<Connection.Response>(
-                response
-            );
+            return response;
         }
 
         public async Task FlushAsync()
@@ -50,6 +36,18 @@ namespace Rediska
             completionSource.SetResult(true);
             commands.Clear();
             completionSource = new TaskCompletionSource<bool>();
+        }
+
+        private struct Pair
+        {
+            public Pair(DataType request, Response response)
+            {
+                Request = request;
+                Response = response;
+            }
+
+            public DataType Request { get; }
+            public Response Response { get; }
         }
 
         private sealed class Response : Connection.Response

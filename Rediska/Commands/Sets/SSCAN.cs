@@ -22,6 +22,21 @@
             this.count = count;
         }
 
+        public SSCAN(Key key, Cursor cursor, Match match)
+            : this(key, cursor, match, ScanCount.None)
+        {
+        }
+
+        public SSCAN(Key key, Cursor cursor, ScanCount count)
+            : this(key, cursor, Match.All, count)
+        {
+        }
+
+        public SSCAN(Key key, Cursor cursor)
+            : this(key, cursor, Match.All, ScanCount.None)
+        {
+        }
+
         public override DataType Request
         {
             get
