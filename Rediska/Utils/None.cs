@@ -1,6 +1,6 @@
 ﻿namespace Rediska.Utils
 {
-    public struct None
+    public readonly struct None
     {
         public override string ToString() => nameof(None);
     }

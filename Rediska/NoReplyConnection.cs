@@ -43,7 +43,7 @@ namespace Rediska
         public static async Task FireAndForgetAsync<T>(this NoReplyConnection connection, Command<T> command)
         {
             await connection.ExecuteAsync(
-                new IgnoringResponse<T>(command)
+                new ResponseIgnoring<T>(command)
             ).ConfigureAwait(false);
         }
     }

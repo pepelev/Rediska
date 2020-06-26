@@ -2,7 +2,9 @@
 
 namespace Rediska.Commands
 {
-    public struct Cursor : IEquatable<Cursor>, IComparable<Cursor>
+    using Protocol;
+
+    public readonly struct Cursor : IEquatable<Cursor>, IComparable<Cursor>
     {
         public static Cursor Start => new Cursor(0);
 
@@ -26,5 +28,6 @@ namespace Rediska.Commands
         public bool Equals(Cursor other) => Value == other.Value;
         public int CompareTo(Cursor other) => Value.CompareTo(other.Value);
         public override string ToString() => Value.ToString();
+        public BulkString ToBulkString() => Value.ToBulkString();
     }
 }

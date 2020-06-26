@@ -4,7 +4,7 @@
     using Protocol;
     using Protocol.Visitors;
 
-    public sealed class KEYS : Command<IReadOnlyList<BulkString>>
+    public sealed class KEYS : Command<IReadOnlyList<Key>>
     {
         private static readonly PlainBulkString name = new PlainBulkString("KEYS");
         private readonly string pattern;
@@ -19,6 +19,6 @@
             new PlainBulkString(pattern)
         );
 
-        public override Visitor<IReadOnlyList<BulkString>> ResponseStructure => CompositeVisitors.BulkStringList;
+        public override Visitor<IReadOnlyList<Key>> ResponseStructure => CompositeVisitors.KeyList;
     }
 }

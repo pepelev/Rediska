@@ -224,7 +224,7 @@
     <Compile Include="Tests\ConnectionShould.cs" />
     <Compile Include="Tests\PipeliningConnectionShould.cs" />
     <Compile Include="ToDo.cs" />
-    <Compile Include="Transactions\Dosyara.cs" />
+    <Compile Include="Transactions\Demonstration.cs" />
     <Compile Include="Transactions\SimpleTransaction.cs" />
     <Compile Include="Transactions\Smoke.cs" />
     <Compile Include="Transactions\Transaction.cs" />

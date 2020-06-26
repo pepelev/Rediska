@@ -25,14 +25,13 @@ namespace Rediska.Tests.Transactions
 
         public void A()
         {
-            connection.PrepareTransaction(transaction =>
-                {
-                    return new
+            connection.PrepareTransaction(
+                transaction =>
+                    new
                     {
                         GetA = transaction.Enqueue(new GET("key-1")),
                         GetB = transaction.Enqueue(new GET("key-2"))
-                    };
-                }
+                    }
             );
         }
     }

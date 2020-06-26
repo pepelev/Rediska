@@ -1,7 +1,6 @@
 ﻿namespace Rediska.Commands.Sets
 {
     using System.Collections.Generic;
-    using System.Globalization;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -37,53 +36,39 @@
         {
         }
 
-        public override DataType Request
+        public override DataType Request => (match.Count, count.Count) switch
         {
-            get
-            {
-                if (match.Count == 0 && count.Count == 0)
-                    return new PlainArray(Prefix);
-
-                if (match.Count == 0)
-                {
-                    return new PlainArray(
-                        new ConcatList<DataType>(
-                            Prefix,
-                            count
-                        )
-                    );
-                }
-
-                if (count.Count == 0)
-                {
-                    return new PlainArray(
-                        new ConcatList<DataType>(
-                            Prefix,
-                            match
-                        )
-                    );
-                }
-
-                return new PlainArray(
+            (0, 0) => new PlainArray(Prefix),
+            (0, _) => new PlainArray(
+                new ConcatList<DataType>(
+                    Prefix,
+                    count
+                )
+            ),
+            (_, 0) => new PlainArray(
+                new ConcatList<DataType>(
+                    Prefix,
+                    match
+                )
+            ),
+            _ => new PlainArray(
+                new ConcatList<DataType>(
+                    Prefix,
                     new ConcatList<DataType>(
-                        Prefix,
-                        new ConcatList<DataType>(
-                            match,
-                            count
-                        )
+                        match,
+                        count
                     )
-                );
-            }
-        }
+                )
+            )
+        };
 
-        private IReadOnlyList<DataType> Prefix => new DataType[]
+    private IReadOnlyList<DataType> Prefix => new DataType[]
         {
             name,
             key.ToBulkString(),
-            Cursor
+            cursor.ToBulkString()
         };
 
-        private PlainBulkString Cursor => new PlainBulkString(cursor.Value.ToString(CultureInfo.InvariantCulture));
         public override Visitor<ScanResult> ResponseStructure => ScanResultVisitor.Singleton;
     }
 }

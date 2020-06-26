@@ -8,7 +8,6 @@
     public sealed class SADD : Command<long>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SADD");
-
         private readonly Key key;
         private readonly IReadOnlyList<BulkString> members;
 
