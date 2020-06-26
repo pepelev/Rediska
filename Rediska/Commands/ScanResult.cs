@@ -2,22 +2,21 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    using Protocol;
 
-    public sealed class ScanResult : IReadOnlyList<BulkString>
+    public sealed class ScanResult<T> : IReadOnlyList<T>
     {
-        private readonly IReadOnlyList<BulkString> members;
+        private readonly IReadOnlyList<T> members;
 
-        public ScanResult(Cursor next, IReadOnlyList<BulkString> members)
+        public ScanResult(Cursor next, IReadOnlyList<T> members)
         {
             this.members = members;
             Next = next;
         }
 
-        public IEnumerator<BulkString> GetEnumerator() => members.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => members.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public int Count => members.Count;
-        public BulkString this[int index] => members[index];
+        public T this[int index] => members[index];
         public Cursor Next { get; }
         public bool ScanTerminated => Next == Cursor.Start;
     }
