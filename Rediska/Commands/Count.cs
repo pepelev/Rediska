@@ -59,7 +59,7 @@
                 );
             }
 
-            return new Count(checked(-value));
+            return new Count(-value);
         }
 
         public override string ToString() => Value.ToString(CultureInfo.InvariantCulture);

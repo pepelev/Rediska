@@ -2,7 +2,7 @@
 {
     public enum ExpireResult : byte
     {
-        KeyDoesNotExists,
-        TimeoutWasSet
+        KeyNotExists,
+        TimeoutSet
     }
 }

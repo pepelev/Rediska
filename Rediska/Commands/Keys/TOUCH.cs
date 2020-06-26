@@ -5,17 +5,17 @@
     using Protocol.Visitors;
     using Utils;
 
-    public sealed class DEL : Command<long>
+    public sealed class TOUCH : Command<long>
     {
-        private static readonly PlainBulkString name = new PlainBulkString("DEL");
+        private static readonly PlainBulkString name = new PlainBulkString("TOUCH");
         private readonly IReadOnlyList<Key> keys;
 
-        public DEL(params Key[] keys)
+        public TOUCH(params Key[] keys)
             : this(keys as IReadOnlyList<Key>)
         {
         }
 
-        public DEL(IReadOnlyList<Key> keys)
+        public TOUCH(IReadOnlyList<Key> keys)
         {
             this.keys = keys;
         }

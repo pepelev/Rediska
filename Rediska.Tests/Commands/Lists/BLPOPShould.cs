@@ -72,7 +72,7 @@ namespace Rediska.Tests.Commands.Lists
         [Test]
         public async Task Test()
         {
-            var array = await connection.ExecuteAsync(new BLPOP(key)).ConfigureAwait(false);
+            var array = await connection.ExecuteAsync(new BLPOP(key, 20)).ConfigureAwait(false);
         }
     }
 }

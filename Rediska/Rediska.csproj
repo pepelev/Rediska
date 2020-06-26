@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AsyncLock.cs" />
     <Compile Include="BulkConnection.cs" />
+    <Compile Include="Cluster\HashSlotMap.cs" />
     <Compile Include="Commands\AddResult.cs" />
     <Compile Include="Commands\Count.cs" />
     <Compile Include="Commands\Cursor.cs" />
@@ -49,7 +50,10 @@
     <Compile Include="Commands\Geo\GEOADD.cs" />
     <Compile Include="Commands\Geo\GEODIST.cs" />
     <Compile Include="Commands\Geo\GeospatialItem.cs" />
+    <Compile Include="Commands\Hashes\HGET.cs" />
+    <Compile Include="Commands\Hashes\HINCRBY.cs" />
     <Compile Include="Commands\Index.cs" />
+    <Compile Include="Commands\Keys\DEL.cs" />
     <Compile Include="Commands\Keys\DUMP.cs" />
     <Compile Include="Commands\Keys\EXISTS.cs" />
     <Compile Include="Commands\Keys\EXPIRE.cs" />
@@ -57,8 +61,15 @@
     <Compile Include="Commands\Keys\ExpireResult.cs" />
     <Compile Include="Commands\Keys\KEYS.cs" />
     <Compile Include="Commands\Keys\KeyType.cs" />
+    <Compile Include="Commands\Keys\MOVE.cs" />
+    <Compile Include="Commands\Keys\PERSIST.cs" />
+    <Compile Include="Commands\Keys\RANDOMKEY.cs" />
+    <Compile Include="Commands\Keys\RENAME.cs" />
+    <Compile Include="Commands\Keys\RENAMENX.cs" />
+    <Compile Include="Commands\Keys\TTL.cs" />
     <Compile Include="Commands\Keys\TYPE.cs" />
     <Compile Include="Commands\Keys\UNLINK.cs" />
+    <Compile Include="Commands\Keys\WAIT.cs" />
     <Compile Include="Commands\Lists\BRPOP.cs" />
     <Compile Include="Commands\Lists\BRPOPLPUSH.cs" />
     <Compile Include="Commands\Lists\LINDEX.cs" />
@@ -78,6 +89,7 @@
     <Compile Include="Commands\Lists\RPUSH.cs" />
     <Compile Include="Commands\Lists\RPUSHX.cs" />
     <Compile Include="Commands\Lists\Timeout.cs" />
+    <Compile Include="Commands\MillisecondsTimeout.cs" />
     <Compile Include="Commands\PublishSubscribe\Channel.cs" />
     <Compile Include="Commands\PublishSubscribe\ListeningConnection.cs" />
     <Compile Include="Commands\PublishSubscribe\PUBLISH.cs" />
@@ -85,6 +97,7 @@
     <Compile Include="Commands\Server\CLIENT.cs" />
     <Compile Include="Commands\Server\CLIENT.REPLY.cs" />
     <Compile Include="Commands\Server\DBSIZE.cs" />
+    <Compile Include="Commands\Server\INFO.cs" />
     <Compile Include="Commands\UnixTimestamp.cs" />
     <Compile Include="Commands\Utility\IgnoringResponse.cs" />
     <Compile Include="ConnectionExtensions.cs" />
@@ -98,7 +111,7 @@
     <Compile Include="Utils\GeospatialItemList.cs" />
     <Compile Include="Commands\Geo\Location.cs" />
     <Compile Include="Commands\Geo\Unit.cs" />
-    <Compile Include="Commands\Keys\DEL.cs" />
+    <Compile Include="Commands\Keys\TOUCH.cs" />
     <Compile Include="Commands\Lists\BLPOP.cs" />
     <Compile Include="Commands\ScanResult.cs" />
     <Compile Include="Commands\ScanCount.cs" />

@@ -22,9 +22,9 @@
             switch (integer)
             {
                 case 0:
-                    return Commands.Keys.ExpireResult.KeyDoesNotExists;
+                    return Commands.Keys.ExpireResult.KeyNotExists;
                 case 1:
-                    return Commands.Keys.ExpireResult.TimeoutWasSet;
+                    return Commands.Keys.ExpireResult.TimeoutSet;
                 default:
                     throw new Exception($"Expected 0 or 1, but '{integer}' received");
             }

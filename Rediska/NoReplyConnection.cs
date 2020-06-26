@@ -6,7 +6,6 @@ using Rediska.Utils;
 
 namespace Rediska
 {
-    using System.Configuration;
     using Commands;
     using Commands.Utility;
 
