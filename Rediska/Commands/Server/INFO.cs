@@ -1,10 +1,11 @@
 ﻿namespace Rediska.Commands.Server
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.IO;
     using Protocol;
     using Protocol.Visitors;
-    using Array = Protocol.Array;
 
     public sealed class INFO : Command<INFO.SectionList>
     {
@@ -26,11 +27,49 @@
             {
                 this.response = response;
             }
+
+            public IEnumerator<Section> GetEnumerator()
+            {
+                using var feed = new StringReader(response);
+                while (true)
+                {
+                    var line = feed.ReadLine();
+                    if (line == null)
+                        yield break;
+
+                    if (line.StartsWith("#"))
+                    {
+                        var name = line.Substring(2);
+                        yield return new Section(name);
+                    }
+                }
+            }
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            public override string ToString() => response;
         }
 
         public sealed class Section : IEnumerable<KeyValuePair<string, string>>
         {
+            private readonly string response;
+            private readonly int bodyStart;
+            private readonly int bodyEnd;
+
+            public Section(string name)
+            {
+                Name = name;
+            }
+
             public string Name { get; }
+            public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+            {
+                yield break;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
         }
 
         public override DataType Request => section == DefaultSection

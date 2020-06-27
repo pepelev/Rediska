@@ -47,15 +47,12 @@ namespace Rediska.Commands
             {
                 get
                 {
-                    switch (index)
+                    return index switch
                     {
-                        case 0:
-                            return keyWord;
-                        case 1:
-                            return Pattern;
-                        default:
-                            throw new IndexOutOfRangeException();
-                    }
+                        0 => keyWord,
+                        1 => Pattern,
+                        _ => throw new IndexOutOfRangeException()
+                    };
                 }
             }
 

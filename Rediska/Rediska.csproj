@@ -192,7 +192,7 @@
     <Compile Include="Protocol\PlainArray.cs" />
     <Compile Include="Protocol\PlainBulkString.cs" />
     <Compile Include="Protocol\SimpleString.cs" />
-    <Compile Include="Protocol\Visitors\ArrayContentExpectation.cs" />
+    <Compile Include="Protocol\Visitors\ArrayExpectation.cs" />
     <Compile Include="Protocol\Visitors\ArrayExpectation2.cs" />
     <Compile Include="Protocol\Visitors\BulkStringExpectation.cs" />
     <Compile Include="Protocol\Visitors\CommandPrintVisitor.cs" />

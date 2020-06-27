@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using Array = Protocol.Array;
 
-    public sealed class ArrayContentExpectation : Visitor<IReadOnlyList<DataType>>
+    public sealed class ArrayExpectation : Visitor<IReadOnlyList<DataType>>
     {
-        public static ArrayContentExpectation Singleton { get; } = new ArrayContentExpectation();
+        public static ArrayExpectation Singleton { get; } = new ArrayExpectation();
 
         public override IReadOnlyList<DataType> Visit(Integer integer) =>
             throw new ArgumentException("Array expected");
