@@ -1,26 +1,26 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Rediska.Utils;
-
-namespace Rediska.Tests
+﻿namespace Rediska.Tests
 {
+    using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Utilities;
+
     public sealed class Cashier : IDisposable
     {
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
         private readonly AtomicLong currentNumber = new AtomicLong();
 
-        public async Task<Ticket> AcquireTicketAsync()
+        public void Dispose()
         {
-            await semaphore.WaitAsync().ConfigureAwait(false);
-            return new Ticket(currentNumber.Read(), this);
+            semaphore.Dispose();
         }
 
         public bool Busy => semaphore.CurrentCount == 0;
 
-        public void Dispose()
+        public async Task<Ticket> AcquireTicketAsync()
         {
-            semaphore.Dispose();
+            await semaphore.WaitAsync().ConfigureAwait(false);
+            return new Ticket(currentNumber.Read(), this);
         }
 
         private void Release(long number)
@@ -35,7 +35,7 @@ namespace Rediska.Tests
                 throw new InvalidOperationException("Ticket is outdated");
             }
         }
-        
+
         public struct Ticket : IDisposable
         {
             private readonly Cashier cashier;

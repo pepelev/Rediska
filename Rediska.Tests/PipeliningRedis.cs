@@ -13,6 +13,8 @@ using Rediska.Utils;
 
 namespace Rediska.Tests
 {
+    using Utilities;
+
     public sealed class PipeliningRedis
     {
         private readonly Cashier cashier = new Cashier();

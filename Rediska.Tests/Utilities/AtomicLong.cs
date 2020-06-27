@@ -1,7 +1,7 @@
-﻿using System.Threading;
-
-namespace Rediska.Utils
+﻿namespace Rediska.Tests.Utilities
 {
+    using System.Threading;
+
     internal sealed class AtomicLong
     {
         private long value;
