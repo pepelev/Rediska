@@ -3,7 +3,6 @@ using BenchmarkDotNet.Attributes;
 
 namespace Rediska.Tests.Performance
 {
-    
     public class CallCost
     {
         private readonly Base @abstract = new Child();
