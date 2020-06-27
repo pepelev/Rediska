@@ -112,6 +112,7 @@
     <Compile Include="Commands\Server\DBSIZE.cs" />
     <Compile Include="Commands\Server\INFO.cs" />
     <Compile Include="Commands\Hashes\HSCAN.cs" />
+    <Compile Include="Commands\Streams\Id.cs" />
     <Compile Include="Commands\UnixTimestamp.cs" />
     <Compile Include="Commands\Utility\ResponseIgnoring.cs" />
     <Compile Include="Commands\Utility\ScanRequest.cs" />
