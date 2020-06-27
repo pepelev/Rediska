@@ -32,6 +32,6 @@
         );
 
         // todo parse
-        public override Visitor<None> ResponseStructure => ArrayExpectation.Singleton.Then(_ => new None());
+        public override Visitor<None> ResponseStructure => ArrayContentExpectation.Singleton.Then(_ => new None());
     }
 }

@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
-    using Utils;
+    using Utility;
 
     public sealed class HSCAN : Command<ScanResult<HashEntry>>
     {
@@ -36,33 +36,9 @@
         {
         }
 
-        public override DataType Request => (match.Count, count.Count) switch
-        {
-            (0, 0) => new PlainArray(Prefix),
-            (0, _) => new PlainArray(
-                new ConcatList<DataType>(
-                    Prefix,
-                    count
-                )
-            ),
-            (_, 0) => new PlainArray(
-                new ConcatList<DataType>(
-                    Prefix,
-                    match
-                )
-            ),
-            _ => new PlainArray(
-                new ConcatList<DataType>(
-                    Prefix,
-                    new ConcatList<DataType>(
-                        match,
-                        count
-                    )
-                )
-            )
-        };
+        public override DataType Request => new ScanRequest(Prefix, match, count);
 
-        private IReadOnlyList<DataType> Prefix => new DataType[]
+        private IReadOnlyList<BulkString> Prefix => new[]
         {
             name,
             key.ToBulkString(),

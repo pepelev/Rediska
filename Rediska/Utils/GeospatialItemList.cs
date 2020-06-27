@@ -2,7 +2,6 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Globalization;
     using Commands.Geo;
     using Protocol;
 
@@ -19,15 +18,9 @@
         {
             foreach (var item in items)
             {
-                yield return new PlainBulkString(
-                    item.Location.Longitude.ToString(CultureInfo.InvariantCulture)
-                );
-
-                yield return new PlainBulkString(
-                    item.Location.Latitude.ToString(CultureInfo.InvariantCulture)
-                );
-
-                yield return item.Name;
+                yield return item.Location.Longitude.ToBulkString();
+                yield return item.Location.Latitude.ToBulkString();
+                yield return item.Name.ToBulkString();
             }
         }
 
@@ -39,19 +32,12 @@
             get
             {
                 var itemIndex = index / 3;
-                switch (index % 3)
+                return (index % 3) switch
                 {
-                    case 0:
-                        return new PlainBulkString(
-                            items[itemIndex].Location.Longitude.ToString(CultureInfo.InvariantCulture)
-                        );
-                    case 1:
-                        return new PlainBulkString(
-                            items[itemIndex].Location.Latitude.ToString(CultureInfo.InvariantCulture)
-                        );
-                    default:
-                        return items[itemIndex].Name;
-                }
+                    0 => items[itemIndex].Location.Longitude.ToBulkString(),
+                    1 => items[itemIndex].Location.Latitude.ToBulkString(),
+                    _ => items[itemIndex].Name.ToBulkString()
+                };
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Rediska.Commands.Geo
 {
-    public struct Distance
+    public readonly struct Distance
     {
         public Distance(double value, Unit unit)
         {

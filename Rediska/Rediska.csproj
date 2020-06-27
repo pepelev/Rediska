@@ -52,6 +52,8 @@
     <Compile Include="Commands\Geo\Distance.cs" />
     <Compile Include="Commands\Geo\GEOADD.cs" />
     <Compile Include="Commands\Geo\GEODIST.cs" />
+    <Compile Include="Commands\Geo\Geohash.cs" />
+    <Compile Include="Commands\Geo\GEOPOS.cs" />
     <Compile Include="Commands\Geo\GeospatialItem.cs" />
     <Compile Include="Commands\Hashes\HGET.cs" />
     <Compile Include="Commands\Hashes\HINCRBY.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Commands\Keys\RANDOMKEY.cs" />
     <Compile Include="Commands\Keys\RENAME.cs" />
     <Compile Include="Commands\Keys\RENAMENX.cs" />
+    <Compile Include="Commands\Keys\SCAN.cs" />
     <Compile Include="Commands\Keys\TTL.cs" />
     <Compile Include="Commands\Keys\TYPE.cs" />
     <Compile Include="Commands\Keys\UNLINK.cs" />
@@ -111,6 +114,7 @@
     <Compile Include="Commands\Hashes\HSCAN.cs" />
     <Compile Include="Commands\UnixTimestamp.cs" />
     <Compile Include="Commands\Utility\ResponseIgnoring.cs" />
+    <Compile Include="Commands\Utility\ScanRequest.cs" />
     <Compile Include="ConnectionExtensions.cs" />
     <Compile Include="ConstResponse.cs" />
     <Compile Include="DataTypes\HyperLogLog.cs" />
@@ -118,6 +122,7 @@
     <Compile Include="Protocol\Extensions.cs" />
     <Compile Include="Protocol\Inputs\InputExtensions.cs" />
     <Compile Include="Protocol\Visitors\CompositeVisitors.cs" />
+    <Compile Include="Protocol\Visitors\DoubleExpectation.cs" />
     <Compile Include="Protocol\Visitors\SimpleStringExpectation.cs" />
     <Compile Include="Utils\GeospatialItemList.cs" />
     <Compile Include="Commands\Geo\Location.cs" />
@@ -186,7 +191,7 @@
     <Compile Include="Protocol\PlainArray.cs" />
     <Compile Include="Protocol\PlainBulkString.cs" />
     <Compile Include="Protocol\SimpleString.cs" />
-    <Compile Include="Protocol\Visitors\ArrayExpectation.cs" />
+    <Compile Include="Protocol\Visitors\ArrayContentExpectation.cs" />
     <Compile Include="Protocol\Visitors\ArrayExpectation2.cs" />
     <Compile Include="Protocol\Visitors\BulkStringExpectation.cs" />
     <Compile Include="Protocol\Visitors\CommandPrintVisitor.cs" />

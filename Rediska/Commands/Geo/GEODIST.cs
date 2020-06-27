@@ -7,16 +7,16 @@
     {
         private static readonly PlainBulkString name = new PlainBulkString("GEODIST");
         private readonly Key key;
-        private readonly BulkString member;
-        private readonly BulkString anotherMember;
+        private readonly Key member;
+        private readonly Key anotherMember;
         private readonly Unit unit;
 
-        public GEODIST(Key key, BulkString member, BulkString anotherMember)
+        public GEODIST(Key key, Key member, Key anotherMember)
             : this(key, member, anotherMember, Unit.Meter)
         {
         }
 
-        public GEODIST(Key key, BulkString member, BulkString anotherMember, Unit unit)
+        public GEODIST(Key key, Key member, Key anotherMember, Unit unit)
         {
             this.key = key;
             this.member = member;
@@ -31,27 +31,24 @@
         public DataType ShortRequest => new PlainArray(
             name,
             key.ToBulkString(),
-            member,
-            anotherMember
+            member.ToBulkString(),
+            anotherMember.ToBulkString()
         );
 
         public DataType FullRequest => new PlainArray(
             name,
             key.ToBulkString(),
-            member,
-            anotherMember,
+            member.ToBulkString(),
+            anotherMember.ToBulkString(),
             unit.ToBulkString()
         );
 
         public override Visitor<Distance?> ResponseStructure => BulkStringExpectation.Singleton
             .Then(
-                distance =>
+                distance => distance.ToDoubleOrNull() switch
                 {
-                    if (distance.IsNull)
-                        return default(Distance?);
-
-                    var value = double.Parse(distance.ToString());
-                    return new Distance(value, unit);
+                    {} value => new Distance(value, unit),
+                    null => default(Distance?)
                 }
             );
     }

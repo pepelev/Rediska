@@ -16,6 +16,10 @@ namespace Rediska.Protocol.Visitors
         public static ScanResultVisitor<HashEntry> HashEntryList { get; } = new ScanResultVisitor<HashEntry>(
             CompositeVisitors.HashEntryList
         );
+
+        public static ScanResultVisitor<Key> KeyList { get; } = new ScanResultVisitor<Key>(
+            CompositeVisitors.KeyList
+        );
     }
 
     public sealed class ScanResultVisitor<T> : Visitor<ScanResult<T>>

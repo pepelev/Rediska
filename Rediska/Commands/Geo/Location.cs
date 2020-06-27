@@ -2,7 +2,7 @@
 {
     using System;
 
-    public struct Location : IEquatable<Location>
+    public readonly struct Location : IEquatable<Location>
     {
         public const double MaxLongitudeAbsoluteValue = 180;
         public const double MaxLatitudeAbsoluteValue = 85.05112878;
@@ -10,10 +10,20 @@
         public Location(double longitude, double latitude)
         {
             if (Math.Abs(longitude) >= MaxLongitudeAbsoluteValue)
-                throw new ArgumentException("Longitude must be between -180 and 180", nameof(longitude));
+            {
+                throw new ArgumentException(
+                    $"Longitude must be between {-MaxLongitudeAbsoluteValue} and {MaxLongitudeAbsoluteValue}",
+                    nameof(longitude)
+                );
+            }
 
             if (Math.Abs(latitude) >= MaxLatitudeAbsoluteValue)
-                throw new ArgumentException("Latitude must be between -85.05112878 and 85.05112878", nameof(latitude));
+            {
+                throw new ArgumentException(
+                    $"Latitude must be between {-MaxLatitudeAbsoluteValue} and {MaxLatitudeAbsoluteValue}",
+                    nameof(latitude)
+                );
+            }
 
             Longitude = longitude;
             Latitude = latitude;
@@ -23,13 +33,7 @@
         public double Latitude { get; }
         public bool Equals(Location other) => Longitude.Equals(other.Longitude) && Latitude.Equals(other.Latitude);
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-                return false;
-
-            return obj is Location other && Equals(other);
-        }
+        public override bool Equals(object obj) => obj is Location other && Equals(other);
 
         public override int GetHashCode()
         {
