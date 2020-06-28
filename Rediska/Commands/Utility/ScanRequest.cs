@@ -19,22 +19,19 @@
             this.count = count;
         }
 
-        private DataType Content => (match.Count, count.Count) switch
-        {
-            (0, 0) => new PlainArray(prefix),
-            (0, _) => new PlainArray(
-                new ConcatList<DataType>(
+        private DataType Content => new PlainArray(
+            (match.Count, count.Count) switch
+            {
+                (0, 0) => prefix,
+                (0, _) => new ConcatList<DataType>(
                     prefix,
                     count
-                )
-            ),
-            (_, 0) => new PlainArray(
-                new ConcatList<DataType>(
+                ),
+                (_, 0) => new ConcatList<DataType>(
                     prefix,
                     match
-                )
-            ),
-            _ => new PlainArray(
+                ),
+                _ =>
                 new ConcatList<DataType>(
                     prefix,
                     new ConcatList<DataType>(
@@ -42,8 +39,8 @@
                         count
                     )
                 )
-            )
-        };
+            }
+        );
 
         public override T Accept<T>(Visitor<T> visitor) => Content.Accept(visitor);
         public override void Write(Output output) => Content.Write(output);

@@ -6,7 +6,7 @@
 
     public readonly struct Timeout : IEquatable<Timeout>
     {
-        public static Timeout Infinite { get; } = new Timeout(0);
+        public static Timeout Infinite => new Timeout(0);
 
         public Timeout(long seconds)
         {
@@ -49,7 +49,8 @@
             }
 
             var duration = new TimeSpan(TimeSpan.TicksPerSecond * Seconds);
-            return duration.ToString("g", CultureInfo.InvariantCulture);
+            const string generalShort = "g"; // 0:01:23.456
+            return duration.ToString(generalShort, CultureInfo.InvariantCulture);
         }
 
         public static explicit operator Timeout(long value) => new Timeout(value);

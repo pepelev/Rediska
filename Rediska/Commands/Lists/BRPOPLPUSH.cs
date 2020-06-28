@@ -25,6 +25,5 @@
         );
 
         public override Visitor<BulkString> ResponseStructure => BulkStringExpectation.Singleton;
-        public static RPOPLPUSH Rotate(Key key) => new RPOPLPUSH(key, key);
     }
 }
