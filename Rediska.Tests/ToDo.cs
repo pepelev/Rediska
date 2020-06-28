@@ -6,10 +6,9 @@
 
         // дописать команды на Keys
         // Исправить все TODO
-        // code style разобраться с порядком вложенный enum, struct
+        // code style разобраться с порядком вложенных enum, struct
         // дописать тесты на команды SET
         // использовать VisitException в ArrayExpectation(2)
-        // дописать команды на HASH
         // дописать команды на ZSET
         // тесты на HASH
         // Реализовать Pub/Sub
@@ -27,6 +26,7 @@
         #region done
 
         // Реализовать CLIENT REPLY ON|OFF|SKIP
+        // дописать команды на HASH
         // дописать команды на SET
         // Написать конвейер (PipeliningConnection)
 
