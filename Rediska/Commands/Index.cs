@@ -11,7 +11,7 @@
             Value = value;
         }
 
-        public Index FromStart(long index)
+        public static Index FromStart(long index)
         {
             if (index < 0)
             {
@@ -26,7 +26,7 @@
             return new Index(index);
         }
 
-        public Index FromEnd(long index)
+        public static Index FromEnd(long index)
         {
             if (index < 0)
             {
