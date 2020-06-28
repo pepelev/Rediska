@@ -1,5 +1,7 @@
 ﻿namespace Rediska.Tests.Commands.Server
 {
+    using System.Linq;
+    using FluentAssertions;
     using NUnit.Framework;
     using Protocol;
     using Rediska.Commands.Server;
@@ -26,7 +28,7 @@ uptime_in_days:0
 hz:10
 configured_hz:10
 lru_clock:16218300
-executable:/home/lexa/redis-6.0.5/src/./redis-server
+executable:/home/user/redis-6.0.5/src/./redis-server
 config_file:
 
 # Clients
@@ -170,10 +172,26 @@ db0:keys=1,expires=0,avg_ttl=0"
         );
 
         [Test]
-        public void Parse_All()
+        public void Parse_Sections()
         {
             var sut = new INFO(INFO.AllSections);
             var sections = allSections.Accept(sut.ResponseStructure);
+            sections
+                .Select(section => section.Name)
+                .Should()
+                .Equal(
+                    "Server",
+                    "Clients",
+                    "Memory",
+                    "Persistence",
+                    "Stats",
+                    "Replication",
+                    "CPU",
+                    "Modules",
+                    "Commandstats",
+                    "Cluster",
+                    "Keyspace"
+                );
         }
     }
 }

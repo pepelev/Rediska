@@ -4,6 +4,8 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
     using Protocol;
     using Protocol.Visitors;
 
@@ -23,7 +25,7 @@
         {
             private readonly string response;
 
-            public SectionList(string response)
+            internal SectionList(string response)
             {
                 this.response = response;
             }
@@ -40,7 +42,28 @@
                     if (line.StartsWith("#"))
                     {
                         var name = line.Substring(2);
-                        yield return new Section(name);
+                        var properties = new List<KeyValuePair<string, string>>();
+                        while (true)
+                        {
+                            var propertyLine = feed.ReadLine();
+                            if (propertyLine == null)
+                            {
+                                yield return new Section(name, properties);
+                                yield break;
+                            }
+                            if (string.IsNullOrWhiteSpace(propertyLine))
+                            {
+                                yield return new Section(name, properties);
+                                break;
+                            }
+
+                            var segments = propertyLine.Split(':');
+                            if (segments.Length != 2)
+                                throw new Exception("Expected single colon");
+
+                            var item = new KeyValuePair<string, string>(segments[0], segments[1]);
+                            properties.Add(item);
+                        }
                     }
                 }
             }
@@ -51,24 +74,27 @@
 
         public sealed class Section : IEnumerable<KeyValuePair<string, string>>
         {
-            private readonly string response;
-            private readonly int bodyStart;
-            private readonly int bodyEnd;
-
-            public Section(string name)
+            internal Section(string name, IReadOnlyList<KeyValuePair<string, string>> properties)
             {
                 Name = name;
+                this.properties = properties;
             }
 
             public string Name { get; }
-            public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-            {
-                yield break;
-            }
+            private readonly IReadOnlyList<KeyValuePair<string, string>> properties;
+            public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => properties.GetEnumerator();
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-            IEnumerator IEnumerable.GetEnumerator()
+            public override string ToString()
             {
-                return GetEnumerator();
+                if (properties.Count == 0)
+                    return $"# {Name}";
+
+                var tail = string.Join(
+                    Environment.NewLine,
+                    this.Select(property => $"{property.Key}:{property.Value}")
+                );
+                return $"# {Name}{Environment.NewLine}{tail}";
             }
         }
 
