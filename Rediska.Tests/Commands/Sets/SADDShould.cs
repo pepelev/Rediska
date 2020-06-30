@@ -78,8 +78,8 @@ namespace Rediska.Tests.Commands.Sets
                 var index = 1;
                 foreach (var entry in connection.Log)
                 {
-                    Console.WriteLine($"{index}: -> {entry.Request}");
-                    Console.WriteLine($"{index}: <- {entry.Response}");
+                    Console.WriteLine($"{entry.RequestedAt:hh:mm:ss.zzz} {index}: -> {entry.Request}");
+                    Console.WriteLine($"{entry.ResponseReceivedAt:hh:mm:ss.zzz} {index}: <- {entry.Response}");
 
                     index++;
                 }

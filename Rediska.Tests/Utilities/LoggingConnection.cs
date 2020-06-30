@@ -6,6 +6,8 @@ using Rediska.Utils;
 
 namespace Rediska.Tests.Utilities
 {
+    using System;
+
     public sealed class LoggingConnection : Connection
     {
         private readonly Connection connection;
@@ -20,12 +22,16 @@ namespace Rediska.Tests.Utilities
 
         public override async Task<Resource<Response>> SendAsync(DataType command)
         {
+            var requestTime = DateTime.Now;
             var response = await connection.SendAsync(command).ConfigureAwait(false);
             var dataType = await response.Value.ReadAsync().ConfigureAwait(false);
+            var responseTime = DateTime.Now;
             log.Enqueue(
                 new Entry(
+                    requestTime,
                     command,
-                    dataType
+                    dataType,
+                    responseTime
                 )
             );
             return response.Move<Response>(
@@ -33,16 +39,20 @@ namespace Rediska.Tests.Utilities
             );
         }
 
-        public struct Entry
+        public readonly struct Entry
         {
-            public Entry(DataType request, DataType response)
+            public Entry(DateTime requestedAt, DataType request, DataType response, DateTime responseReceivedAt)
             {
+                RequestedAt = requestedAt;
                 Request = request;
                 Response = response;
+                ResponseReceivedAt = responseReceivedAt;
             }
 
+            public DateTime RequestedAt { get; }
             public DataType Request { get; }
             public DataType Response { get; }
+            public DateTime ResponseReceivedAt { get; }
         }
     }
 }

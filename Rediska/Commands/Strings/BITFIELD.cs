@@ -70,9 +70,9 @@
             public abstract IEnumerable<BulkString> Query();
         }
 
-        private sealed class GET : SubCommand
+        public sealed class GET : SubCommand
         {
-            private static readonly PlainBulkString name = new PlainBulkString("GET");
+            private static readonly PlainBulkString subCommandName = new PlainBulkString("GET");
             private readonly Type type;
             private readonly Offset offset;
 
@@ -86,8 +86,66 @@
 
             public override IEnumerable<BulkString> Query()
             {
-                yield return name;
-                // todo type and kind
+                yield return subCommandName;
+                yield return type.ToBulkString();
+                yield return offset.ToBulkString();
+            }
+        }
+
+        public sealed class SET : SubCommand
+        {
+            private static readonly PlainBulkString subCommandName = new PlainBulkString("SET");
+            private readonly Type type;
+            private readonly Offset offset;
+            private readonly long value;
+
+            public SET(Type type, Offset offset, long value)
+            {
+                if (!type.Fit(value))
+                {
+                    //throw new ArgumentOutOfRangeException(nameof(value), value, $"Value must fit type range {type.Range}");
+                }
+
+                this.type = type;
+                this.offset = offset;
+                this.value = value;
+            }
+
+            public override Overflow? DesiredOverflow => null;
+
+            public override IEnumerable<BulkString> Query()
+            {
+                yield return subCommandName;
+                yield return type.ToBulkString();
+                yield return offset.ToBulkString();
+                yield return value.ToBulkString();
+            }
+        }
+
+        public sealed class INCRBY : SubCommand
+        {
+            private static readonly PlainBulkString subCommandName = new PlainBulkString("INCRBY");
+            private readonly Type type;
+            private readonly Offset offset;
+            private readonly long increment;
+            private readonly Overflow desiredOverflow;
+
+            public INCRBY(Type type, Offset offset, long increment, Overflow desiredOverflow = Overflow.Wrap)
+            {
+                this.type = type;
+                this.offset = offset;
+                this.increment = increment;
+                this.desiredOverflow = desiredOverflow;
+            }
+
+            public override Overflow? DesiredOverflow => desiredOverflow;
+
+            public override IEnumerable<BulkString> Query()
+            {
+                yield return subCommandName;
+                yield return type.ToBulkString();
+                yield return offset.ToBulkString();
+                yield return increment.ToBulkString();
             }
         }
 

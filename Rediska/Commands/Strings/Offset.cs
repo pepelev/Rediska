@@ -2,6 +2,7 @@
 {
     using System;
     using System.Globalization;
+    using Protocol;
 
     public readonly struct Offset
     {
@@ -30,7 +31,10 @@
             };
         }
 
+        public BulkString ToBulkString() => new PlainBulkString(ToString());
+
         public static Offset Bits(long count) => new Offset(OffsetUnit.Bit, count);
         public static Offset Integers(long count) => new Offset(OffsetUnit.Integer, count);
+        public static Offset Zero => Bits(0);
     }
 }
