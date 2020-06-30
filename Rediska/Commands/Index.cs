@@ -11,6 +11,8 @@
             Value = value;
         }
 
+        public static Index Start => FromStart(0);
+
         public static Index FromStart(long index)
         {
             if (index < 0)
@@ -25,6 +27,8 @@
 
             return new Index(index);
         }
+
+        public static Index End => FromEnd(0);
 
         public static Index FromEnd(long index)
         {
