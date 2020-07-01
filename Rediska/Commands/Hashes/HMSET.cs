@@ -11,11 +11,6 @@
         private readonly Key key;
         private readonly IReadOnlyList<(Key Field, BulkString Value)> pairs;
 
-        public HMSET(Key key, Key field, BulkString value)
-            : this(key, (field, value))
-        {
-        }
-
         public HMSET(Key key, params (Key Field, BulkString Value)[] pairs)
             : this(key, pairs as IReadOnlyList<(Key Field, BulkString Value)>)
         {
