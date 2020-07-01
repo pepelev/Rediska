@@ -14,7 +14,7 @@
                 new LazyConnection(
                     new IPEndPoint(IPAddress.Loopback, 6379)
                 )
-            );
+            ).SetArgDisplayNames("Redis-6-0-5");
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

@@ -7,8 +7,6 @@
     public sealed class BITPOS : Command<BITPOS.Response>
     {
         private static readonly PlainBulkString name = new PlainBulkString("BITPOS");
-        private static readonly PlainBulkString zero = new PlainBulkString("0");
-        private static readonly PlainBulkString one = new PlainBulkString("1");
         private readonly Key key;
         private readonly bool bit;
         private readonly Index start;
@@ -33,8 +31,8 @@
         }
 
         private BulkString Bit => bit
-            ? one
-            : zero;
+            ? BulkStringConstants.One
+            : BulkStringConstants.Zero;
 
         public override DataType Request => (start, end) switch
         {

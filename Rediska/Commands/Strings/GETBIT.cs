@@ -19,9 +19,9 @@
             );
 
         private readonly Key key;
-        private readonly long offset;
+        private readonly uint offset;
 
-        public GETBIT(Key key, long offset)
+        public GETBIT(Key key, uint offset)
         {
             this.key = key;
             this.offset = offset;

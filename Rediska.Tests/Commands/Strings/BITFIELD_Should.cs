@@ -5,7 +5,6 @@
     using NUnit.Framework;
     using Rediska.Commands.Strings;
     using Sets;
-    using static Rediska.Commands.Strings.BITFIELD;
     using static Rediska.Commands.Strings.Offset;
     using static Rediska.Commands.Strings.Type;
 
