@@ -25,7 +25,7 @@
             var result = await connection.ExecuteAsync(
                 new BITFIELD(
                     "hello",
-                    new SET(Unsigned(32), Zero, 2_000_000_000)
+                    new BITFIELD.SET(Unsigned(32), Zero, 2_000_000_000)
                 )
             ).ConfigureAwait(false);
 
@@ -37,8 +37,8 @@
         {
             var sut = new BITFIELD(
                 "hello",
-                new INCRBY(Signed(32), Zero, 0, Overflow.Saturate),
-                new SET(Signed(32), Zero, 4_000_000_000)
+                new BITFIELD.INCRBY(Signed(32), Zero, 0, Overflow.Saturate),
+                new BITFIELD.SET(Signed(32), Zero, 4_000_000_000)
             );
             var result = await connection.ExecuteAsync(sut).ConfigureAwait(false);
 
@@ -50,7 +50,7 @@
         {
             var sut = new BITFIELD(
                 "hello",
-                new INCRBY(Signed(1), Zero, -9, Overflow.Fail)
+                new BITFIELD.INCRBY(Signed(1), Zero, -9, Overflow.Fail)
             );
             var result = await connection.ExecuteAsync(sut).ConfigureAwait(false);
         }

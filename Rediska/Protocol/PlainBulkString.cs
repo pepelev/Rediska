@@ -1,9 +1,9 @@
-﻿using System.IO;
-using System.Text;
-using Rediska.Protocol.Outputs;
-
-namespace Rediska.Protocol
+﻿namespace Rediska.Protocol
 {
+    using System.IO;
+    using System.Text;
+    using Outputs;
+
     public sealed class PlainBulkString : BulkString
     {
         private readonly byte[] content;
@@ -20,6 +20,7 @@ namespace Rediska.Protocol
 
         public override bool IsNull => false;
         public override long Length => content.Length;
+        public static PlainBulkString Empty { get; } = new PlainBulkString(new byte[0]);
         public override void WriteContent(Stream stream) => stream.Write(content, 0, content.Length);
 
         public override void Write(Output output)
