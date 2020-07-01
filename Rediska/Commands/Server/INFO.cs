@@ -5,7 +5,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text.RegularExpressions;
     using Protocol;
     using Protocol.Visitors;
 
@@ -20,6 +19,13 @@
         {
             this.section = section ?? throw new ArgumentNullException(nameof(section));
         }
+
+        public override DataType Request => section == DefaultSection
+            ? new PlainArray(name)
+            : new PlainArray(name, new PlainBulkString(section));
+
+        public override Visitor<SectionList> ResponseStructure => BulkStringExpectation.Singleton
+            .Then(response => new SectionList(response.ToString()));
 
         public sealed class SectionList : IEnumerable<Section>
         {
@@ -51,6 +57,7 @@
                                 yield return new Section(name, properties);
                                 yield break;
                             }
+
                             if (string.IsNullOrWhiteSpace(propertyLine))
                             {
                                 yield return new Section(name, properties);
@@ -74,16 +81,17 @@
 
         public sealed class Section : IEnumerable<KeyValuePair<string, string>>
         {
+            private readonly IReadOnlyList<KeyValuePair<string, string>> properties;
+
             internal Section(string name, IReadOnlyList<KeyValuePair<string, string>> properties)
             {
                 Name = name;
                 this.properties = properties;
             }
 
-            public string Name { get; }
-            private readonly IReadOnlyList<KeyValuePair<string, string>> properties;
             public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => properties.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            public string Name { get; }
 
             public override string ToString()
             {
@@ -97,12 +105,5 @@
                 return $"# {Name}{Environment.NewLine}{tail}";
             }
         }
-
-        public override DataType Request => section == DefaultSection
-            ? new PlainArray(name)
-            : new PlainArray(name, new PlainBulkString(section));
-
-        public override Visitor<SectionList> ResponseStructure => BulkStringExpectation.Singleton
-            .Then(response => new SectionList(response.ToString()));
     }
 }

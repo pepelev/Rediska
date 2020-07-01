@@ -18,6 +18,11 @@
             BulkStringExpectation.Singleton
         );
 
+        public static Visitor<IReadOnlyList<string>> SimpleStringList { get; } = new ListVisitor<string>(
+            ArrayExpectation.Singleton,
+            SimpleStringExpectation.Singleton
+        );
+
         public static Visitor<IReadOnlyList<Key>> KeyList { get; } = new ListVisitor<Key>(
             ArrayExpectation.Singleton,
             BulkStringExpectation.Singleton.Then(@string => new Key.BulkString(@string) as Key)
