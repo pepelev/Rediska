@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace Rediska.Utils
+﻿namespace Rediska.Utils
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
     internal sealed class PrefixedList<T> : IReadOnlyList<T>
     {
         private readonly IReadOnlyList<T> list;
