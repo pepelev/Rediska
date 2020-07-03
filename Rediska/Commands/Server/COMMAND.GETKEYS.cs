@@ -5,20 +5,8 @@
     using Protocol.Visitors;
     using Utils;
 
-    public sealed partial class COMMAND : Command<IReadOnlyList<CommandDescription>>
+    public sealed partial class COMMAND
     {
-        private static readonly PlainBulkString name = new PlainBulkString("COMMAND");
-        private static readonly PlainArray request = new PlainArray(name);
-
-        private static readonly ListVisitor<CommandDescription> responseStructure = new ListVisitor<CommandDescription>(
-            ArrayExpectation.Singleton,
-            CommandDescriptionVisitor.Singleton
-        );
-
-        public static COMMAND Singleton { get; } = new COMMAND();
-        public override DataType Request => request;
-        public override Visitor<IReadOnlyList<CommandDescription>> ResponseStructure => responseStructure;
-
         public sealed class GETKEYS : Command<IReadOnlyList<Key>>
         {
             private static readonly PlainBulkString subName = new PlainBulkString("GETKEYS");
