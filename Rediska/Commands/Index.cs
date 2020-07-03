@@ -46,6 +46,8 @@
         }
 
         public long Value { get; }
+        public bool IsFromStart => Value >= 0;
+        public bool IsFromEnd => !IsFromStart;
         public static implicit operator Index(long value) => new Index(value);
         public bool Equals(Index other) => Value == other.Value;
         public override bool Equals(object obj) => obj is Index other && Equals(other);

@@ -1,5 +1,7 @@
 ﻿namespace Rediska.Tests.Commands.Server
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using NUnit.Framework;
     using Rediska.Commands.Server;
@@ -16,9 +18,26 @@
         }
 
         [Test]
-        public async Task METHOD()
+        public async Task Print_All_Commands()
         {
             var commands = await connection.ExecuteAsync(COMMAND.Singleton).ConfigureAwait(false);
+            var descriptions = commands.OrderBy(command => command.Name, StringComparer.InvariantCultureIgnoreCase);
+            var nl = Environment.NewLine;
+            var result = string.Join(
+                nl + nl,
+                descriptions.Select(
+                    description => $"{description.Name}{nl}" +
+                                   $"{description.Aritry}{nl}" +
+                                   $"{description.Flags}{nl}" +
+                                   $"{description.FirstKeyPosition}{nl}" +
+                                   $"{description.LastKeyPosition}{nl}" +
+                                   $"{description.KeyStepCount}{nl}" +
+                                   $"{description.Categories}"
+                )
+            );
+
+            // todo approval
+            Console.WriteLine(result);
         }
     }
 }
