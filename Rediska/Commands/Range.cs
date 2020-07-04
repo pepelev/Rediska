@@ -31,7 +31,6 @@
         public static bool operator ==(Range left, Range right) => left.Equals(right);
         public static bool operator !=(Range left, Range right) => !left.Equals(right);
         public override string ToString() => $"[{StartInclusive}..{EndInclusive}]";
-
         public static Range Whole => new Range(Index.FromStart(0), Index.FromEnd(0));
     }
 }

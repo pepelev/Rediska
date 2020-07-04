@@ -6,6 +6,7 @@
     using FluentAssertions;
     using NUnit.Framework;
     using Rediska.Commands;
+    using Rediska.Commands.Connection;
 
     public sealed class PipeliningConnectionShould
     {

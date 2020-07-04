@@ -1,6 +1,6 @@
 ﻿namespace Rediska.Commands
 {
-    public struct AddResult
+    public readonly struct AddResult
     {
         public AddResult(long added)
         {

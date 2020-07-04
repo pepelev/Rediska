@@ -14,7 +14,7 @@
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(milliseconds),
-                    "Seconds count must be nonnegative"
+                    "Seconds count must be non-negative"
                 );
             }
 

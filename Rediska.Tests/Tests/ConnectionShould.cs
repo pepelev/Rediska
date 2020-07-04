@@ -5,6 +5,8 @@ using Rediska.Commands;
 
 namespace Rediska.Tests.Tests
 {
+    using Rediska.Commands.Connection;
+
     public sealed class ConnectionShould
     {
         private SimpleConnection sut;

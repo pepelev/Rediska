@@ -14,6 +14,8 @@ using Rediska.Protocol.Visitors;
 
 namespace Rediska.Tests
 {
+    using Rediska.Commands.Connection;
+
     public class TrashTests
     {
         [Test]

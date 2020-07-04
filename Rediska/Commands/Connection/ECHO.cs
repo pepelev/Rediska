@@ -1,11 +1,14 @@
-﻿using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-
-namespace Rediska.Commands
+﻿namespace Rediska.Commands.Connection
 {
+    using Protocol;
+    using Protocol.Visitors;
+
     public sealed class ECHO : Command<string>
     {
         private static readonly PlainBulkString name = new PlainBulkString("ECHO");
+
+        private static readonly Visitor<string> responseStructure = BulkStringExpectation.Singleton
+            .Then(bulk => bulk.ToString());
 
         private readonly string message;
 
@@ -19,7 +22,6 @@ namespace Rediska.Commands
             new PlainBulkString(message)
         );
 
-        public override Visitor<string> ResponseStructure =>
-            BulkStringExpectation.Singleton.Then(bulk => bulk.ToString());
+        public override Visitor<string> ResponseStructure => responseStructure;
     }
 }
