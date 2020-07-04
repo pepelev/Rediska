@@ -23,6 +23,7 @@
                 count.ToBulkString()
             );
 
+            // todo pass one as count
             public override Visitor<IReadOnlyList<BulkString>> ResponseStructure => CompositeVisitors.BulkStringList;
         }
     }
