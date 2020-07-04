@@ -22,15 +22,13 @@
             this.sources = sources;
         }
 
-        public override DataType Request => new PlainArray(
-            new ConcatList<DataType>(
-                new DataType[]
-                {
-                    name,
-                    destination.ToBulkString()
-                },
-                new KeyList(sources)
-            )
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new ConcatList<BulkString>(
+            new[]
+            {
+                name,
+                destination.ToBulkString()
+            },
+            new KeyList(sources)
         );
 
         public override Visitor<None> ResponseStructure => OkExpectation.Singleton;

@@ -8,19 +8,19 @@
 
     public sealed class PlainCommand : Command<DataType>
     {
-        private readonly IReadOnlyList<BulkString> segments;
+        private readonly IReadOnlyList<BulkString> arguments;
 
-        public PlainCommand(params BulkString[] segments)
-            : this(segments as IReadOnlyList<BulkString>)
+        public PlainCommand(params BulkString[] arguments)
+            : this(arguments as IReadOnlyList<BulkString>)
         {
         }
 
-        public PlainCommand(IReadOnlyList<BulkString> segments)
+        public PlainCommand(IReadOnlyList<BulkString> arguments)
         {
-            this.segments = segments;
+            this.arguments = arguments;
         }
 
-        public override DataType Request => new PlainArray(segments);
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => arguments;
         public override Visitor<DataType> ResponseStructure => Id.Singleton;
 
         public static PlainCommand Parse(string query)
