@@ -8,10 +8,10 @@
     {
         public abstract class By
         {
-            private static readonly PlainBulkString @by = new PlainBulkString("BY");
-            public abstract IEnumerable<BulkString> Query();
+            private static readonly PlainBulkString by = new PlainBulkString("BY");
             public static By Self { get; } = new BySelf();
             public static By Nothing { get; } = new ByNothing();
+            public abstract IEnumerable<BulkString> Arguments(BulkStringFactory factory);
 
             public sealed class Pattern : By
             {
@@ -22,10 +22,10 @@
                     this.pattern = pattern;
                 }
 
-                public override IEnumerable<BulkString> Query()
+                public override IEnumerable<BulkString> Arguments(BulkStringFactory factory)
                 {
-                    yield return @by;
-                    yield return new PlainBulkString(pattern);
+                    yield return by;
+                    yield return factory.Utf8(pattern);
                 }
             }
 
@@ -33,16 +33,17 @@
             {
                 private static readonly PlainBulkString nosort = new PlainBulkString("nosort");
 
-                public override IEnumerable<BulkString> Query()
+                public override IEnumerable<BulkString> Arguments(BulkStringFactory factory)
                 {
-                    yield return @by;
+                    yield return by;
                     yield return nosort;
                 }
             }
 
             private sealed class BySelf : By
             {
-                public override IEnumerable<BulkString> Query() => Enumerable.Empty<BulkString>();
+                public override IEnumerable<BulkString> Arguments(BulkStringFactory factory) =>
+                    Enumerable.Empty<BulkString>();
             }
         }
     }

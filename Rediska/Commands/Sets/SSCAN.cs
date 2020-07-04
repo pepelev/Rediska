@@ -22,7 +22,7 @@
         }
 
         public SSCAN(Key key, Cursor cursor, Match match)
-            : this(key, cursor, match, ScanCount.None)
+            : this(key, cursor, match, ScanCount.Default)
         {
         }
 
@@ -32,7 +32,7 @@
         }
 
         public SSCAN(Key key, Cursor cursor)
-            : this(key, cursor, Match.All, ScanCount.None)
+            : this(key, cursor, Match.All, ScanCount.Default)
         {
         }
 

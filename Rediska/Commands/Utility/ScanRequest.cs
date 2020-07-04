@@ -1,12 +1,11 @@
 ﻿namespace Rediska.Commands.Utility
 {
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using Protocol;
-    using Protocol.Outputs;
-    using Protocol.Visitors;
-    using Utils;
 
-    internal sealed class ScanRequest : DataType
+    internal sealed class ScanRequest : IEnumerable<BulkString>
     {
         private readonly IReadOnlyList<BulkString> prefix;
         private readonly Match match;
@@ -19,30 +18,7 @@
             this.count = count;
         }
 
-        private DataType Content => new PlainArray(
-            (match.Count, count.Count) switch
-            {
-                (0, 0) => prefix,
-                (0, _) => new ConcatList<DataType>(
-                    prefix,
-                    count
-                ),
-                (_, 0) => new ConcatList<DataType>(
-                    prefix,
-                    match
-                ),
-                _ =>
-                new ConcatList<DataType>(
-                    prefix,
-                    new ConcatList<DataType>(
-                        match,
-                        count
-                    )
-                )
-            }
-        );
-
-        public override T Accept<T>(Visitor<T> visitor) => Content.Accept(visitor);
-        public override void Write(Output output) => Content.Write(output);
+        public IEnumerator<BulkString> GetEnumerator() => prefix.Concat(match).Concat(count).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

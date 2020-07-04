@@ -1,9 +1,7 @@
 ﻿namespace Rediska.Commands.Keys
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -11,9 +9,9 @@
     public sealed partial class SORT : Command<IReadOnlyList<SORT.Item>>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SORT");
-        private static readonly PlainBulkString limitSegment = new PlainBulkString("LIMIT");
-        private static readonly PlainBulkString descendingSegment = new PlainBulkString("DESC");
-        private static readonly PlainBulkString alphabeticalSegment = new PlainBulkString("ALPHA");
+        private static readonly PlainBulkString limitArgument = new PlainBulkString("LIMIT");
+        private static readonly PlainBulkString descendingArgument = new PlainBulkString("DESC");
+        private static readonly PlainBulkString alphabeticalArgument = new PlainBulkString("ALPHA");
         private readonly Key key;
         private readonly By by;
         private readonly Limit? limit;
@@ -31,9 +29,33 @@
             this.mode = mode;
         }
 
-        public override DataType Request => new PlainArray(
-            Query().ToList()
-        );
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            yield return name;
+            yield return key.ToBulkString();
+            foreach (var argument in by.Arguments(factory))
+            {
+                yield return argument;
+            }
+
+            if (limit is { } value)
+            {
+                yield return limitArgument;
+                yield return factory.Create(value.Offset);
+                yield return factory.Create(value.Count);
+            }
+
+            foreach (var argument in select.Arguments(factory))
+            {
+                yield return argument;
+            }
+
+            if (order == Order.Descending)
+                yield return descendingArgument;
+
+            if (mode == Mode.Alphabetical)
+                yield return alphabeticalArgument;
+        }
 
         public override Visitor<IReadOnlyList<Item>> ResponseStructure => CompositeVisitors.BulkStringList
             .Then(
@@ -64,33 +86,5 @@
                     return (IReadOnlyList<Item>) result;
                 }
             );
-
-        private IEnumerable<BulkString> Query()
-        {
-            yield return name;
-            yield return key.ToBulkString();
-            foreach (var segment in by.Query())
-            {
-                yield return segment;
-            }
-
-            if (limit is {} value)
-            {
-                yield return limitSegment;
-                yield return value.Offset.ToBulkString();
-                yield return value.Count.ToBulkString();
-            }
-
-            foreach (var segment in select.Query())
-            {
-                yield return segment;
-            }
-
-            if (order == Order.Descending)
-                yield return descendingSegment;
-
-            if (mode == Mode.Alphabetical)
-                yield return alphabeticalSegment;
-        }
     }
 }

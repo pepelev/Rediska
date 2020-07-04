@@ -9,24 +9,6 @@
 
     public sealed class MIGRATE : Command<MIGRATE.Response>
     {
-        public enum DestinationKeyBehavior : byte
-        {
-            EnsureKeyExists = 0,
-            Replace = 1
-        }
-
-        public enum Response : byte
-        {
-            Success = 0,
-            KeysNotFound = 1
-        }
-
-        public enum SourceKeyBehavior : byte
-        {
-            Move = 0,
-            Copy = 1
-        }
-
         private static readonly PlainBulkString name = new PlainBulkString("MIGRATE");
         private static readonly PlainBulkString copySegment = new PlainBulkString("COPY");
         private static readonly PlainBulkString replaceSegment = new PlainBulkString("REPLACE");
@@ -92,10 +74,6 @@
             this.auth = auth;
         }
 
-        public override DataType Request => new PlainArray(
-            Query().ToList()
-        );
-
         public override Visitor<Response> ResponseStructure => SimpleStringExpectation.Singleton
             .Then(
                 response => response switch
@@ -106,17 +84,17 @@
                 }
             );
 
-        private IEnumerable<BulkString> Query()
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return name;
-            yield return new PlainBulkString(ipEndPoint.ToString());
-            yield return ipEndPoint.Port.ToBulkString();
+            yield return factory.Utf8(ipEndPoint.ToString());
+            yield return factory.Create(ipEndPoint.Port);
             yield return keys.Count == 1
                 ? keys[0].ToBulkString()
                 : emptyKeySegment;
 
-            yield return destinationDb.ToBulkString();
-            yield return timeout.ToBulkString();
+            yield return factory.Create(destinationDb.Value);
+            yield return factory.Create(timeout.Milliseconds);
             if (sourceKeyBehavior == SourceKeyBehavior.Copy)
             {
                 yield return copySegment;
@@ -127,9 +105,9 @@
                 yield return replaceSegment;
             }
 
-            foreach (var segment in auth.Query())
+            foreach (var argument in auth.Arguments())
             {
-                yield return segment;
+                yield return argument;
             }
 
             if (keys.Count > 1)
@@ -142,15 +120,34 @@
             }
         }
 
+        public enum DestinationKeyBehavior : byte
+        {
+            EnsureKeyExists = 0,
+            Replace = 1
+        }
+
+        public enum Response : byte
+        {
+            Success = 0,
+            KeysNotFound = 1
+        }
+
+        public enum SourceKeyBehavior : byte
+        {
+            Move = 0,
+            Copy = 1
+        }
+
+        // todo make normal auth
         public abstract class Auth
         {
-            public abstract IEnumerable<BulkString> Query();
+            public abstract IEnumerable<BulkString> Arguments();
         }
 
         public sealed class NoAuth : Auth
         {
             public static NoAuth Singleton { get; } = new NoAuth();
-            public override IEnumerable<BulkString> Query() => Enumerable.Empty<BulkString>();
+            public override IEnumerable<BulkString> Arguments() => Enumerable.Empty<BulkString>();
         }
     }
 }

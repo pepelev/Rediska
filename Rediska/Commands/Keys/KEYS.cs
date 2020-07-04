@@ -14,10 +14,11 @@
             this.pattern = pattern;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            new PlainBulkString(pattern)
-        );
+            factory.Utf8(pattern)
+        };
 
         public override Visitor<IReadOnlyList<Key>> ResponseStructure => CompositeVisitors.KeyList;
     }
