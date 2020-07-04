@@ -39,16 +39,17 @@
             this.members = members;
         }
 
-        public override DataType Request => new PlainArray(
-            new ConcatList<DataType>(
-                new DataType[]
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            return new ConcatList<BulkString>(
+                new[]
                 {
                     name,
                     key.ToBulkString()
                 },
                 new KeyList(members)
-            )
-        );
+            );
+        }
 
         public override Visitor<IReadOnlyList<Location?>> ResponseStructure => responseStructure;
     }

@@ -24,15 +24,13 @@
             this.members = members;
         }
 
-        public override DataType Request => new PlainArray(
-            new ConcatList<DataType>(
-                new[]
-                {
-                    name,
-                    key.ToBulkString()
-                },
-                new KeyList(members)
-            )
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new ConcatList<BulkString>(
+            new[]
+            {
+                name,
+                key.ToBulkString()
+            },
+            new KeyList(members)
         );
 
         public override Visitor<IReadOnlyList<(Key Member, Geohash Location)>> ResponseStructure => CompositeVisitors.BulkStringList
@@ -41,7 +39,7 @@
                     members,
                     new ProjectingReadOnlyList<BulkString, Geohash>(
                         response,
-                        @string => new Geohash(@string.ToBytes())
+                        bulkString => new Geohash(bulkString.ToBytes())
                     )
                 ) as IReadOnlyList<(Key Member, Geohash Location)>
             );

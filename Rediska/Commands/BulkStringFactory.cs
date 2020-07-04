@@ -1,0 +1,21 @@
+﻿namespace Rediska.Commands
+{
+    using Protocol;
+
+    public abstract class BulkStringFactory
+    {
+        public abstract BulkString Utf8(string content);
+        public abstract BulkString Create(byte[] content);
+        public abstract BulkString Create(double content);
+        public abstract BulkString Create(long content);
+        public static BulkStringFactory Plain { get; } = new PlainFactory();
+
+        private sealed class PlainFactory : BulkStringFactory
+        {
+            public override BulkString Utf8(string content) => new PlainBulkString(content);
+            public override BulkString Create(byte[] content) => new PlainBulkString(content);
+            public override BulkString Create(double content) => content.ToBulkString();
+            public override BulkString Create(long content) => content.ToBulkString();
+        }
+    }
+}

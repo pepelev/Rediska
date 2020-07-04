@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Geo
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -24,24 +25,12 @@
             this.unit = unit;
         }
 
-        public override DataType Request => unit == Unit.Meter
-            ? ShortRequest
-            : FullRequest;
-
-        public DataType ShortRequest => new PlainArray(
-            name,
-            key.ToBulkString(),
-            member.ToBulkString(),
-            anotherMember.ToBulkString()
-        );
-
-        public DataType FullRequest => new PlainArray(
-            name,
-            key.ToBulkString(),
-            member.ToBulkString(),
-            anotherMember.ToBulkString(),
-            unit.ToBulkString()
-        );
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            return unit == Unit.Meter
+                ? ShortRequest
+                : FullRequest;
+        }
 
         public override Visitor<Distance?> ResponseStructure => BulkStringExpectation.Singleton
             .Then(
@@ -51,5 +40,22 @@
                     null => default(Distance?)
                 }
             );
+
+        private BulkString[] ShortRequest => new[]
+        {
+            name,
+            key.ToBulkString(),
+            member.ToBulkString(),
+            anotherMember.ToBulkString()
+        };
+
+        private BulkString[] FullRequest => new[]
+        {
+            name,
+            key.ToBulkString(),
+            member.ToBulkString(),
+            anotherMember.ToBulkString(),
+            unit.ToBulkString()
+        };
     }
 }
