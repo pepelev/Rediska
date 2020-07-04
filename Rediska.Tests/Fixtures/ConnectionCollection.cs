@@ -1,4 +1,4 @@
-﻿namespace Rediska.Tests.Commands.Sets
+﻿namespace Rediska.Tests.Fixtures
 {
     using System.Collections;
     using System.Collections.Generic;

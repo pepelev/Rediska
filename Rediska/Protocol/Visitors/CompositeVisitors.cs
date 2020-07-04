@@ -18,6 +18,11 @@
             BulkStringExpectation.Singleton
         );
 
+        public static Visitor<IReadOnlyList<long>> IntegerList { get; } = new ListVisitor<long>(
+            ArrayExpectation.Singleton,
+            IntegerExpectation.Singleton
+        );
+
         public static Visitor<IReadOnlyList<string>> SimpleStringList { get; } = new ListVisitor<string>(
             ArrayExpectation.Singleton,
             SimpleStringExpectation.Singleton

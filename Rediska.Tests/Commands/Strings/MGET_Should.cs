@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+    using Fixtures;
     using FluentAssertions;
     using NUnit.Framework;
     using Protocol;

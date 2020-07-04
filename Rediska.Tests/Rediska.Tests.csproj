@@ -30,4 +30,8 @@
     <ProjectReference Include="..\Rediska\Rediska.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Fixtures\" />
+  </ItemGroup>
+
 </Project>

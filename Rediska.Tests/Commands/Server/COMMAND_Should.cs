@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using Fixtures;
     using NUnit.Framework;
     using Rediska.Commands.Server;
     using Sets;
