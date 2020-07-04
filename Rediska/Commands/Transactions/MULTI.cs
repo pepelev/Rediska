@@ -1,18 +1,15 @@
-﻿using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-using Rediska.Utils;
-
-namespace Rediska.Commands.Transactions
+﻿namespace Rediska.Commands.Transactions
 {
+    using System.Collections.Generic;
+    using Protocol;
+    using Protocol.Visitors;
+    using Utils;
+
     public sealed class MULTI : Command<None>
     {
-        private static readonly PlainArray request = new PlainArray(
-            new PlainBulkString("MULTI")
-        );
-
+        private static readonly BulkString[] request = {new PlainBulkString("MULTI")};
         public static MULTI Singleton { get; } = new MULTI();
-
-        public override DataType Request => request;
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => request;
         public override Visitor<None> ResponseStructure => OkExpectation.Singleton;
     }
 }
