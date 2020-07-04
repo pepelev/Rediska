@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-using Rediska.Utils;
-
-namespace Rediska.Commands.HyperLogLog
+﻿namespace Rediska.Commands.HyperLogLog
 {
+    using System.Collections.Generic;
+    using Protocol;
+    using Protocol.Visitors;
+    using Utils;
+
     public sealed class PFADD : Command<PFADD.Response>
     {
         public enum Response : byte
@@ -16,15 +16,15 @@ namespace Rediska.Commands.HyperLogLog
         private readonly Key key;
         private readonly IReadOnlyList<BulkString> values;
 
+        public PFADD(Key key, params BulkString[] values)
+            : this(key, values as IReadOnlyList<BulkString>)
+        {
+        }
+
         public PFADD(Key key, IReadOnlyList<BulkString> values)
         {
             this.key = key;
             this.values = values;
-        }
-
-        public PFADD(Key key, params BulkString[] values)
-            : this(key, values as IReadOnlyList<BulkString>)
-        {
         }
 
         public override DataType Request => new PlainArray(

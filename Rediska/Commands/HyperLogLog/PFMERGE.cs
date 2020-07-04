@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-using Rediska.Utils;
-
-namespace Rediska.Commands.HyperLogLog
+﻿namespace Rediska.Commands.HyperLogLog
 {
+    using System.Collections.Generic;
+    using Protocol;
+    using Protocol.Visitors;
+    using Utils;
+
     public sealed class PFMERGE : Command<None>
     {
         private static readonly PlainBulkString name = new PlainBulkString("PFMERGE");
-
         private readonly Key destination;
         private readonly IReadOnlyList<Key> sources;
 
