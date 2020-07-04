@@ -4,16 +4,16 @@
     using Protocol;
     using Protocol.Visitors;
 
-    public sealed class TTL : Command<TTL.Response>
+    public sealed class PTTL : Command<PTTL.Response>
     {
-        private static readonly PlainBulkString name = new PlainBulkString("TTL");
+        private static readonly PlainBulkString name = new PlainBulkString("PTTL");
 
         private static readonly Visitor<Response> responseStructure = IntegerExpectation.Singleton
             .Then(integer => new Response(integer));
 
         private readonly Key key;
 
-        public TTL(Key key)
+        public PTTL(Key key)
         {
             this.key = key;
         }
@@ -43,11 +43,11 @@
 
             public long Reply { get; }
 
-            public long Seconds => Status == TtlStatus.Ok
+            public long Milliseconds => Status == TtlStatus.Ok
                 ? Reply
                 : throw new InvalidOperationException(Status.ToString("G"));
 
-            public TimeSpan TimeSpan => new TimeSpan(Seconds * TimeSpan.TicksPerSecond);
+            public TimeSpan TimeSpan => new TimeSpan(Milliseconds * TimeSpan.TicksPerMillisecond);
 
             public TtlStatus Status => Reply switch
             {

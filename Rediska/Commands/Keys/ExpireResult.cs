@@ -1,8 +1,8 @@
 ﻿namespace Rediska.Commands.Keys
 {
-    public enum ExpireResult : byte
+    public enum ExpireResponse : byte
     {
-        KeyNotExists,
-        TimeoutSet
+        KeyNotExists = 0,
+        TimeoutSet = 1
     }
 }

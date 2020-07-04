@@ -10,7 +10,7 @@
 
     public static class CompositeVisitors
     {
-        public static Visitor<ExpireResult> ExpireResult { get; } =
+        public static Visitor<ExpireResponse> ExpireResult { get; } =
             IntegerExpectation.Singleton.Then(ParseExpireResult);
 
         public static Visitor<IReadOnlyList<BulkString>> BulkStringList { get; } = new ListVisitor<BulkString>(
@@ -46,14 +46,14 @@
                 )
             );
 
-        private static ExpireResult ParseExpireResult(long integer)
+        private static ExpireResponse ParseExpireResult(long integer)
         {
             switch (integer)
             {
                 case 0:
-                    return Commands.Keys.ExpireResult.KeyNotExists;
+                    return Commands.Keys.ExpireResponse.KeyNotExists;
                 case 1:
-                    return Commands.Keys.ExpireResult.TimeoutSet;
+                    return Commands.Keys.ExpireResponse.TimeoutSet;
                 default:
                     throw new Exception($"Expected 0 or 1, but '{integer}' received");
             }

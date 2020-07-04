@@ -13,7 +13,7 @@
 
         public ulong High { get; }
         public ulong Low { get; }
-        public ulong UnixMillisecondsTimestamp => High;
+        public UnixMillisecondsTimestamp Timestamp => new UnixMillisecondsTimestamp(checked((long)High));
         public ulong SequenceNumber => Low;
 
         [Pure]

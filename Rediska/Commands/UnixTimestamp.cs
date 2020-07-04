@@ -6,7 +6,16 @@
 
     public readonly struct UnixTimestamp : IEquatable<UnixTimestamp>, IComparable<UnixTimestamp>
     {
-        private static readonly DateTime epochStart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified);
+        internal static DateTime EpochStart => new DateTime(
+            1970,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            DateTimeKind.Unspecified
+        );
 
         public UnixTimestamp(long seconds)
         {
@@ -25,7 +34,7 @@
         public DateTime ToDateTime(DateTimeKind kind)
         {
             var ticksSinceEpochStart = TimeSpan.TicksPerSecond * Seconds;
-            var ticks = epochStart.Ticks + ticksSinceEpochStart;
+            var ticks = EpochStart.Ticks + ticksSinceEpochStart;
             return new DateTime(ticks, kind);
         }
 

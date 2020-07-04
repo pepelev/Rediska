@@ -8,25 +8,25 @@
     {
         public enum Result : byte
         {
-            KeyNotMoved,
-            KeyMoved
+            KeyMoved = 0,
+            KeyNotMoved = 1,
         }
 
         private static readonly PlainBulkString name = new PlainBulkString("MOVE");
         private static readonly Visitor<Result> responseStructure = IntegerExpectation.Singleton.Then(Parse);
         private readonly Key key;
-        private readonly long db;
+        private readonly DatabaseNumber destinationDb;
 
-        public MOVE(Key key, long db)
+        public MOVE(Key key, DatabaseNumber destinationDb)
         {
             this.key = key;
-            this.db = db;
+            this.destinationDb = destinationDb;
         }
 
         public override DataType Request => new PlainArray(
             name,
             key.ToBulkString(),
-            db.ToBulkString()
+            destinationDb.ToBulkString()
         );
 
         public override Visitor<Result> ResponseStructure => responseStructure;

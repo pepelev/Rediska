@@ -3,7 +3,7 @@
     using Protocol;
     using Protocol.Visitors;
 
-    public sealed class EXPIRE : Command<ExpireResult>
+    public sealed class EXPIRE : Command<ExpireResponse>
     {
         private static readonly PlainBulkString name = new PlainBulkString("EXPIRE");
         private readonly Key key;
@@ -21,6 +21,6 @@
             seconds.ToBulkString()
         );
 
-        public override Visitor<ExpireResult> ResponseStructure => CompositeVisitors.ExpireResult;
+        public override Visitor<ExpireResponse> ResponseStructure => CompositeVisitors.ExpireResult;
     }
 }

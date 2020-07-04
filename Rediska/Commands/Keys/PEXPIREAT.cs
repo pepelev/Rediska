@@ -3,13 +3,13 @@
     using Protocol;
     using Protocol.Visitors;
 
-    public sealed class EXPIREAT : Command<ExpireResponse>
+    public sealed class PEXPIREAT : Command<ExpireResponse>
     {
-        private static readonly PlainBulkString name = new PlainBulkString("EXPIREAT");
+        private static readonly PlainBulkString name = new PlainBulkString("PEXPIREAT");
         private readonly Key key;
-        private readonly UnixTimestamp timestamp;
+        private readonly UnixMillisecondsTimestamp timestamp;
 
-        public EXPIREAT(Key key, UnixTimestamp timestamp)
+        public PEXPIREAT(Key key, UnixMillisecondsTimestamp timestamp)
         {
             this.key = key;
             this.timestamp = timestamp;
