@@ -29,13 +29,11 @@
                 this.hashes = hashes;
             }
 
-            public override DataType Request => new PlainArray(
-                new ConcatList<DataType>(
-                    prefix,
-                    new ProjectingReadOnlyList<Sha1, DataType>(
-                        hashes,
-                        sha1 => sha1.ToBulkString()
-                    )
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new ConcatList<BulkString>(
+                prefix,
+                new ProjectingReadOnlyList<Sha1, BulkString>(
+                    hashes,
+                    sha1 => factory.Create(sha1)
                 )
             );
 
