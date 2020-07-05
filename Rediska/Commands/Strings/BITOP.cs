@@ -29,7 +29,7 @@
                 operation != BinaryOperation.Or &&
                 operation != BinaryOperation.Xor)
             {
-                throw new ArgumentException("Must be And, Or, or Xor", nameof(operation));
+                throw new ArgumentException("Must be And, Or or Xor", nameof(operation));
             }
 
             this.operation = operation;
@@ -37,30 +37,25 @@
             this.keys = keys;
         }
 
-        public override DataType Request => new PlainArray(
-            new ConcatList<DataType>(
-                new[]
-                {
-                    name,
-                    Operation(),
-                    destination.ToBulkString()
-                },
-                new KeyList(keys)
-            )
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new ConcatList<BulkString>(
+            new[]
+            {
+                name,
+                Operation,
+                destination.ToBulkString(factory)
+            },
+            new KeyList(factory, keys)
         );
 
         public override Visitor<Response> ResponseStructure => responseStructure;
 
-        private BulkString Operation()
+        private BulkString Operation => operation switch
         {
-            return operation switch
-            {
-                BinaryOperation.And => and,
-                BinaryOperation.Or => or,
-                BinaryOperation.Xor => xor,
-                _ => throw new Exception("There is a bug in constructor")
-            };
-        }
+            BinaryOperation.And => and,
+            BinaryOperation.Or => or,
+            BinaryOperation.Xor => xor,
+            _ => throw new Exception("There is a bug in constructor")
+        };
 
         public readonly struct Response
         {
@@ -83,12 +78,13 @@
                 this.argument = argument;
             }
 
-            public override DataType Request => new PlainArray(
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+            {
                 name,
                 not,
-                destination.ToBulkString(),
-                argument.ToBulkString()
-            );
+                destination.ToBulkString(factory),
+                argument.ToBulkString(factory)
+            };
 
             public override Visitor<Response> ResponseStructure => responseStructure;
         }

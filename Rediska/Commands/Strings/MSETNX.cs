@@ -2,18 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
 
     public sealed class MSETNX : Command<MSETNX.Response>
     {
-        public enum Response : byte
-        {
-            NotAllKeysSet = 0,
-            AllKeysSet = 1
-        }
-
         private static readonly PlainBulkString name = new PlainBulkString("MSETNX");
         private readonly IReadOnlyList<(Key Key, BulkString Value)> pairs;
 
@@ -30,9 +23,15 @@
             this.pairs = pairs;
         }
 
-        public override DataType Request => new PlainArray(
-            Query().ToList()
-        );
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            yield return name;
+            foreach (var (key, value) in pairs)
+            {
+                yield return key.ToBulkString(factory);
+                yield return value;
+            }
+        }
 
         public override Visitor<Response> ResponseStructure => IntegerExpectation.Singleton.Then(
             response => response switch
@@ -43,14 +42,10 @@
             }
         );
 
-        public IEnumerable<BulkString> Query()
+        public enum Response : byte
         {
-            yield return name;
-            foreach (var (key, value) in pairs)
-            {
-                yield return key.ToBulkString();
-                yield return value;
-            }
+            NotAllKeysSet = 0,
+            AllKeysSet = 1
         }
     }
 }

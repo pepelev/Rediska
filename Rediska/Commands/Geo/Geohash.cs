@@ -28,9 +28,9 @@
             new[]
             {
                 name,
-                key.ToBulkString()
+                key.ToBulkString(factory)
             },
-            new KeyList(members)
+            new KeyList(factory, members)
         );
 
         public override Visitor<IReadOnlyList<(Key Member, Geohash Location)>> ResponseStructure => CompositeVisitors.BulkStringList

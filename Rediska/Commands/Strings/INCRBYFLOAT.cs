@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Strings
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -19,11 +20,12 @@
             this.increment = increment;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            key.ToBulkString(),
-            increment.ToBulkString()
-        );
+            key.ToBulkString(factory),
+            factory.Create(increment)
+        };
 
         public override Visitor<Response> ResponseStructure => responseStructure;
 

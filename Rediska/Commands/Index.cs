@@ -55,6 +55,6 @@
         public static bool operator ==(Index left, Index right) => left.Equals(right);
         public static bool operator !=(Index left, Index right) => !left.Equals(right);
         public override string ToString() => Value.ToString(CultureInfo.InvariantCulture);
-        public BulkString ToBulkString() => Value.ToBulkString();
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Value);
     }
 }

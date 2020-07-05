@@ -7,12 +7,6 @@
 
     public sealed class SET : Command<SET.Response>
     {
-        public enum Response : byte
-        {
-            OperationPerformed = 0,
-            OperationNotPerformedDueToCondition = 1
-        }
-
         private static readonly PlainBulkString name = new PlainBulkString("SET");
         private static readonly PlainBulkString expire = new PlainBulkString("EX");
         private static readonly PlainBulkString expireMilliseconds = new PlainBulkString("PX");
@@ -36,20 +30,14 @@
             this.condition = condition;
         }
 
-        public override DataType Request => new PlainArray(
-            Query().ToList()
-        );
-
-        public override Visitor<Response> ResponseStructure => ResponseVisitor.Singleton;
-
-        private IEnumerable<BulkString> Query()
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return name;
-            yield return key.ToBulkString();
+            yield return key.ToBulkString(factory);
             yield return value;
-            foreach (var segment in expiration.Query())
+            foreach (var argument in expiration.Arguments(factory))
             {
-                yield return segment;
+                yield return argument;
             }
 
             switch (condition)
@@ -64,15 +52,25 @@
             }
         }
 
+        public override Visitor<Response> ResponseStructure => ResponseVisitor.Singleton;
+
+        public enum Response : byte
+        {
+            OperationPerformed = 0,
+            OperationNotPerformedDueToCondition = 1
+        }
+
         public abstract class Expiration
         {
-            public abstract IEnumerable<BulkString> Query();
+            public abstract IEnumerable<BulkString> Arguments(BulkStringFactory factory);
         }
 
         public sealed class None : Expiration
         {
             public static None Singleton { get; } = new None();
-            public override IEnumerable<BulkString> Query() => Enumerable.Empty<BulkString>();
+
+            public override IEnumerable<BulkString> Arguments(BulkStringFactory factory) =>
+                Enumerable.Empty<BulkString>();
         }
 
         public sealed class Seconds : Expiration
@@ -84,10 +82,10 @@
                 this.value = value;
             }
 
-            public override IEnumerable<BulkString> Query()
+            public override IEnumerable<BulkString> Arguments(BulkStringFactory factory)
             {
                 yield return expire;
-                yield return value.ToBulkString();
+                yield return factory.Create(value);
             }
         }
 
@@ -100,10 +98,10 @@
                 this.value = value;
             }
 
-            public override IEnumerable<BulkString> Query()
+            public override IEnumerable<BulkString> Arguments(BulkStringFactory factory)
             {
                 yield return expireMilliseconds;
-                yield return value.ToBulkString();
+                yield return factory.Create(value);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Strings
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -15,12 +16,13 @@
             this.range = range;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            key.ToBulkString(),
-            range.StartInclusive.ToBulkString(),
-            range.EndInclusive.ToBulkString()
-        );
+            key.ToBulkString(factory),
+            range.StartInclusive.ToBulkString(factory),
+            range.EndInclusive.ToBulkString(factory)
+        };
 
         public override Visitor<BulkString> ResponseStructure => BulkStringExpectation.Singleton;
     }

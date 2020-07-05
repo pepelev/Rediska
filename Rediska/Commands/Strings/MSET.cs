@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -25,20 +24,16 @@
             this.pairs = pairs;
         }
 
-        public override DataType Request => new PlainArray(
-            Query().ToList()
-        );
-
-        public override Visitor<None> ResponseStructure => OkExpectation.Singleton;
-
-        public IEnumerable<BulkString> Query()
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return name;
             foreach (var (key, value) in pairs)
             {
-                yield return key.ToBulkString();
+                yield return key.ToBulkString(factory);
                 yield return value;
             }
         }
+
+        public override Visitor<None> ResponseStructure => OkExpectation.Singleton;
     }
 }

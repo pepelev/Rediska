@@ -31,8 +31,7 @@
             };
         }
 
-        public BulkString ToBulkString() => new PlainBulkString(ToString());
-
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Utf8(ToString());
         public static Offset Bits(long count) => new Offset(OffsetUnit.Bit, count);
         public static Offset Integers(long count) => new Offset(OffsetUnit.Integer, count);
         public static Offset Zero => Bits(0);
