@@ -15,7 +15,7 @@
                 this.name = name;
             }
 
-            public bool Equals(Flag other) => equality.Equals(Name, (string) other.Name);
+            public bool Equals(Flag other) => equality.Equals(Name, other.Name);
             public override bool Equals(object obj) => obj is Flag other && Equals(other);
             public override int GetHashCode() => equality.GetHashCode(Name);
             public static bool operator ==(Flag left, Flag right) => left.Equals(right);

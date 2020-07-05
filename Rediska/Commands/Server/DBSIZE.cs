@@ -1,21 +1,19 @@
 ﻿namespace Rediska.Commands.Server
 {
     using System;
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
-    using Array = Protocol.Array;
 
     public sealed class DBSIZE : Command<DBSIZE.Response>
     {
-        private static readonly Array request = new PlainArray(
-            new PlainBulkString("DBSIZE")
-        );
+        private static readonly BulkString[] request = {new PlainBulkString("DBSIZE")};
 
         private static readonly Visitor<Response> responseStructure = IntegerExpectation.Singleton
             .Then(numberOfKeysInDatabase => new Response(numberOfKeysInDatabase));
 
         public static DBSIZE Singleton { get; } = new DBSIZE();
-        public override DataType Request => request;
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => request;
         public override Visitor<Response> ResponseStructure => responseStructure;
 
         public readonly struct Response
@@ -35,6 +33,7 @@
             }
 
             public long NumberOfKeysInDatabase { get; }
+            public override string ToString() => $"{nameof(NumberOfKeysInDatabase)}: {NumberOfKeysInDatabase}";
         }
     }
 }

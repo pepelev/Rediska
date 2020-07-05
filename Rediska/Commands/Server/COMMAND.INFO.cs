@@ -11,6 +11,7 @@
         public sealed class INFO : Command<IReadOnlyList<CommandDescription>>
         {
             private static readonly PlainBulkString subName = new PlainBulkString("INFO");
+            private static readonly PlainBulkString[] prefix = {name, subName};
             private readonly IReadOnlyList<BulkString> commandNames;
 
             public INFO(params BulkString[] commandNames)
@@ -26,11 +27,9 @@
                 this.commandNames = commandNames;
             }
 
-            public override DataType Request => new PlainArray(
-                new ConcatList<DataType>(
-                    new[] {name, subName},
-                    commandNames
-                )
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new ConcatList<BulkString>(
+                prefix,
+                commandNames
             );
 
             public override Visitor<IReadOnlyList<CommandDescription>> ResponseStructure => responseStructure;

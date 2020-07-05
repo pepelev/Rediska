@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Server
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -9,17 +10,17 @@
         public sealed class REPLY : Command<None>
         {
             private static readonly PlainBulkString subName = new PlainBulkString("REPLY");
-            private readonly BulkString argument;
-
-            public REPLY(BulkString argument)
-            {
-                this.argument = argument;
-            }
-
             public static REPLY ON { get; } = new REPLY("ON");
             public static REPLY OFF { get; } = new REPLY("OFF");
             public static REPLY SKIP { get; } = new REPLY("SKIP");
-            public override DataType Request => new PlainArray(name, subName, argument);
+            private readonly BulkString[] request;
+
+            public REPLY(BulkString argument)
+            {
+                request = new[] {name, subName, argument};
+            }
+
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => request;
             public override Visitor<None> ResponseStructure => OkExpectation.Singleton;
         }
     }
