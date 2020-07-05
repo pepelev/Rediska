@@ -17,13 +17,13 @@
                 this.count = count;
             }
 
-            public override DataType Request => new PlainArray(
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+            {
                 name,
-                key.ToBulkString(),
-                count.ToBulkString()
-            );
+                key.ToBulkString(factory),
+                count.ToBulkString(factory)
+            };
 
-            // todo pass one as count
             public override Visitor<IReadOnlyList<BulkString>> ResponseStructure => CompositeVisitors.BulkStringList;
         }
     }

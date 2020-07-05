@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Sets
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -17,12 +18,13 @@
             this.member = member;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            source.ToBulkString(),
-            destination.ToBulkString(),
+            source.ToBulkString(factory),
+            destination.ToBulkString(factory),
             member
-        );
+        };
 
         public override Visitor<long> ResponseStructure => IntegerExpectation.Singleton;
     }

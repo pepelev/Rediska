@@ -38,10 +38,10 @@
 
         public override DataType Request => new ScanRequest(Prefix, match, count);
 
-        private IReadOnlyList<BulkString> Prefix => new[]
+        private IReadOnlyList<BulkString> Prefix(BulkStringFactory factory) => new[]
         {
             name,
-            key.ToBulkString(),
+            key.ToBulkString(factory),
             cursor.ToBulkString()
         };
 

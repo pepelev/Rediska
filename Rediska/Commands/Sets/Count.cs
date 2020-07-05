@@ -1,4 +1,4 @@
-﻿namespace Rediska.Commands
+﻿namespace Rediska.Commands.Sets
 {
     using System;
     using System.Globalization;
@@ -63,6 +63,6 @@
         }
 
         public override string ToString() => Value.ToString(CultureInfo.InvariantCulture);
-        public BulkString ToBulkString() => Value.ToBulkString();
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Value);
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace Rediska.Commands.Sets
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
-    using Utility;
 
     public sealed class SSCAN : Command<ScanResult<BulkString>>
     {
@@ -36,15 +36,20 @@
         {
         }
 
-        public override DataType Request => new ScanRequest(Prefix, match, count);
-
-        private IReadOnlyList<BulkString> Prefix => new[]
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
-            name,
-            key.ToBulkString(),
-            cursor.ToBulkString()
-        };
+            return Prefix(factory)
+                .Concat(match.Arguments(factory))
+                .Concat(count.Arguments(factory));
+        }
 
         public override Visitor<ScanResult<BulkString>> ResponseStructure => ScanResultVisitor.BulkStringList;
+
+        private IEnumerable<BulkString> Prefix(BulkStringFactory factory) => new[]
+        {
+            name,
+            key.ToBulkString(factory),
+            cursor.ToBulkString()
+        };
     }
 }

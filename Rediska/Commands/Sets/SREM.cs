@@ -22,15 +22,13 @@
             this.members = members;
         }
 
-        public override DataType Request => new PlainArray(
-            new ConcatList<DataType>(
-                new DataType[]
-                {
-                    name,
-                    key.ToBulkString()
-                },
-                members
-            )
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new ConcatList<BulkString>(
+            new[]
+            {
+                name,
+                key.ToBulkString(factory)
+            },
+            members
         );
 
         public override Visitor<long> ResponseStructure => IntegerExpectation.Singleton;

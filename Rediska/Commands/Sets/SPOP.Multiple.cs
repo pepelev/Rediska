@@ -1,7 +1,7 @@
 ﻿namespace Rediska.Commands.Sets
 {
+    using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using Protocol;
     using Protocol.Visitors;
 
@@ -14,15 +14,19 @@
 
             public Multiple(Key key, long count)
             {
+                if (count < 1)
+                    throw new ArgumentOutOfRangeException(nameof(count), count, "Must be positive");
+
                 this.key = key;
                 this.count = count;
             }
 
-            public override DataType Request => new PlainArray(
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+            {
                 name,
-                key.ToBulkString(),
-                new PlainBulkString(count.ToString(CultureInfo.InvariantCulture))
-            );
+                key.ToBulkString(factory),
+                factory.Create(count)
+            };
 
             public override Visitor<IReadOnlyList<BulkString>> ResponseStructure => CompositeVisitors.BulkStringList;
         }
