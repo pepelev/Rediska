@@ -17,7 +17,6 @@
             &lt;HasAttribute Name="System.Runtime.InteropServices.ComImport" /&gt;&#xD;
           &lt;/Or&gt;&#xD;
         &lt;/And&gt;&#xD;
-        &lt;Kind Is="Struct" /&gt;&#xD;
         &lt;HasAttribute Name="JetBrains.Annotations.NoReorderAttribute" /&gt;&#xD;
         &lt;HasAttribute Name="JetBrains.Annotations.NoReorder" /&gt;&#xD;
       &lt;/Or&gt;&#xD;
