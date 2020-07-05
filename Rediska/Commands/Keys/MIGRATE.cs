@@ -74,16 +74,6 @@
             this.auth = auth;
         }
 
-        public override Visitor<Response> ResponseStructure => SimpleStringExpectation.Singleton
-            .Then(
-                response => response switch
-                {
-                    "OK" => Response.Success,
-                    "NOKEY" => Response.KeysNotFound,
-                    _ => throw new ArgumentException("Must be either OK or NOKEY", nameof(response))
-                }
-            );
-
         public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return name;
@@ -119,6 +109,16 @@
                 }
             }
         }
+
+        public override Visitor<Response> ResponseStructure => SimpleStringExpectation.Singleton
+            .Then(
+                response => response switch
+                {
+                    "OK" => Response.Success,
+                    "NOKEY" => Response.KeysNotFound,
+                    _ => throw new ArgumentException("Must be either OK or NOKEY", nameof(response))
+                }
+            );
 
         public enum DestinationKeyBehavior : byte
         {

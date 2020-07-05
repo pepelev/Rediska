@@ -31,6 +31,16 @@
             Seconds = seconds;
         }
 
+        public long Seconds { get; }
+        public int CompareTo(UnixTimestamp other) => Seconds.CompareTo(other.Seconds);
+        public bool Equals(UnixTimestamp other) => Seconds == other.Seconds;
+        public static bool operator ==(UnixTimestamp left, UnixTimestamp right) => left.Equals(right);
+        public static bool operator >(UnixTimestamp left, UnixTimestamp right) => left.CompareTo(right) > 0;
+        public static bool operator >=(UnixTimestamp left, UnixTimestamp right) => left.CompareTo(right) >= 0;
+        public static bool operator !=(UnixTimestamp left, UnixTimestamp right) => !left.Equals(right);
+        public static bool operator <(UnixTimestamp left, UnixTimestamp right) => left.CompareTo(right) < 0;
+        public static bool operator <=(UnixTimestamp left, UnixTimestamp right) => left.CompareTo(right) <= 0;
+
         public DateTime ToDateTime(DateTimeKind kind)
         {
             var ticksSinceEpochStart = TimeSpan.TicksPerSecond * Seconds;
@@ -46,16 +56,7 @@
             return dateTime.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
         }
 
-        public long Seconds { get; }
-        public bool Equals(UnixTimestamp other) => Seconds == other.Seconds;
         public override bool Equals(object obj) => obj is UnixTimestamp other && Equals(other);
         public override int GetHashCode() => Seconds.GetHashCode();
-        public int CompareTo(UnixTimestamp other) => Seconds.CompareTo(other.Seconds);
-        public static bool operator ==(UnixTimestamp left, UnixTimestamp right) => left.Equals(right);
-        public static bool operator !=(UnixTimestamp left, UnixTimestamp right) => !left.Equals(right);
-        public static bool operator <(UnixTimestamp left, UnixTimestamp right) => left.CompareTo(right) < 0;
-        public static bool operator >(UnixTimestamp left, UnixTimestamp right) => left.CompareTo(right) > 0;
-        public static bool operator <=(UnixTimestamp left, UnixTimestamp right) => left.CompareTo(right) <= 0;
-        public static bool operator >=(UnixTimestamp left, UnixTimestamp right) => left.CompareTo(right) >= 0;
     }
 }

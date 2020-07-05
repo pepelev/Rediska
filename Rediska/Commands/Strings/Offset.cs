@@ -6,6 +6,8 @@
 
     public readonly struct Offset
     {
+        public static Offset Zero => Bits(0);
+
         public Offset(OffsetUnit unit, long count)
         {
             if (unit != OffsetUnit.Bit && unit != OffsetUnit.Integer)
@@ -34,6 +36,5 @@
         public BulkString ToBulkString(BulkStringFactory factory) => factory.Utf8(ToString());
         public static Offset Bits(long count) => new Offset(OffsetUnit.Bit, count);
         public static Offset Integers(long count) => new Offset(OffsetUnit.Integer, count);
-        public static Offset Zero => Bits(0);
     }
 }

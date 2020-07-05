@@ -5,12 +5,12 @@
 
     public abstract class BulkStringFactory
     {
+        public static BulkStringFactory Plain { get; } = new PlainFactory();
         public abstract BulkString Utf8(string content);
         public abstract BulkString Create(byte[] content);
         public abstract BulkString Create(double content);
         public abstract BulkString Create(long content);
         public abstract BulkString Create(in Sha1 content);
-        public static BulkStringFactory Plain { get; } = new PlainFactory();
 
         private sealed class PlainFactory : BulkStringFactory
         {

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Rediska.Protocol;
-using Rediska.Utils;
-
-namespace Rediska.Commands
+﻿namespace Rediska.Commands
 {
+    using System.Collections.Generic;
     using System.Linq;
+    using Protocol;
 
     public abstract class Match
     {
@@ -23,7 +19,6 @@ namespace Rediska.Commands
         private sealed class PatternMatch : Match
         {
             private static readonly PlainBulkString match = new PlainBulkString("MATCH");
-
             private readonly string pattern;
 
             public PatternMatch(string pattern)

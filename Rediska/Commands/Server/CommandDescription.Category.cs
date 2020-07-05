@@ -7,20 +7,6 @@
         public readonly struct Category : IEquatable<Category>
         {
             private static readonly StringComparer equality = StringComparer.CurrentCultureIgnoreCase;
-            private readonly string name;
-            public string Name => name ?? "";
-
-            public Category(string name)
-            {
-                this.name = name;
-            }
-
-            public override string ToString() => $"@{Name}";
-            public bool Equals(Category other) => equality.Equals(Name, other.Name);
-            public override bool Equals(object obj) => obj is Category other && Equals(other);
-            public override int GetHashCode() => equality.GetHashCode(Name);
-            public static bool operator ==(Category left, Category right) => left.Equals(right);
-            public static bool operator !=(Category left, Category right) => !left.Equals(right);
             public static Category Admin => new Category("admin");
             public static Category Bitmap => new Category("bitmap");
             public static Category Blocking => new Category("blocking");
@@ -42,6 +28,20 @@
             public static Category String => new Category("string");
             public static Category Transaction => new Category("transaction");
             public static Category Write => new Category("write");
+            private readonly string name;
+
+            public Category(string name)
+            {
+                this.name = name;
+            }
+
+            public string Name => name ?? "";
+            public bool Equals(Category other) => equality.Equals(Name, other.Name);
+            public static bool operator ==(Category left, Category right) => left.Equals(right);
+            public static bool operator !=(Category left, Category right) => !left.Equals(right);
+            public override string ToString() => $"@{Name}";
+            public override bool Equals(object obj) => obj is Category other && Equals(other);
+            public override int GetHashCode() => equality.GetHashCode(Name);
         }
     }
 }

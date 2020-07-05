@@ -18,6 +18,9 @@
                 : ArityMode.MinimumArgumentCount;
 
             public long Count => Math.Abs(RawValue);
+            public bool Equals(ArityDescription other) => RawValue == other.RawValue;
+            public static bool operator ==(ArityDescription left, ArityDescription right) => left.Equals(right);
+            public static bool operator !=(ArityDescription left, ArityDescription right) => !left.Equals(right);
 
             public override string ToString() => Mode switch
             {
@@ -25,11 +28,8 @@
                 _ => $"Minimum {Count}"
             };
 
-            public bool Equals(ArityDescription other) => RawValue == other.RawValue;
             public override bool Equals(object obj) => obj is ArityDescription other && Equals(other);
             public override int GetHashCode() => RawValue.GetHashCode();
-            public static bool operator ==(ArityDescription left, ArityDescription right) => left.Equals(right);
-            public static bool operator !=(ArityDescription left, ArityDescription right) => !left.Equals(right);
         }
     }
 }

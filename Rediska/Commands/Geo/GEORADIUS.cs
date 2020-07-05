@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -112,9 +111,6 @@
             this.sorting = sorting;
         }
 
-        public override Visitor<IReadOnlyList<T>> ResponseStructure => ArrayExpectation.Singleton
-            .Then(response => new ProjectingReadOnlyList<DataType, T>(response, format.Parse) as IReadOnlyList<T>);
-
         public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return GEORADIUS.Name;
@@ -136,5 +132,8 @@
             else if (sorting == Sorting.DescendingByDistance)
                 yield return GEORADIUS.Descending;
         }
+
+        public override Visitor<IReadOnlyList<T>> ResponseStructure => ArrayExpectation.Singleton
+            .Then(response => new ProjectingReadOnlyList<DataType, T>(response, format.Parse) as IReadOnlyList<T>);
     }
 }

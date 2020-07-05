@@ -7,20 +7,6 @@
         public readonly struct Flag : IEquatable<Flag>
         {
             private static readonly StringComparer equality = StringComparer.CurrentCultureIgnoreCase;
-            private readonly string name;
-            private string Name => name ?? "";
-
-            public Flag(string name)
-            {
-                this.name = name;
-            }
-
-            public bool Equals(Flag other) => equality.Equals(Name, other.Name);
-            public override bool Equals(object obj) => obj is Flag other && Equals(other);
-            public override int GetHashCode() => equality.GetHashCode(Name);
-            public static bool operator ==(Flag left, Flag right) => left.Equals(right);
-            public static bool operator !=(Flag left, Flag right) => !left.Equals(right);
-            public override string ToString() => Name;
             public static Flag Admin => new Flag("admin");
             public static Flag Asking => new Flag("asking");
             public static Flag DenyOutOfMemory => new Flag("denyoom");
@@ -37,6 +23,20 @@
             public static Flag SortForScript => new Flag("sort_for_script");
             public static Flag Stale => new Flag("stale");
             public static Flag Write => new Flag("write");
+            private readonly string name;
+
+            public Flag(string name)
+            {
+                this.name = name;
+            }
+
+            private string Name => name ?? "";
+            public bool Equals(Flag other) => equality.Equals(Name, other.Name);
+            public static bool operator ==(Flag left, Flag right) => left.Equals(right);
+            public static bool operator !=(Flag left, Flag right) => !left.Equals(right);
+            public override bool Equals(object obj) => obj is Flag other && Equals(other);
+            public override int GetHashCode() => equality.GetHashCode(Name);
+            public override string ToString() => Name;
         }
     }
 }

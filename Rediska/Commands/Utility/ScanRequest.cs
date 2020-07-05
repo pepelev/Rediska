@@ -2,7 +2,6 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
     using Protocol;
 
     internal sealed class ScanRequest : IEnumerable<BulkString>
