@@ -18,12 +18,13 @@
             this.stop = stop;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            key.ToBulkString(),
-            start.ToBulkString(),
-            stop.ToBulkString()
-        );
+            key.ToBulkString(factory),
+            start.ToBulkString(factory),
+            stop.ToBulkString(factory)
+        };
 
         public override Visitor<IReadOnlyList<BulkString>> ResponseStructure => CompositeVisitors.BulkStringList;
     }

@@ -1,25 +1,13 @@
 ﻿namespace Rediska.Commands.Lists
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using Protocol;
     using Protocol.Visitors;
 
     public sealed class LINSERT : Command<LINSERT.Result>
     {
-        public enum Status : byte
-        {
-            PivotNotFound,
-            ListIsEmpty,
-            Ok
-        }
-
-        public enum Where : byte
-        {
-            BEFORE,
-            AFTER
-        }
-
         private static readonly PlainBulkString name = new PlainBulkString("LINSERT");
         private static readonly PlainBulkString before = new PlainBulkString("BEFORE");
         private static readonly PlainBulkString after = new PlainBulkString("AFTER");
@@ -36,18 +24,32 @@
             this.element = element;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            key.ToBulkString(),
+            key.ToBulkString(factory),
             where == Where.BEFORE
                 ? before
                 : after,
             pivot,
             element
-        );
+        };
 
         public override Visitor<Result> ResponseStructure =>
             IntegerExpectation.Singleton.Then(reply => new Result(reply));
+
+        public enum Status : byte
+        {
+            PivotNotFound,
+            ListIsEmpty,
+            Ok
+        }
+
+        public enum Where : byte
+        {
+            BEFORE,
+            AFTER
+        }
 
         public readonly struct Result
         {
@@ -61,21 +63,12 @@
                 Reply = reply;
             }
 
-            public Status Status
+            public Status Status => Reply switch
             {
-                get
-                {
-                    switch (Reply)
-                    {
-                        case -1:
-                            return Status.PivotNotFound;
-                        case 0:
-                            return Status.ListIsEmpty;
-                        default:
-                            return Status.Ok;
-                    }
-                }
-            }
+                -1 => Status.PivotNotFound,
+                0 => Status.ListIsEmpty,
+                _ => Status.Ok
+            };
 
             public long ListLength => Status == Status.Ok || Status == Status.ListIsEmpty
                 ? Reply

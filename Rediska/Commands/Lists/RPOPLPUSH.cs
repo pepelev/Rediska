@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Lists
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -15,11 +16,12 @@
             this.destination = destination;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            source.ToBulkString(),
-            destination.ToBulkString()
-        );
+            source.ToBulkString(factory),
+            destination.ToBulkString(factory)
+        };
 
         public override Visitor<BulkString> ResponseStructure => BulkStringExpectation.Singleton;
         public static RPOPLPUSH Rotate(Key key) => new RPOPLPUSH(key, key);

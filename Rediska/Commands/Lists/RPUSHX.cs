@@ -22,15 +22,13 @@
             this.values = values;
         }
 
-        public override DataType Request => new PlainArray(
-            new ConcatList<DataType>(
-                new DataType[]
-                {
-                    name,
-                    key.ToBulkString()
-                },
-                values
-            )
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new ConcatList<BulkString>(
+            new[]
+            {
+                name,
+                key.ToBulkString(factory)
+            },
+            values
         );
 
         public override Visitor<long> ResponseStructure => IntegerExpectation.Singleton;

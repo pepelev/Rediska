@@ -1,6 +1,7 @@
 ﻿namespace Rediska.Commands.Lists
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using Protocol;
     using Protocol.Visitors;
@@ -19,18 +20,30 @@
             this.element = element;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            key.ToBulkString(),
-            count.ToBulkString(),
+            key.ToBulkString(factory),
+            count.ToBulkString(factory),
             element
-        );
+        };
 
         public override Visitor<long> ResponseStructure => IntegerExpectation.Singleton;
 
         public readonly struct Count : IEquatable<Count>
         {
             public static Count All { get; } = new Count(0);
+
+            public Count(long value)
+            {
+                Value = value;
+            }
+
+            public long Value { get; }
+            public bool Equals(Count other) => Value == other.Value;
+            public static bool operator ==(Count left, Count right) => left.Equals(right);
+            public static implicit operator Count(long value) => new Count(value);
+            public static bool operator !=(Count left, Count right) => !left.Equals(right);
 
             public static Count Left(long count)
             {
@@ -62,13 +75,6 @@
                 return new Count(checked(-count));
             }
 
-            public Count(long value)
-            {
-                Value = value;
-            }
-
-            public long Value { get; }
-            public bool Equals(Count other) => Value == other.Value;
             public override bool Equals(object obj) => obj is Count other && Equals(other);
             public override int GetHashCode() => Value.GetHashCode();
 
@@ -85,10 +91,7 @@
                     : $"Remove first {count} elements moving from tail (right) to head (left)";
             }
 
-            public BulkString ToBulkString() => Value.ToBulkString();
-            public static implicit operator Count(long value) => new Count(value);
-            public static bool operator !=(Count left, Count right) => !left.Equals(right);
-            public static bool operator ==(Count left, Count right) => left.Equals(right);
+            public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Value);
         }
     }
 }
