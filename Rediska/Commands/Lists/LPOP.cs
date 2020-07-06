@@ -21,6 +21,5 @@
         };
 
         public override Visitor<BulkString> ResponseStructure => BulkStringExpectation.Singleton;
-        public override DataType Request => new PlainArray();
     }
 }
