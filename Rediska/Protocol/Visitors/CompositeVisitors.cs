@@ -1,12 +1,12 @@
 ﻿namespace Rediska.Protocol.Visitors
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Globalization;
     using System.Text;
     using Commands.Keys;
     using Commands.Lists;
+    using Utils;
 
     public static class CompositeVisitors
     {
@@ -59,51 +59,13 @@
             }
         }
 
-        public static Visitor<IReadOnlyList<Commands.Hashes.HashEntry>> HashEntryList { get; } =
-            ArrayExpectation.Singleton.Then(list => new Response(list) as IReadOnlyList<Commands.Hashes.HashEntry>);
-
-        private sealed class Response : IReadOnlyList<HashEntry>
-        {
-            private readonly IReadOnlyList<DataType> list;
-
-            public Response(IReadOnlyList<DataType> list)
-            {
-                this.list = list;
-            }
-
-            public IEnumerator<HashEntry> GetEnumerator()
-            {
-                for (var i = 0; i < Count; i++)
-                    yield return this[i];
-            }
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-            public int Count => list.Count / 2;
-
-            public HashEntry this[int index] => 0 <= index && index < Count
-                ? new HashEntry(index, list)
-                : throw new IndexOutOfRangeException();
-        }
-        private sealed class HashEntry : Commands.Hashes.HashEntry
-        {
-            private readonly int index;
-
-            public HashEntry(int index, IReadOnlyList<DataType> list)
-            {
-                this.index = index;
-                this.list = list;
-            }
-
-            private readonly IReadOnlyList<DataType> list;
-
-            public override Key Key => new Key.BulkString(
-                list[index * 2].Accept(BulkStringExpectation.Singleton)
+        public static Visitor<IReadOnlyList<(BulkString Field, BulkString Value)>> HashEntryList { get; } =
+            BulkStringList.Then(
+                list =>
+                {
+                    var pairs = new PairsList<BulkString>(list);
+                    return (IReadOnlyList<(BulkString Field, BulkString Value)>) pairs;
+                }
             );
-
-            public override BulkString Value => list[index * 2 + 1].Accept(
-                BulkStringExpectation.Singleton
-            );
-        }
     }
 }

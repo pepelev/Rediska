@@ -34,19 +34,16 @@
         {
         }
 
-        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
-        {
-            return Prefix
-                .Concat(match.Arguments(factory))
-                .Concat(count.Arguments(factory));
-        }
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => Prefix(factory)
+            .Concat(match.Arguments(factory))
+            .Concat(count.Arguments(factory));
 
         public override Visitor<ScanResult<Key>> ResponseStructure => ScanResultVisitor.KeyList;
 
-        private IEnumerable<BulkString> Prefix => new[]
+        private IEnumerable<BulkString> Prefix(BulkStringFactory factory) => new[]
         {
             name,
-            cursor.ToBulkString()
+            cursor.ToBulkString(factory)
         };
     }
 }

@@ -36,12 +36,9 @@
         {
         }
 
-        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
-        {
-            return Prefix(factory)
-                .Concat(match.Arguments(factory))
-                .Concat(count.Arguments(factory));
-        }
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => Prefix(factory)
+            .Concat(match.Arguments(factory))
+            .Concat(count.Arguments(factory));
 
         public override Visitor<ScanResult<BulkString>> ResponseStructure => ScanResultVisitor.BulkStringList;
 
@@ -49,7 +46,7 @@
         {
             name,
             key.ToBulkString(factory),
-            cursor.ToBulkString()
+            cursor.ToBulkString(factory)
         };
     }
 }

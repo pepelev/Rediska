@@ -56,47 +56,6 @@ namespace Rediska.Tests
         }
 
         [Test]
-        public async Task Bosyata2()
-        {
-            var redis = new SimpleConnection();
-            await redis.ExecuteAsync(new Add()).ConfigureAwait(false);
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            await redis.ExecuteAsync(new Add()).ConfigureAwait(false);
-            stopwatch.Stop();
-            Console.WriteLine(stopwatch.Elapsed);
-        }
-
-        private sealed class Add : Command<object>
-        {
-            public override DataType Request
-            {
-                get
-                {
-                    return new PlainArray(
-                        new DataType[]
-                            {
-                                new PlainBulkString("PFADD"),
-                                new PlainBulkString("persik")
-                            }
-                            .Concat(Generate())
-                            .ToList()
-                    );
-
-                    IEnumerable<DataType> Generate()
-                    {
-                        for (var i = 0; i < 100_000; i++)
-                        {
-                            yield return new PlainBulkString(Guid.NewGuid().ToByteArray());
-                        }
-                    }
-                }
-            }
-
-            public override Visitor<object> ResponseStructure => new ConstVisitor<object>(null);
-        }
-
-        [Test]
         public void Bosyata()
         {
             var bytes = new Content(
@@ -136,8 +95,6 @@ namespace Rediska.Tests
                 Encoding.ASCII.GetString(bytes)
             );
         }
-
-        
 
         public sealed class Structure<T>
         {

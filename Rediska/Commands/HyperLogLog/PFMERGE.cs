@@ -26,9 +26,9 @@
             new[]
             {
                 name,
-                destination.ToBulkString()
+                destination.ToBulkString(factory)
             },
-            new KeyList(sources)
+            new KeyList(factory, sources)
         );
 
         public override Visitor<None> ResponseStructure => OkExpectation.Singleton;

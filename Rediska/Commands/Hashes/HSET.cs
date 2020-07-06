@@ -7,31 +7,41 @@
     public sealed class HSET : Command<HSET.Response>
     {
         private static readonly PlainBulkString name = new PlainBulkString("HSET");
-        private readonly Key key;
-        private readonly IReadOnlyList<(Key Field, BulkString Value)> pairs;
 
-        public HSET(Key key, Key field, BulkString value)
+        private static readonly Visitor<Response> responseStructure = IntegerExpectation.Singleton
+            .Then(keysAdded => new Response(keysAdded));
+
+        private readonly Key key;
+        private readonly IReadOnlyList<(BulkString Field, BulkString Value)> pairs;
+
+        public HSET(Key key, BulkString field, BulkString value)
             : this(key, (field, value))
         {
         }
 
-        public HSET(Key key, params (Key Field, BulkString Value)[] pairs)
-            : this(key, pairs as IReadOnlyList<(Key Field, BulkString Value)>)
+        public HSET(Key key, params (BulkString Field, BulkString Value)[] pairs)
+            : this(key, pairs as IReadOnlyList<(BulkString Field, BulkString Value)>)
         {
         }
 
-        public HSET(Key key, IReadOnlyList<(Key Key, BulkString Value)> pairs)
+        public HSET(Key key, IReadOnlyList<(BulkString Key, BulkString Value)> pairs)
         {
             this.key = key;
             this.pairs = pairs;
         }
 
-        public override DataType Request => new PlainArray(
-            new SetRequest(name, key, pairs)
-        );
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            yield return name;
+            yield return key.ToBulkString(factory);
+            foreach (var (field, value) in pairs)
+            {
+                yield return field;
+                yield return value;
+            }
+        }
 
-        public override Visitor<Response> ResponseStructure => IntegerExpectation.Singleton
-            .Then(keysAdded => new Response(keysAdded));
+        public override Visitor<Response> ResponseStructure => responseStructure;
 
         public readonly struct Response
         {
@@ -41,7 +51,7 @@
             }
 
             public long KeysAdded { get; }
-            public override string ToString() => KeysAdded.ToString();
+            public override string ToString() => $"{nameof(KeysAdded)}: {KeysAdded}";
         }
     }
 }

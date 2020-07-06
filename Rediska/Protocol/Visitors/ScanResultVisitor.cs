@@ -13,9 +13,10 @@ namespace Rediska.Protocol.Visitors
             CompositeVisitors.BulkStringList
         );
 
-        public static ScanResultVisitor<HashEntry> HashEntryList { get; } = new ScanResultVisitor<HashEntry>(
-            CompositeVisitors.HashEntryList
-        );
+        public static ScanResultVisitor<(BulkString Field, BulkString Value)> HashEntryList { get; } =
+            new ScanResultVisitor<(BulkString Field, BulkString Value)>(
+                CompositeVisitors.HashEntryList
+            );
 
         public static ScanResultVisitor<Key> KeyList { get; } = new ScanResultVisitor<Key>(
             CompositeVisitors.KeyList

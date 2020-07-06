@@ -1,11 +1,11 @@
 ﻿namespace Rediska.Commands.Hashes
 {
     using System.Collections.Generic;
-    using Auxiliary;
+    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
 
-    public sealed class HSCAN : Command<ScanResult<HashEntry>>
+    public sealed class HSCAN : Command<ScanResult<(BulkString Field, BulkString Value)>>
     {
         private static readonly PlainBulkString name = new PlainBulkString("HSCAN");
         private readonly Key key;
@@ -36,15 +36,18 @@
         {
         }
 
-        public override DataType Request => new ScanRequest(Prefix, match, count);
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => Prefix(factory)
+            .Concat(match.Arguments(factory))
+            .Concat(count.Arguments(factory));
 
-        private IReadOnlyList<BulkString> Prefix(BulkStringFactory factory) => new[]
+        public override Visitor<ScanResult<(BulkString Field, BulkString Value)>> ResponseStructure =>
+            ScanResultVisitor.HashEntryList;
+
+        private IEnumerable<BulkString> Prefix(BulkStringFactory factory) => new[]
         {
             name,
             key.ToBulkString(factory),
-            cursor.ToBulkString()
+            cursor.ToBulkString(factory)
         };
-
-        public override Visitor<ScanResult<HashEntry>> ResponseStructure => ScanResultVisitor.HashEntryList;
     }
 }

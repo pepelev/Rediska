@@ -45,9 +45,9 @@
                 new[]
                 {
                     name,
-                    key.ToBulkString()
+                    key.ToBulkString(factory)
                 },
-                new KeyList(members)
+                new KeyList(factory, members)
             );
         }
 

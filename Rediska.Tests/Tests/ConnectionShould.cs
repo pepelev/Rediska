@@ -5,6 +5,8 @@ using Rediska.Commands;
 
 namespace Rediska.Tests.Tests
 {
+    using System.Linq;
+    using Protocol;
     using Rediska.Commands.Connection;
 
     public sealed class ConnectionShould
@@ -21,13 +23,13 @@ namespace Rediska.Tests.Tests
         public async Task Test()
         {
             var command = new ECHO("foo");
-            var request = command.Request;
-            using (var response = await sut.SendAsync(request).ConfigureAwait(false))
-            {
-                var dataType = await response.Value.ReadAsync().ConfigureAwait(false);
-                var echo = dataType.Accept(command.ResponseStructure);
-                echo.Should().Be("foo");
-            }
+            var request = new PlainArray(
+                command.Request(BulkStringFactory.Plain).ToList()
+            );
+            using var response = await sut.SendAsync(request).ConfigureAwait(false);
+            var dataType = await response.Value.ReadAsync().ConfigureAwait(false);
+            var echo = dataType.Accept(command.ResponseStructure);
+            echo.Should().Be("foo");
         }
     }
 }

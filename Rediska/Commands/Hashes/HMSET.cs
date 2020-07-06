@@ -9,22 +9,29 @@
     {
         private static readonly PlainBulkString name = new PlainBulkString("HMSET");
         private readonly Key key;
-        private readonly IReadOnlyList<(Key Field, BulkString Value)> pairs;
+        private readonly IReadOnlyList<(BulkString Field, BulkString Value)> pairs;
 
-        public HMSET(Key key, params (Key Field, BulkString Value)[] pairs)
-            : this(key, pairs as IReadOnlyList<(Key Field, BulkString Value)>)
+        public HMSET(Key key, params (BulkString Field, BulkString Value)[] pairs)
+            : this(key, pairs as IReadOnlyList<(BulkString Field, BulkString Value)>)
         {
         }
 
-        public HMSET(Key key, IReadOnlyList<(Key Key, BulkString Value)> pairs)
+        public HMSET(Key key, IReadOnlyList<(BulkString Key, BulkString Value)> pairs)
         {
             this.key = key;
             this.pairs = pairs;
         }
 
-        public override DataType Request => new PlainArray(
-            new SetRequest(name, key, pairs)
-        );
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            yield return name;
+            yield return key.ToBulkString(factory);
+            foreach (var (field, value) in pairs)
+            {
+                yield return field;
+                yield return value;
+            }
+        }
 
         public override Visitor<None> ResponseStructure => OkExpectation.Singleton;
     }

@@ -22,7 +22,7 @@
         }
 
         public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new PrefixedList<BulkString>(
-            key.ToBulkString(),
+            key.ToBulkString(factory),
             values
         );
 

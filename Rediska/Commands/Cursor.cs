@@ -28,6 +28,6 @@
 
         public override int GetHashCode() => Value.GetHashCode();
         public override string ToString() => Value.ToString();
-        public BulkString ToBulkString() => Value.ToBulkString();
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Value);
     }
 }

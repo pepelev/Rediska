@@ -4,17 +4,14 @@
     using System.Linq;
     using NUnit.Framework;
     using Protocol;
+    using Rediska.Commands;
     using Rediska.Commands.Auxiliary;
 
     public class PlainCommand_Should
     {
         private static TestCaseData Case(string query, params BulkString[] segments)
         {
-            return new TestCaseData(query).Returns(
-                new PlainArray(
-                    segments as IReadOnlyList<DataType>
-                )
-            );
+            return new TestCaseData(query).Returns(segments);
         }
 
         public static TestCaseData[] ParseCases()
@@ -34,10 +31,10 @@
 
         [Test]
         [TestCaseSource(nameof(ParseCases))]
-        public DataType Parse(string query)
+        public IEnumerable<BulkString> Parse(string query)
         {
             var command = PlainCommand.Parse(query);
-            return command.Request;
+            return command.Request(BulkStringFactory.Plain);
         }
     }
 }

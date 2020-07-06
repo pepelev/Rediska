@@ -23,7 +23,7 @@
 
         public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new PrefixedList<BulkString>(
             name,
-            new KeyList(keys)
+            new KeyList(factory, keys)
         );
 
         public override Visitor<long> ResponseStructure => IntegerExpectation.Singleton;

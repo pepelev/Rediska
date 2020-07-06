@@ -1,6 +1,7 @@
 ﻿namespace Rediska.Commands.Hashes
 {
     using System;
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -8,10 +9,10 @@
     {
         private static readonly PlainBulkString name = new PlainBulkString("HINCRBYFLOAT");
         private readonly Key key;
-        private readonly Key field;
+        private readonly BulkString field;
         private readonly double increment;
 
-        public HINCRBYFLOAT(Key key, Key field, double increment)
+        public HINCRBYFLOAT(Key key, BulkString field, double increment)
         {
             if (double.IsInfinity(increment) || double.IsNaN(increment))
                 throw new ArgumentException($"Must be regular number, but {increment} found", nameof(increment));
@@ -21,12 +22,13 @@
             this.increment = increment;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            key.ToBulkString(),
-            field.ToBulkString(),
-            increment.ToBulkString()
-        );
+            key.ToBulkString(factory),
+            field,
+            factory.Create(increment)
+        };
 
         public override Visitor<double> ResponseStructure => CompositeVisitors.Double;
     }
