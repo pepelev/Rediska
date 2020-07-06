@@ -1,9 +1,9 @@
 ﻿namespace Rediska.Commands.Hashes
 {
     using System.Collections.Generic;
+    using Auxiliary;
     using Protocol;
     using Protocol.Visitors;
-    using Utility;
 
     public sealed class HSCAN : Command<ScanResult<HashEntry>>
     {

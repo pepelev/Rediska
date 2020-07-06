@@ -1,4 +1,4 @@
-﻿namespace Rediska.Commands.Utility
+﻿namespace Rediska.Commands.Auxiliary
 {
     using System;
     using System.Collections.Generic;

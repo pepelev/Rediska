@@ -6,8 +6,8 @@
     using FluentAssertions;
     using NUnit.Framework;
     using Protocol;
+    using Rediska.Commands.Auxiliary;
     using Rediska.Commands.Strings;
-    using Rediska.Commands.Utility;
     using Sets;
 
     [TestFixtureSource(typeof(ConnectionCollection))]

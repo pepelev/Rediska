@@ -7,7 +7,7 @@ using Rediska.Utils;
 namespace Rediska
 {
     using Commands;
-    using Commands.Utility;
+    using Commands.Auxiliary;
 
     public sealed class NoReplyConnection : Connection
     {

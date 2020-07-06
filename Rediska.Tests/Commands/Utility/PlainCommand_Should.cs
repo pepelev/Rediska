@@ -4,7 +4,7 @@
     using System.Linq;
     using NUnit.Framework;
     using Protocol;
-    using Rediska.Commands.Utility;
+    using Rediska.Commands.Auxiliary;
 
     public class PlainCommand_Should
     {
