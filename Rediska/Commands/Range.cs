@@ -8,6 +8,24 @@
 
         public Range(Index startInclusive, Index endInclusive)
         {
+            const string parameterNames = nameof(startInclusive) + "|" + nameof(endInclusive);
+            switch (startInclusive, endInclusive)
+            {
+                case (
+                    { IsFromStart: true, Value: var start },
+                    { IsFromStart: true, Value: var end }
+                    ) when start > end:
+                    throw new ArgumentException(Message(), parameterNames);
+
+                case (
+                    { IsFromStart: false, Value: var start },
+                    { IsFromStart: false, Value: var end }
+                    ) when start > end:
+                    throw new ArgumentException(Message(), parameterNames);
+            }
+
+            string Message() => $"Range [{startInclusive}..{endInclusive}] can't contain any element";
+
             StartInclusive = startInclusive;
             EndInclusive = endInclusive;
         }

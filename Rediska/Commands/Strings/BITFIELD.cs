@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
-    using Array = Protocol.Array;
 
     public sealed class BITFIELD : Command<IReadOnlyList<long?>>
     {
@@ -56,7 +55,7 @@
 
         public override Visitor<IReadOnlyList<long?>> ResponseStructure => new ListVisitor<long?>(
             ArrayExpectation.Singleton,
-            NullableInteger.Singleton
+            NullableIntegerExpectation.Singleton
         );
 
         public abstract class SubCommand
@@ -98,6 +97,7 @@
             {
                 if (!type.Fit(value))
                 {
+                    //todo
                     //throw new ArgumentOutOfRangeException(nameof(value), value, $"Value must fit type range {type.Range}");
                 }
 
@@ -142,21 +142,6 @@
                 yield return offset.ToBulkString(factory);
                 yield return factory.Create(increment);
             }
-        }
-
-        private sealed class NullableInteger : Expectation<long?>
-        {
-            public static NullableInteger Singleton { get; } = new NullableInteger();
-            public override string Message => "Integer or null";
-            public override long? Visit(Integer integer) => integer.Value;
-
-            public override long? Visit(Array array) => array.IsNull
-                ? default(long?)
-                : throw Exception(array);
-
-            public override long? Visit(BulkString bulkString) => bulkString.IsNull
-                ? default(long?)
-                : throw Exception(bulkString);
         }
     }
 }

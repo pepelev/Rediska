@@ -35,8 +35,8 @@
             {
                 name,
                 key.ToBulkString(factory),
-                factory.Create(range.StartInclusive.Value),
-                factory.Create(range.EndInclusive.Value)
+                range.StartInclusive.ToBulkString(factory),
+                range.EndInclusive.ToBulkString(factory)
             };
 
         public override Visitor<Response> ResponseStructure => responseStructure;
