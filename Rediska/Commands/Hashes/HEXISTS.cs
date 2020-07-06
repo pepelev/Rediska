@@ -3,6 +3,8 @@ using Rediska.Protocol.Visitors;
 
 namespace Rediska.Commands.Hashes
 {
+    using System.Collections.Generic;
+
     public sealed class HEXISTS : Command<HEXISTS.Response>
     {
         public enum Response
@@ -21,19 +23,20 @@ namespace Rediska.Commands.Hashes
             );
 
         private readonly Key key;
-        private readonly Key field;
+        private readonly BulkString field;
 
-        public HEXISTS(Key key, Key field)
+        public HEXISTS(Key key, BulkString field)
         {
             this.key = key;
             this.field = field;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            key.ToBulkString(),
-            field.ToBulkString()
-        );
+            key.ToBulkString(factory),
+            field
+        };
 
         public override Visitor<Response> ResponseStructure => responseStructure;
     }

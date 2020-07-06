@@ -13,11 +13,11 @@
             Next = next;
         }
 
+        public Cursor Next { get; }
+        public bool ScanTerminated => Next == Cursor.Start;
         public IEnumerator<T> GetEnumerator() => members.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public int Count => members.Count;
         public T this[int index] => members[index];
-        public Cursor Next { get; }
-        public bool ScanTerminated => Next == Cursor.Start;
     }
 }

@@ -11,11 +11,11 @@
         {
             private static readonly PlainBulkString subName = new PlainBulkString("GET");
 
-            private static readonly Visitor<IReadOnlyList<(string Name, string Value)>> responseStructure = ArrayExpectation.Singleton
+            private static readonly Visitor<IReadOnlyList<(string Name, string Value)>> responseStructure = CompositeVisitors.BulkStringList
                 .Then(
-                    pairs => new ProjectingReadOnlyList<(DataType Name, DataType Value), (string Name, string Value)>(
-                        new PairsList<DataType>(pairs),
-                        pair => (String(pair.Name), String(pair.Value))
+                    pairs => new ProjectingReadOnlyList<(BulkString Name, BulkString Value), (string Name, string Value)>(
+                        new PairsList<BulkString>(pairs),
+                        pair => (pair.Name.ToString(), pair.Value.ToString())
                     ) as IReadOnlyList<(string Name, string Value)>
                 );
 
@@ -26,16 +26,14 @@
                 this.pattern = pattern;
             }
 
-            public override DataType Request => new PlainArray(
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+            {
                 name,
                 subName,
-                new PlainBulkString(pattern)
-            );
+                factory.Utf8(pattern)
+            };
 
             public override Visitor<IReadOnlyList<(string Name, string Value)>> ResponseStructure => responseStructure;
-
-            private static string String(DataType dateTime) =>
-                dateTime.Accept(BulkStringExpectation.Singleton).ToString();
         }
     }
 }

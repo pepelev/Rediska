@@ -1,7 +1,6 @@
 ﻿namespace Rediska.Commands.Scripting
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
 
@@ -19,14 +18,11 @@
             this.arguments = arguments;
         }
 
-        public override DataType Request => new PlainArray(Query().ToList());
-        public override Visitor<DataType> ResponseStructure => Id.Singleton;
-
-        private IEnumerable<BulkString> Query()
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return name;
-            yield return sha1.ToBulkString();
-            yield return keys.Count.ToBulkString();
+            yield return factory.Create(sha1);
+            yield return factory.Create(keys.Count);
             foreach (var key in keys)
             {
                 yield return key.ToBulkString();
@@ -37,5 +33,7 @@
                 yield return argument;
             }
         }
+
+        public override Visitor<DataType> ResponseStructure => Id.Singleton;
     }
 }

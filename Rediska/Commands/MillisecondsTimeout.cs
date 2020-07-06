@@ -22,6 +22,13 @@
         }
 
         public long Milliseconds { get; }
+        public bool Equals(MillisecondsTimeout other) => Milliseconds == other.Milliseconds;
+        public static bool operator ==(MillisecondsTimeout left, MillisecondsTimeout right) => left.Equals(right);
+
+        // todo remove implicit casts
+        public static explicit operator MillisecondsTimeout(long value) => new MillisecondsTimeout(value);
+        public static implicit operator MillisecondsTimeout(uint value) => new MillisecondsTimeout(value);
+        public static bool operator !=(MillisecondsTimeout left, MillisecondsTimeout right) => !left.Equals(right);
 
         public static MillisecondsTimeout FromSeconds(long seconds)
         {
@@ -52,13 +59,7 @@
             return duration.ToString("g", CultureInfo.InvariantCulture);
         }
 
-        // todo remove implicit casts
-        public static explicit operator MillisecondsTimeout(long value) => new MillisecondsTimeout(value);
-        public static implicit operator MillisecondsTimeout(uint value) => new MillisecondsTimeout(value);
-        public bool Equals(MillisecondsTimeout other) => Milliseconds == other.Milliseconds;
         public override bool Equals(object obj) => obj is MillisecondsTimeout other && Equals(other);
         public override int GetHashCode() => Milliseconds.GetHashCode();
-        public static bool operator ==(MillisecondsTimeout left, MillisecondsTimeout right) => left.Equals(right);
-        public static bool operator !=(MillisecondsTimeout left, MillisecondsTimeout right) => !left.Equals(right);
     }
 }

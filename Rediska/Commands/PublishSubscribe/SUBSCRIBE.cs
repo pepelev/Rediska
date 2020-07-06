@@ -8,7 +8,6 @@
     public sealed class SUBSCRIBE : Command<None>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SUBSCRIBE");
-
         private readonly IReadOnlyList<Channel> channels;
 
         public SUBSCRIBE(params Channel[] channels)
@@ -21,15 +20,16 @@
             this.channels = channels;
         }
 
-        public override DataType Request => new PlainArray(
-            new PrefixedList<DataType>(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            return new PrefixedList<BulkString>(
                 name,
-                new ProjectingReadOnlyList<Channel, DataType>(
+                new ProjectingReadOnlyList<Channel, BulkString>(
                     channels,
-                    channel => new PlainBulkString(channel.ToBytes())
+                    channel => factory.Utf8(channel.Name)
                 )
-            )
-        );
+            );
+        }
 
         // todo parse
         public override Visitor<None> ResponseStructure => ArrayExpectation.Singleton.Then(_ => new None());

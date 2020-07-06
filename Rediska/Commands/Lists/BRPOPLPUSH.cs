@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Lists
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -17,12 +18,13 @@
             this.timeout = timeout;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            source.ToBulkString(),
-            destination.ToBulkString(),
-            timeout.ToBulkString()
-        );
+            source.ToBulkString(factory),
+            destination.ToBulkString(factory),
+            timeout.ToBulkString(factory)
+        };
 
         public override Visitor<BulkString> ResponseStructure => BulkStringExpectation.Singleton;
     }

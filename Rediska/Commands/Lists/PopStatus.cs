@@ -2,7 +2,7 @@
 {
     public enum PopStatus : byte
     {
-        Ok,
-        TimeoutExpired
+        Ok = 0,
+        TimeoutExpired = 1
     }
 }

@@ -32,7 +32,8 @@
         public double Longitude { get; }
         public double Latitude { get; }
         public bool Equals(Location other) => Longitude.Equals(other.Longitude) && Latitude.Equals(other.Latitude);
-
+        public static bool operator ==(Location left, Location right) => left.Equals(right);
+        public static bool operator !=(Location left, Location right) => !left.Equals(right);
         public override bool Equals(object obj) => obj is Location other && Equals(other);
 
         public override int GetHashCode()
@@ -42,8 +43,5 @@
                 return (Longitude.GetHashCode() * 397) ^ Latitude.GetHashCode();
             }
         }
-
-        public static bool operator ==(Location left, Location right) => left.Equals(right);
-        public static bool operator !=(Location left, Location right) => !left.Equals(right);
     }
 }

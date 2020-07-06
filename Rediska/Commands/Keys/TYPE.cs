@@ -1,6 +1,7 @@
 ﻿namespace Rediska.Commands.Keys
 {
     using System;
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -15,34 +16,27 @@
             this.key = key;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
             key.ToBulkString()
-        );
+        };
 
         public override Visitor<KeyType> ResponseStructure => responseStructure;
 
         private static KeyType Parse(string arg)
         {
-            switch (arg)
+            return arg switch
             {
-                case "none":
-                    return KeyType.None;
-                case "string":
-                    return KeyType.String;
-                case "list":
-                    return KeyType.List;
-                case "set":
-                    return KeyType.Set;
-                case "zset":
-                    return KeyType.SortedSet;
-                case "hash":
-                    return KeyType.Hash;
-                case "stream":
-                    return KeyType.Stream;
-                default:
-                    throw new ArgumentException($"Expected data type or none, but '{arg}' found");
-            }
+                "none" => KeyType.None,
+                "string" => KeyType.String,
+                "list" => KeyType.List,
+                "set" => KeyType.Set,
+                "zset" => KeyType.SortedSet,
+                "hash" => KeyType.Hash,
+                "stream" => KeyType.Stream,
+                _ => throw new ArgumentException($"Expected data type or none, but '{arg}' found")
+            };
         }
     }
 }

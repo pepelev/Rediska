@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace Rediska.Commands
+﻿namespace Rediska.Commands
 {
+    using System;
     using Protocol;
 
     public readonly struct Cursor : IEquatable<Cursor>, IComparable<Cursor>
@@ -13,6 +12,12 @@ namespace Rediska.Commands
             Value = value;
         }
 
+        public long Value { get; }
+        public int CompareTo(Cursor other) => Value.CompareTo(other.Value);
+        public bool Equals(Cursor other) => Value == other.Value;
+        public static bool operator ==(Cursor left, Cursor right) => left.Equals(right);
+        public static bool operator !=(Cursor left, Cursor right) => !left.Equals(right);
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -22,12 +27,7 @@ namespace Rediska.Commands
         }
 
         public override int GetHashCode() => Value.GetHashCode();
-        public static bool operator ==(Cursor left, Cursor right) => left.Equals(right);
-        public static bool operator !=(Cursor left, Cursor right) => !left.Equals(right);
-        public long Value { get; }
-        public bool Equals(Cursor other) => Value == other.Value;
-        public int CompareTo(Cursor other) => Value.CompareTo(other.Value);
         public override string ToString() => Value.ToString();
-        public BulkString ToBulkString() => Value.ToBulkString();
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Value);
     }
 }

@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-using Rediska.Utils;
-
-namespace Rediska.Commands.Transactions
+﻿namespace Rediska.Commands.Transactions
 {
+    using System.Collections.Generic;
+    using Protocol;
+    using Protocol.Visitors;
+    using Utils;
+
     public sealed class WATCH : Command<None>
     {
         private static readonly PlainBulkString name = new PlainBulkString("WATCH");
-
         private readonly IReadOnlyList<Key> keys;
 
         public WATCH(params Key[] keys)
@@ -21,11 +20,9 @@ namespace Rediska.Commands.Transactions
             this.keys = keys;
         }
 
-        public override DataType Request => new PlainArray(
-            new PrefixedList<DataType>(
-                name,
-                new KeyList(keys)
-            )
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new PrefixedList<BulkString>(
+            name,
+            new KeyList(factory, keys)
         );
 
         public override Visitor<None> ResponseStructure => OkExpectation.Singleton;

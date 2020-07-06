@@ -10,23 +10,22 @@
         public sealed class GETKEYS : Command<IReadOnlyList<Key>>
         {
             private static readonly PlainBulkString subName = new PlainBulkString("GETKEYS");
-            private readonly IReadOnlyList<BulkString> command;
+            private readonly IReadOnlyList<BulkString> commands;
+            private readonly PlainBulkString[] prefix = {name, subName};
 
             public GETKEYS(params BulkString[] command)
                 : this(command as IReadOnlyList<BulkString>)
             {
             }
 
-            public GETKEYS(IReadOnlyList<BulkString> command)
+            public GETKEYS(IReadOnlyList<BulkString> commands)
             {
-                this.command = command;
+                this.commands = commands;
             }
 
-            public override DataType Request => new PlainArray(
-                new ConcatList<DataType>(
-                    new[] {name, subName},
-                    command
-                )
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new ConcatList<BulkString>(
+                prefix,
+                commands
             );
 
             public override Visitor<IReadOnlyList<Key>> ResponseStructure => CompositeVisitors.KeyList;

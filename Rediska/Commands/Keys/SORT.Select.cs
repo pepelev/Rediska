@@ -10,16 +10,19 @@
         {
             public static Select Self { get; } = new SelectSelf();
             public abstract int BulkStringsPerItem { get; }
-            public abstract IEnumerable<BulkString> Query();
+            public abstract IEnumerable<BulkString> Arguments(BulkStringFactory factory);
 
             private sealed class SelectSelf : Select
             {
                 public override int BulkStringsPerItem => 1;
-                public override IEnumerable<BulkString> Query() => Enumerable.Empty<BulkString>();
+
+                public override IEnumerable<BulkString> Arguments(BulkStringFactory factory) =>
+                    Enumerable.Empty<BulkString>();
             }
 
             public sealed class Patterns : Select
             {
+                private static readonly PlainBulkString get = new PlainBulkString("GET");
                 private readonly IReadOnlyList<string> patterns;
 
                 public Patterns(params string[] patterns)
@@ -34,12 +37,12 @@
 
                 public override int BulkStringsPerItem => patterns.Count;
 
-                public override IEnumerable<BulkString> Query()
+                public override IEnumerable<BulkString> Arguments(BulkStringFactory factory)
                 {
                     foreach (var pattern in patterns)
                     {
-                        yield return new PlainBulkString("GET");
-                        yield return new PlainBulkString(pattern);
+                        yield return get;
+                        yield return factory.Utf8(pattern);
                     }
                 }
             }

@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Server
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -16,11 +17,12 @@
             this.db2 = db2;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            db1.ToBulkString(),
-            db2.ToBulkString()
-        );
+            factory.Create(db1.Value),
+            factory.Create(db2.Value)
+        };
 
         public override Visitor<None> ResponseStructure => OkExpectation.Singleton;
     }

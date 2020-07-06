@@ -1,6 +1,7 @@
 ﻿namespace Rediska.Commands.Keys
 {
     using System;
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -10,6 +11,7 @@
         private readonly Key key;
         private readonly long milliseconds;
 
+        // todo milliseconds to semantic struct
         public PEXPIRE(Key key, long milliseconds)
         {
             if (milliseconds < 0)
@@ -19,11 +21,12 @@
             this.milliseconds = milliseconds;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
             key.ToBulkString(),
-            milliseconds.ToBulkString()
-        );
+            factory.Create(milliseconds)
+        };
 
         public override Visitor<ExpireResponse> ResponseStructure => CompositeVisitors.ExpireResult;
     }

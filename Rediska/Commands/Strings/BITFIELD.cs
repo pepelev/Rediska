@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
     using Array = Protocol.Array;
@@ -28,23 +27,14 @@
             this.subCommands = subCommands;
         }
 
-        public override DataType Request => new PlainArray(
-            Query().ToList()
-        );
-
-        public override Visitor<IReadOnlyList<long?>> ResponseStructure => new ListVisitor<long?>(
-            ArrayExpectation.Singleton,
-            NullableInteger.Singleton
-        );
-
-        private IEnumerable<BulkString> Query()
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return name;
-            yield return key.ToBulkString();
+            yield return key.ToBulkString(factory);
             var currentOverflow = Overflow.Wrap;
             foreach (var subCommand in subCommands)
             {
-                if (subCommand.DesiredOverflow is {} desiredOverflow && desiredOverflow != currentOverflow)
+                if (subCommand.DesiredOverflow is { } desiredOverflow && desiredOverflow != currentOverflow)
                 {
                     yield return overflow;
                     yield return desiredOverflow switch
@@ -57,17 +47,22 @@
                     currentOverflow = desiredOverflow;
                 }
 
-                foreach (var segment in subCommand.Query())
+                foreach (var argument in subCommand.Arguments(factory))
                 {
-                    yield return segment;
+                    yield return argument;
                 }
             }
         }
 
+        public override Visitor<IReadOnlyList<long?>> ResponseStructure => new ListVisitor<long?>(
+            ArrayExpectation.Singleton,
+            NullableInteger.Singleton
+        );
+
         public abstract class SubCommand
         {
             public abstract Overflow? DesiredOverflow { get; }
-            public abstract IEnumerable<BulkString> Query();
+            public abstract IEnumerable<BulkString> Arguments(BulkStringFactory factory);
         }
 
         public sealed class GET : SubCommand
@@ -84,11 +79,11 @@
 
             public override Overflow? DesiredOverflow => null;
 
-            public override IEnumerable<BulkString> Query()
+            public override IEnumerable<BulkString> Arguments(BulkStringFactory factory)
             {
                 yield return subCommandName;
-                yield return type.ToBulkString();
-                yield return offset.ToBulkString();
+                yield return type.ToBulkString(factory);
+                yield return offset.ToBulkString(factory);
             }
         }
 
@@ -113,12 +108,12 @@
 
             public override Overflow? DesiredOverflow => null;
 
-            public override IEnumerable<BulkString> Query()
+            public override IEnumerable<BulkString> Arguments(BulkStringFactory factory)
             {
                 yield return subCommandName;
-                yield return type.ToBulkString();
-                yield return offset.ToBulkString();
-                yield return value.ToBulkString();
+                yield return type.ToBulkString(factory);
+                yield return offset.ToBulkString(factory);
+                yield return factory.Create(value);
             }
         }
 
@@ -140,29 +135,28 @@
 
             public override Overflow? DesiredOverflow => desiredOverflow;
 
-            public override IEnumerable<BulkString> Query()
+            public override IEnumerable<BulkString> Arguments(BulkStringFactory factory)
             {
                 yield return subCommandName;
-                yield return type.ToBulkString();
-                yield return offset.ToBulkString();
-                yield return increment.ToBulkString();
+                yield return type.ToBulkString(factory);
+                yield return offset.ToBulkString(factory);
+                yield return factory.Create(increment);
             }
         }
 
-        private sealed class NullableInteger : Visitor<long?>
+        private sealed class NullableInteger : Expectation<long?>
         {
             public static NullableInteger Singleton { get; } = new NullableInteger();
+            public override string Message => "Integer or null";
             public override long? Visit(Integer integer) => integer.Value;
-            public override long? Visit(SimpleString simpleString) => throw new VisitException("Integer or null expected", simpleString);
-            public override long? Visit(Error error) => throw new VisitException("Integer or null expected", error);
 
             public override long? Visit(Array array) => array.IsNull
                 ? default(long?)
-                : throw new VisitException("Integer or null expected", array);
+                : throw Exception(array);
 
             public override long? Visit(BulkString bulkString) => bulkString.IsNull
                 ? default(long?)
-                : throw new VisitException("Integer or null expected", bulkString);
+                : throw Exception(bulkString);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Rediska.Commands
+﻿namespace Rediska.Commands.Sets
 {
     using System;
     using System.Globalization;
@@ -6,7 +6,18 @@
 
     public readonly struct Count : IEquatable<Count>
     {
+        private const string ZeroCountIsMeaningless = "Zero count is meaningless";
+
+        public Count(long value)
+        {
+            Value = value;
+        }
+
+        public long Value { get; }
         public bool Equals(Count other) => Value == other.Value;
+        public static bool operator ==(Count left, Count right) => left.Equals(right);
+        public static implicit operator Count(long value) => new Count(value);
+        public static bool operator !=(Count left, Count right) => !left.Equals(right);
 
         public override bool Equals(object obj)
         {
@@ -17,16 +28,6 @@
         }
 
         public override int GetHashCode() => Value.GetHashCode();
-        public static bool operator ==(Count left, Count right) => left.Equals(right);
-        public static bool operator !=(Count left, Count right) => !left.Equals(right);
-        public static implicit operator Count(long value) => new Count(value);
-        private const string ZeroCountIsMeaningless = "Zero count is meaningless";
-        public long Value { get; }
-
-        public Count(long value)
-        {
-            Value = value;
-        }
 
         public static Count Distinct(long value)
         {
@@ -63,6 +64,6 @@
         }
 
         public override string ToString() => Value.ToString(CultureInfo.InvariantCulture);
-        public BulkString ToBulkString() => Value.ToBulkString();
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Value);
     }
 }

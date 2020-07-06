@@ -1,10 +1,12 @@
 ﻿namespace Rediska.Tests.Tests
 {
+    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
     using System.Threading.Tasks;
     using FluentAssertions;
     using NUnit.Framework;
+    using Protocol;
     using Rediska.Commands;
     using Rediska.Commands.Connection;
 
@@ -38,14 +40,20 @@
             var firstCommand = new ECHO("foo");
             var secondCommand = new ECHO("bar");
 
-            using (var firstResponse = await sut.SendAsync(firstCommand.Request).ConfigureAwait(false))
-            using (var secondResponse = await sut.SendAsync(secondCommand.Request).ConfigureAwait(false))
-            {
-                var second = await secondResponse.Value.ReadAsync().ConfigureAwait(false);
-                var first = await firstResponse.Value.ReadAsync().ConfigureAwait(false);
-                second.Accept(secondCommand.ResponseStructure).Should().Be("bar");
-                first.Accept(firstCommand.ResponseStructure).Should().Be("foo");
-            }
+            using var firstResponse = await sut.SendAsync(
+                new PlainArray(
+                    firstCommand.Request(BulkStringFactory.Plain).ToList()
+                )
+            ).ConfigureAwait(false);
+            using var secondResponse = await sut.SendAsync(
+                new PlainArray(
+                    secondCommand.Request(BulkStringFactory.Plain).ToList()
+                )
+            ).ConfigureAwait(false);
+            var second = await secondResponse.Value.ReadAsync().ConfigureAwait(false);
+            var first = await firstResponse.Value.ReadAsync().ConfigureAwait(false);
+            second.Accept(secondCommand.ResponseStructure).Should().Be("bar");
+            first.Accept(firstCommand.ResponseStructure).Should().Be("foo");
         }
     }
 }

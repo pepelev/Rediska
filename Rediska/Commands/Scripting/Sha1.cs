@@ -8,10 +8,10 @@
 
     public readonly struct Sha1 : IEquatable<Sha1>
     {
-        private static readonly byte[] defaultContent = new byte[20];
-        private readonly byte[] content;
         public const int Size = 20;
         public const int HexSize = 40;
+        private static readonly byte[] defaultContent = new byte[20];
+        private readonly byte[] content;
 
         public Sha1(byte[] content)
         {
@@ -22,8 +22,6 @@
         }
 
         private byte[] Content => content ?? defaultContent;
-        public byte[] ToBytes() => Content.ToArray();
-        public BulkString ToBulkString() => new PlainBulkString(ToString());
 
         public bool Equals(Sha1 other)
         {
@@ -39,6 +37,10 @@
             return true;
         }
 
+        public static bool operator ==(Sha1 left, Sha1 right) => left.Equals(right);
+        public static bool operator !=(Sha1 left, Sha1 right) => !left.Equals(right);
+        public byte[] ToBytes() => Content.ToArray();
+        public BulkString ToBulkString() => new PlainBulkString(ToString());
         public override bool Equals(object obj) => obj is Sha1 other && Equals(other);
 
         public override int GetHashCode()
@@ -73,9 +75,6 @@
 
             return builder.ToString();
         }
-
-        public static bool operator ==(Sha1 left, Sha1 right) => left.Equals(right);
-        public static bool operator !=(Sha1 left, Sha1 right) => !left.Equals(right);
 
         public static Sha1 Parse(string hex)
         {

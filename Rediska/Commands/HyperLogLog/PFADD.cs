@@ -7,12 +7,6 @@
 
     public sealed class PFADD : Command<PFADD.Response>
     {
-        public enum Response : byte
-        {
-            CardinalityNotChanged,
-            CardinalityChanged
-        }
-
         private readonly Key key;
         private readonly IReadOnlyList<BulkString> values;
 
@@ -27,11 +21,9 @@
             this.values = values;
         }
 
-        public override DataType Request => new PlainArray(
-            new PrefixedList<DataType>(
-                key.ToBulkString(),
-                values
-            )
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new PrefixedList<BulkString>(
+            key.ToBulkString(factory),
+            values
         );
 
         public override Visitor<Response> ResponseStructure => new ProjectingVisitor<long, Response>(
@@ -40,5 +32,11 @@
                 ? Response.CardinalityChanged
                 : Response.CardinalityNotChanged
         );
+
+        public enum Response : byte
+        {
+            CardinalityNotChanged,
+            CardinalityChanged
+        }
     }
 }

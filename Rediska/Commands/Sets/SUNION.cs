@@ -15,12 +15,13 @@
             this.keys = keys;
         }
 
-        public override DataType Request => new PlainArray(
-            new PrefixedList<DataType>(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            return new PrefixedList<BulkString>(
                 name,
-                new KeyList(keys)
-            )
-        );
+                new KeyList(factory, keys)
+            );
+        }
 
         public override Visitor<IReadOnlyList<BulkString>> ResponseStructure => CompositeVisitors.BulkStringList;
     }

@@ -4,7 +4,7 @@
     using Protocol;
     using Protocol.Visitors;
 
-    public sealed class HGETALL : Command<IReadOnlyList<HashEntry>>
+    public sealed class HGETALL : Command<IReadOnlyList<(BulkString Field, BulkString Value)>>
     {
         private static readonly BulkString name = new PlainBulkString("HGETALL");
         private readonly Key key;
@@ -14,11 +14,13 @@
             this.key = key;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            key.ToBulkString()
-        );
+            key.ToBulkString(factory)
+        };
 
-        public override Visitor<IReadOnlyList<HashEntry>> ResponseStructure => CompositeVisitors.HashEntryList;
+        public override Visitor<IReadOnlyList<(BulkString Field, BulkString Value)>> ResponseStructure =>
+            CompositeVisitors.HashEntryList;
     }
 }

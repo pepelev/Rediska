@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Keys
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -16,11 +17,12 @@
             this.newKey = newKey;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
             key.ToBulkString(),
             newKey.ToBulkString()
-        );
+        };
 
         // todo parse value and error
         public override Visitor<None> ResponseStructure => OkExpectation.Singleton;

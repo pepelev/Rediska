@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Server
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -9,13 +10,8 @@
         public sealed class RESETSTAT : Command<None>
         {
             private static readonly PlainBulkString subName = new PlainBulkString("RESETSTAT");
-
-            private static readonly PlainArray request = new PlainArray(
-                name,
-                subName
-            );
-
-            public override DataType Request => request;
+            private static readonly BulkString[] request = {name, subName};
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => request;
             public override Visitor<None> ResponseStructure => OkExpectation.Singleton;
         }
     }

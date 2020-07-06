@@ -78,8 +78,7 @@
             };
         }
 
-        public BulkString ToBulkString() => new PlainBulkString(ToString());
-
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Utf8(ToString());
         public static Type Signed(byte bits) => new Type(TypeKind.Signed, bits);
         public static Type Unsigned(byte bits) => new Type(TypeKind.Signed, bits);
     }

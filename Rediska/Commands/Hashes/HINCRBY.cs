@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Hashes
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -7,22 +8,23 @@
     {
         private static readonly PlainBulkString name = new PlainBulkString("HINCRBY");
         private readonly Key key;
-        private readonly Key field;
+        private readonly BulkString field;
         private readonly long increment;
 
-        public HINCRBY(Key key, Key field, long increment)
+        public HINCRBY(Key key, BulkString field, long increment)
         {
             this.key = key;
             this.field = field;
             this.increment = increment;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            key.ToBulkString(),
-            field.ToBulkString(),
-            increment.ToBulkString()
-        );
+            key.ToBulkString(factory),
+            field,
+            factory.Create(increment)
+        };
 
         public override Visitor<long> ResponseStructure => IntegerExpectation.Singleton;
     }

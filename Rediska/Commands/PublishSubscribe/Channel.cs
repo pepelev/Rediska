@@ -1,22 +1,21 @@
 ﻿namespace Rediska.Commands.PublishSubscribe
 {
     using System;
-    using System.Text;
 
     public readonly struct Channel : IEquatable<Channel>
     {
-        private readonly string name;
-
         public Channel(string name)
         {
-            this.name = name ?? throw new ArgumentNullException(nameof(name));
+            Name = name ?? throw new ArgumentNullException(nameof(name));
         }
 
-        public byte[] ToBytes() => Encoding.UTF8.GetBytes(name);
-        public override int GetHashCode() => name.GetHashCode();
-        public override string ToString() => name;
-        public bool Equals(Channel other) => name == other.name;
-        public override bool Equals(object obj) => obj is Channel other && Equals(other);
+        public string Name { get; }
+        public bool Equals(Channel other) => Name == other.Name;
         public static implicit operator Channel(string name) => new Channel(name);
+
+        // todo Name can be null
+        public override int GetHashCode() => Name.GetHashCode();
+        public override string ToString() => Name;
+        public override bool Equals(object obj) => obj is Channel other && Equals(other);
     }
 }

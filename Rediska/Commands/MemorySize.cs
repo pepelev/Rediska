@@ -9,6 +9,7 @@
         private const ulong mebi = kibi * kibi;
         private const ulong gibi = mebi * kibi;
         private const ulong tebi = gibi * kibi;
+        private static CultureInfo Culture => CultureInfo.InvariantCulture;
 
         public Size(ulong totalBytes)
         {
@@ -40,7 +41,5 @@
                 .Select(pair => $"{pair.Value.ToString("N0", Culture)}{pair.Symbol}");
             return string.Join(" ", parts);
         }
-
-        private static CultureInfo Culture => CultureInfo.InvariantCulture;
     }
 }

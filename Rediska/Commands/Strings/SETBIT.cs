@@ -1,6 +1,7 @@
 ﻿namespace Rediska.Commands.Strings
 {
     using System;
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -29,18 +30,19 @@
             this.value = value;
         }
 
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
+            name,
+            key.ToBulkString(factory),
+            factory.Create(offset),
+            Value
+        };
+
+        public override Visitor<Response> ResponseStructure => responseStructure;
+
         private BulkString Value => value
             ? BulkStringConstants.One
             : BulkStringConstants.Zero;
-
-        public override DataType Request => new PlainArray(
-            name,
-            key.ToBulkString(),
-            offset.ToBulkString(),
-            Value
-        );
-
-        public override Visitor<Response> ResponseStructure => responseStructure;
 
         public readonly struct Response
         {

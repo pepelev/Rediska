@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
-    using Utils;
 
     public sealed class BRPOP : Command<PopResult>
     {
@@ -12,7 +11,7 @@
         private readonly Timeout timeout;
 
         public BRPOP(Key key, Timeout timeout)
-            : this(new[] { key }, timeout)
+            : this(new[] {key}, timeout)
         {
         }
 
@@ -22,16 +21,16 @@
             this.timeout = timeout;
         }
 
-        public override DataType Request => new PlainArray(
-            // todo специализированная версия листа с листом посередине
-            new ConcatList<DataType>(
-                new PrefixedList<DataType>(
-                    name,
-                    new KeyList(keys)
-                ),
-                new[] { timeout.ToBulkString() }
-            )
-        );
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            yield return name;
+            foreach (var key in keys)
+            {
+                yield return key.ToBulkString(factory);
+            }
+
+            yield return timeout.ToBulkString(factory);
+        }
 
         public override Visitor<PopResult> ResponseStructure => CompositeVisitors.Pop;
     }

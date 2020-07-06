@@ -20,11 +20,9 @@
             this.keys = keys;
         }
 
-        public override DataType Request => new PlainArray(
-            new PrefixedList<DataType>(
-                name,
-                new KeyList(keys)
-            )
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new PrefixedList<BulkString>(
+            name,
+            new KeyList(factory, keys)
         );
 
         public override Visitor<long> ResponseStructure => IntegerExpectation.Singleton;

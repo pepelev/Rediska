@@ -21,6 +21,26 @@
         }
 
         public long Milliseconds { get; }
+        public int CompareTo(UnixMillisecondsTimestamp other) => Milliseconds.CompareTo(other.Milliseconds);
+        public bool Equals(UnixMillisecondsTimestamp other) => Milliseconds == other.Milliseconds;
+
+        public static bool operator ==(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
+            left.Equals(right);
+
+        public static bool operator >(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
+            left.CompareTo(right) > 0;
+
+        public static bool operator >=(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
+            left.CompareTo(right) >= 0;
+
+        public static bool operator !=(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
+            !left.Equals(right);
+
+        public static bool operator <(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
+            left.CompareTo(right) < 0;
+
+        public static bool operator <=(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
+            left.CompareTo(right) <= 0;
 
         public DateTime ToDateTime(DateTimeKind kind)
         {
@@ -37,28 +57,7 @@
             return dateTime.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture);
         }
 
-        public bool Equals(UnixMillisecondsTimestamp other) => Milliseconds == other.Milliseconds;
         public override bool Equals(object obj) => obj is UnixMillisecondsTimestamp other && Equals(other);
         public override int GetHashCode() => Milliseconds.GetHashCode();
-
-        public static bool operator ==(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
-            left.Equals(right);
-
-        public static bool operator !=(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
-            !left.Equals(right);
-
-        public int CompareTo(UnixMillisecondsTimestamp other) => Milliseconds.CompareTo(other.Milliseconds);
-
-        public static bool operator <(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
-            left.CompareTo(right) < 0;
-
-        public static bool operator >(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
-            left.CompareTo(right) > 0;
-
-        public static bool operator <=(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
-            left.CompareTo(right) <= 0;
-
-        public static bool operator >=(UnixMillisecondsTimestamp left, UnixMillisecondsTimestamp right) =>
-            left.CompareTo(right) >= 0;
     }
 }

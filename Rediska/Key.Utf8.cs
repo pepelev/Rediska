@@ -1,7 +1,8 @@
-﻿using System.Text;
-
-namespace Rediska
+﻿namespace Rediska
 {
+    using System.Text;
+    using Commands;
+
     public abstract partial class Key
     {
         public sealed class Utf8 : Key
@@ -14,6 +15,7 @@ namespace Rediska
             }
 
             public override byte[] ToBytes() => Encoding.UTF8.GetBytes(value);
+            public override Protocol.BulkString ToBulkString(BulkStringFactory factory) => factory.Utf8(value);
             public override string ToString() => value;
         }
     }

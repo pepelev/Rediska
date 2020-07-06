@@ -16,10 +16,10 @@
 
         public long Value { get; }
         public bool Equals(DatabaseNumber other) => Value == other.Value;
-        public override bool Equals(object obj) => obj is DatabaseNumber other && Equals(other);
-        public override int GetHashCode() => Value.GetHashCode();
         public static bool operator ==(DatabaseNumber left, DatabaseNumber right) => left.Equals(right);
         public static bool operator !=(DatabaseNumber left, DatabaseNumber right) => !left.Equals(right);
+        public override bool Equals(object obj) => obj is DatabaseNumber other && Equals(other);
+        public override int GetHashCode() => Value.GetHashCode();
         public override string ToString() => Value.ToString(CultureInfo.InvariantCulture);
         public BulkString ToBulkString() => Value.ToBulkString();
     }

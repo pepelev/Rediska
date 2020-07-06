@@ -1,6 +1,7 @@
 ﻿namespace Rediska.Commands.Server
 {
     using System;
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -8,9 +9,9 @@
     public sealed class SHUTDOWN : Command<None>
     {
         private static readonly PlainBulkString name = new PlainBulkString("SHUTDOWN");
-        private static readonly PlainArray autoRequest = new PlainArray(name);
-        private static readonly PlainArray saveRequest = new PlainArray(name, new PlainBulkString("SAVE"));
-        private static readonly PlainArray noSaveRequest = new PlainArray(name, new PlainBulkString("NOSAVE"));
+        private static readonly BulkString[] autoRequest = {name};
+        private static readonly BulkString[] saveRequest = {name, new PlainBulkString("SAVE")};
+        private static readonly BulkString[] noSaveRequest = {name, new PlainBulkString("NOSAVE")};
         private readonly ShutdownMode mode;
 
         public SHUTDOWN(ShutdownMode mode)
@@ -26,7 +27,7 @@
             this.mode = mode;
         }
 
-        public override DataType Request => mode switch
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => mode switch
         {
             ShutdownMode.Auto => autoRequest,
             ShutdownMode.Save => saveRequest,

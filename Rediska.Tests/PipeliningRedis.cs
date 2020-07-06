@@ -13,6 +13,7 @@ using Rediska.Utils;
 
 namespace Rediska.Tests
 {
+    using System.Linq;
     using Utilities;
 
     public sealed class PipeliningRedis
@@ -57,7 +58,10 @@ namespace Rediska.Tests
                     bulkWriteStream
                 )
             );
-            command.Request.Write(output);
+            var array = new PlainArray(
+                command.Request(BulkStringFactory.Plain).ToList()
+            );
+            array.Write(output);
             long number;
             using (var ticket = await cashier.AcquireTicketAsync().ConfigureAwait(false))
             {

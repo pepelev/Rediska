@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Scripting
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -19,11 +20,12 @@
                 this.script = script;
             }
 
-            public override DataType Request => new PlainArray(
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+            {
                 name,
                 subName,
-                new PlainBulkString(script)
-            );
+                factory.Utf8(script)
+            };
 
             public override Visitor<Sha1> ResponseStructure => responseStructure;
         }

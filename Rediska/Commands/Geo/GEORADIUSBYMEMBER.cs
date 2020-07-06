@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -14,6 +13,14 @@
         internal static PlainBulkString Descending { get; } = new PlainBulkString("DESC");
         internal static PlainBulkString Store { get; } = new PlainBulkString("STORE");
         internal static PlainBulkString StoreDistance { get; } = new PlainBulkString("STOREDIST");
+
+        public static GEORADIUSBYMEMBER<Key> OnlyNames(
+            Key key,
+            Key member,
+            Distance radius,
+            long? count = null,
+            Sorting sorting = Sorting.None)
+            => new GEORADIUSBYMEMBER<Key>(key, member, radius, OnlyName.Singleton, count, sorting);
 
         public sealed class STORE : Command<StoreResponse>
         {
@@ -51,42 +58,29 @@
                 this.storingMode = storingMode;
             }
 
-            private IEnumerable<BulkString> Query
+            public override IEnumerable<BulkString> Request(BulkStringFactory factory)
             {
-                get
-                {
-                    yield return Name;
-                    yield return key.ToBulkString();
-                    yield return location.Longitude.ToBulkString();
-                    yield return location.Latitude.ToBulkString();
-                    yield return radius.Value.ToBulkString();
-                    yield return radius.Unit.ToBulkString();
+                yield return Name;
+                yield return key.ToBulkString();
+                yield return factory.Create(location.Longitude);
+                yield return factory.Create(location.Latitude);
+                yield return factory.Create(radius.Value);
+                yield return radius.Unit.ToBulkString();
 
-                    if (count is { } value)
-                        yield return value.ToBulkString();
+                if (count is { } value)
+                    yield return factory.Create(value);
 
-                    if (storingMode == StoringMode.WithRawGeohash)
-                        yield return Store;
-                    else
-                        yield return StoreDistance;
+                if (storingMode == StoringMode.WithRawGeohash)
+                    yield return Store;
+                else
+                    yield return StoreDistance;
 
-                    yield return target.ToBulkString();
-                }
+                yield return target.ToBulkString();
             }
-
-            public override DataType Request => new PlainArray(Query.ToList());
 
             public override Visitor<StoreResponse> ResponseStructure => IntegerExpectation.Singleton
                 .Then(itemsSaved => new StoreResponse(target, itemsSaved));
         }
-
-        public static GEORADIUSBYMEMBER<Key> OnlyNames(
-            Key key,
-            Key member,
-            Distance radius,
-            long? count = null,
-            Sorting sorting = Sorting.None)
-            => new GEORADIUSBYMEMBER<Key>(key, member, radius, OnlyName.Singleton, count, sorting);
     }
 
     public sealed class GEORADIUSBYMEMBER<T> : Command<IReadOnlyList<T>>
@@ -117,31 +111,26 @@
             this.sorting = sorting;
         }
 
-        private IEnumerable<BulkString> Query
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
-            get
+            yield return GEORADIUS.Name;
+            yield return key.ToBulkString();
+            yield return member.ToBulkString();
+            yield return factory.Create(radius.Value);
+            yield return radius.Unit.ToBulkString();
+            foreach (var argument in format.AdditionalArguments)
             {
-                yield return GEORADIUS.Name;
-                yield return key.ToBulkString();
-                yield return member.ToBulkString();
-                yield return radius.Value.ToBulkString();
-                yield return radius.Unit.ToBulkString();
-                foreach (var argument in format.AdditionalArguments)
-                {
-                    yield return argument;
-                }
-
-                if (count is { } value)
-                    yield return value.ToBulkString();
-
-                if (sorting == Sorting.AscendingByDistance)
-                    yield return GEORADIUS.Ascending;
-                else if (sorting == Sorting.DescendingByDistance)
-                    yield return GEORADIUS.Descending;
+                yield return argument;
             }
-        }
 
-        public override DataType Request => new PlainArray(Query.ToList());
+            if (count is { } value)
+                yield return factory.Create(value);
+
+            if (sorting == Sorting.AscendingByDistance)
+                yield return GEORADIUS.Ascending;
+            else if (sorting == Sorting.DescendingByDistance)
+                yield return GEORADIUS.Descending;
+        }
 
         public override Visitor<IReadOnlyList<T>> ResponseStructure => ArrayExpectation.Singleton
             .Then(response => new ProjectingReadOnlyList<DataType, T>(response, format.Parse) as IReadOnlyList<T>);

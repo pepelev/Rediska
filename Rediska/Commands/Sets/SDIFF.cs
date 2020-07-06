@@ -22,14 +22,13 @@
             this.subtrahends = subtrahends;
         }
 
-        public override DataType Request => new PlainArray(
-            new PrefixedList<DataType>(
-                name,
-                new KeyList(
-                    new PrefixedList<Key>(
-                        minuend,
-                        subtrahends
-                    )
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new PrefixedList<BulkString>(
+            name,
+            new KeyList(
+                factory,
+                new PrefixedList<Key>(
+                    minuend,
+                    subtrahends
                 )
             )
         );

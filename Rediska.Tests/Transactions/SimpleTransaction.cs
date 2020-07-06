@@ -8,6 +8,8 @@ using Rediska.Utils;
 
 namespace Rediska.Tests.Transactions
 {
+    using System.Linq;
+
     public sealed class SimpleTransaction : Transaction
     {
         private readonly BulkConnection connection;
@@ -30,7 +32,11 @@ namespace Rediska.Tests.Transactions
         private (SimpleQueuedCommand<T>, Resource<Connection.Response>) EnqueueInternal<T>(Command<T> command)
         {
             var queuedCommand = new SimpleQueuedCommand<T>(command);
-            var response = connection.Send(command.Request);
+            var response = connection.Send(
+                new PlainArray(
+                    command.Request(BulkStringFactory.Plain).ToList()
+                )
+            );
             return (queuedCommand, response);
         }
 

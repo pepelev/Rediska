@@ -1,11 +1,11 @@
 ﻿namespace Rediska.Commands.Hashes
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Protocol;
     using Protocol.Visitors;
-    using Utility;
 
-    public sealed class HSCAN : Command<ScanResult<HashEntry>>
+    public sealed class HSCAN : Command<ScanResult<(BulkString Field, BulkString Value)>>
     {
         private static readonly PlainBulkString name = new PlainBulkString("HSCAN");
         private readonly Key key;
@@ -22,7 +22,7 @@
         }
 
         public HSCAN(Key key, Cursor cursor, Match match)
-            : this(key, cursor, match, ScanCount.None)
+            : this(key, cursor, match, ScanCount.Default)
         {
         }
 
@@ -32,19 +32,22 @@
         }
 
         public HSCAN(Key key, Cursor cursor)
-            : this(key, cursor, Match.All, ScanCount.None)
+            : this(key, cursor, Match.All, ScanCount.Default)
         {
         }
 
-        public override DataType Request => new ScanRequest(Prefix, match, count);
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => Prefix(factory)
+            .Concat(match.Arguments(factory))
+            .Concat(count.Arguments(factory));
 
-        private IReadOnlyList<BulkString> Prefix => new[]
+        public override Visitor<ScanResult<(BulkString Field, BulkString Value)>> ResponseStructure =>
+            ScanResultVisitor.HashEntryList;
+
+        private IEnumerable<BulkString> Prefix(BulkStringFactory factory) => new[]
         {
             name,
-            key.ToBulkString(),
-            cursor.ToBulkString()
+            key.ToBulkString(factory),
+            cursor.ToBulkString(factory)
         };
-
-        public override Visitor<ScanResult<HashEntry>> ResponseStructure => ScanResultVisitor.HashEntryList;
     }
 }

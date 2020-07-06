@@ -1,12 +1,29 @@
-﻿using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-
-namespace Rediska.Commands
+﻿namespace Rediska.Commands
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using Protocol;
+    using Protocol.Visitors;
+
     public abstract class Command<T>
     {
-        public abstract DataType Request { get; }
         public abstract Visitor<T> ResponseStructure { get; }
-        public override string ToString() => Request.Accept(CommandPrintVisitor.Singleton);
+        public abstract IEnumerable<BulkString> Request(BulkStringFactory factory);
+        public override string ToString() => string.Join(" ", Arguments());
+
+        private IEnumerable<string> Arguments() => Request(BulkStringFactory.Plain)
+            .Select(
+                bulkString =>
+                {
+                    var text = bulkString.ToString();
+                    foreach (var @char in text)
+                    {
+                        if (char.IsWhiteSpace(@char) || char.IsControl(@char))
+                            return $"'{text.Replace("'", "\\'")}'";
+                    }
+
+                    return text;
+                }
+            );
     }
 }

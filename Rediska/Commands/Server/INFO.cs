@@ -13,6 +13,7 @@
         public const string DefaultSection = "default";
         public const string AllSections = "all";
         private static readonly PlainBulkString name = new PlainBulkString("INFO");
+        private static readonly PlainBulkString[] defaultRequest = {name};
         private readonly string section;
 
         public INFO(string section = DefaultSection)
@@ -20,9 +21,12 @@
             this.section = section ?? throw new ArgumentNullException(nameof(section));
         }
 
-        public override DataType Request => section == DefaultSection
-            ? new PlainArray(name)
-            : new PlainArray(name, new PlainBulkString(section));
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
+        {
+            return section == DefaultSection
+                ? defaultRequest
+                : new[] {name, factory.Utf8(section)};
+        }
 
         public override Visitor<SectionList> ResponseStructure => BulkStringExpectation.Singleton
             .Then(response => new SectionList(response.ToString()));
@@ -89,9 +93,9 @@
                 this.properties = properties;
             }
 
+            public string Name { get; }
             public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => properties.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-            public string Name { get; }
 
             public override string ToString()
             {

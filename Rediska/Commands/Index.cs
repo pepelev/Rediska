@@ -6,12 +6,21 @@
 
     public readonly struct Index : IEquatable<Index>
     {
+        public static Index Start => FromStart(0);
+        public static Index End => FromEnd(0);
+
         public Index(long value)
         {
             Value = value;
         }
 
-        public static Index Start => FromStart(0);
+        public long Value { get; }
+        public bool IsFromStart => Value >= 0;
+        public bool IsFromEnd => !IsFromStart;
+        public bool Equals(Index other) => Value == other.Value;
+        public static bool operator ==(Index left, Index right) => left.Equals(right);
+        public static implicit operator Index(long value) => new Index(value);
+        public static bool operator !=(Index left, Index right) => !left.Equals(right);
 
         public static Index FromStart(long index)
         {
@@ -28,8 +37,6 @@
             return new Index(index);
         }
 
-        public static Index End => FromEnd(0);
-
         public static Index FromEnd(long index)
         {
             if (index < 0)
@@ -45,16 +52,9 @@
             return new Index(checked(-index - 1));
         }
 
-        public long Value { get; }
-        public bool IsFromStart => Value >= 0;
-        public bool IsFromEnd => !IsFromStart;
-        public static implicit operator Index(long value) => new Index(value);
-        public bool Equals(Index other) => Value == other.Value;
         public override bool Equals(object obj) => obj is Index other && Equals(other);
         public override int GetHashCode() => Value.GetHashCode();
-        public static bool operator ==(Index left, Index right) => left.Equals(right);
-        public static bool operator !=(Index left, Index right) => !left.Equals(right);
         public override string ToString() => Value.ToString(CultureInfo.InvariantCulture);
-        public BulkString ToBulkString() => Value.ToBulkString();
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Value);
     }
 }

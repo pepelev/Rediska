@@ -1,5 +1,6 @@
-﻿namespace Rediska.Commands.Utility
+﻿namespace Rediska.Commands.Auxiliary
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
     using Utils;
@@ -18,7 +19,7 @@
             this.command = command;
         }
 
-        public override DataType Request => command.Request;
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => command.Request(factory);
         public override Visitor<None> ResponseStructure => ResponseIgnoring.Structure;
     }
 }

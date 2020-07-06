@@ -5,6 +5,10 @@
 
     public sealed class Unit : IEquatable<Unit>
     {
+        public static Unit Meter { get; } = new Unit(new PlainBulkString("m"));
+        public static Unit Kilometer { get; } = new Unit(new PlainBulkString("km"));
+        public static Unit Mile { get; } = new Unit(new PlainBulkString("mi"));
+        public static Unit Feet { get; } = new Unit(new PlainBulkString("ft"));
         private readonly BulkString content;
 
         public Unit(BulkString content)
@@ -23,15 +27,11 @@
             return content.Equals(other.content);
         }
 
-        public override bool Equals(object obj) => ReferenceEquals(this, obj) || obj is Unit other && Equals(other);
-        public override int GetHashCode() => content.GetHashCode();
         public static bool operator ==(Unit left, Unit right) => Equals(left, right);
         public static bool operator !=(Unit left, Unit right) => !Equals(left, right);
+        public override bool Equals(object obj) => ReferenceEquals(this, obj) || obj is Unit other && Equals(other);
+        public override int GetHashCode() => content.GetHashCode();
         public BulkString ToBulkString() => content;
         public override string ToString() => content.ToString();
-        public static Unit Meter { get; } = new Unit(new PlainBulkString("m"));
-        public static Unit Kilometer { get; } = new Unit(new PlainBulkString("km"));
-        public static Unit Mile { get; } = new Unit(new PlainBulkString("mi"));
-        public static Unit Feet { get; } = new Unit(new PlainBulkString("ft"));
     }
 }

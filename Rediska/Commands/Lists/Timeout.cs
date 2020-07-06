@@ -22,6 +22,11 @@
         }
 
         public long Seconds { get; }
+        public bool Equals(Timeout other) => Seconds == other.Seconds;
+        public static bool operator ==(Timeout left, Timeout right) => left.Equals(right);
+        public static explicit operator Timeout(long value) => new Timeout(value);
+        public static implicit operator Timeout(uint value) => new Timeout(value);
+        public static bool operator !=(Timeout left, Timeout right) => !left.Equals(right);
 
         public static Timeout FromSeconds(long seconds)
         {
@@ -39,7 +44,7 @@
             return new Timeout(seconds);
         }
 
-        public BulkString ToBulkString() => Seconds.ToBulkString();
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Seconds);
 
         public override string ToString()
         {
@@ -53,12 +58,7 @@
             return duration.ToString(generalShort, CultureInfo.InvariantCulture);
         }
 
-        public static explicit operator Timeout(long value) => new Timeout(value);
-        public static implicit operator Timeout(uint value) => new Timeout(value);
-        public bool Equals(Timeout other) => Seconds == other.Seconds;
         public override bool Equals(object obj) => obj is Timeout other && Equals(other);
         public override int GetHashCode() => Seconds.GetHashCode();
-        public static bool operator ==(Timeout left, Timeout right) => left.Equals(right);
-        public static bool operator !=(Timeout left, Timeout right) => !left.Equals(right);
     }
 }

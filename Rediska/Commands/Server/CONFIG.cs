@@ -1,8 +1,6 @@
 ﻿namespace Rediska.Commands.Server
 {
     using Protocol;
-    using Protocol.Visitors;
-    using Utils;
 
     public static partial class CONFIG
     {

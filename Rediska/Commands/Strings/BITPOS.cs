@@ -1,6 +1,7 @@
 ﻿namespace Rediska.Commands.Strings
 {
     using System;
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -30,34 +31,40 @@
             this.end = end;
         }
 
-        private BulkString Bit => bit
-            ? BulkStringConstants.One
-            : BulkStringConstants.Zero;
-
-        public override DataType Request => (start, end) switch
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
-            (_, {} endValue) => new PlainArray(
-                name,
-                key.ToBulkString(),
-                Bit,
-                start.ToBulkString(),
-                endValue.ToBulkString()
-            ),
-            (var startValue, null) when startValue == Index.Start => new PlainArray(
-                name,
-                key.ToBulkString(),
-                Bit
-            ),
-            _ => new PlainArray(
-                name,
-                key.ToBulkString(),
-                Bit,
-                start.ToBulkString()
-            )
-        };
+            return (start, end) switch
+            {
+                (_, { } endValue) => new[]
+                {
+                    name,
+                    key.ToBulkString(factory),
+                    Bit,
+                    start.ToBulkString(factory),
+                    endValue.ToBulkString(factory)
+                },
+                (var startValue, null) when startValue == Index.Start => new[]
+                {
+                    name,
+                    key.ToBulkString(factory),
+                    Bit
+                },
+                _ => new[]
+                {
+                    name,
+                    key.ToBulkString(factory),
+                    Bit,
+                    start.ToBulkString(factory)
+                }
+            };
+        }
 
         public override Visitor<Response> ResponseStructure => IntegerExpectation.Singleton
             .Then(firstMatchingBitPosition => new Response(bit, end == null, firstMatchingBitPosition));
+
+        private BulkString Bit => bit
+            ? BulkStringConstants.One
+            : BulkStringConstants.Zero;
 
         public readonly struct Response
         {

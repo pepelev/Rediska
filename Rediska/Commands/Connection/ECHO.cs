@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Connection
 {
+    using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
@@ -17,10 +18,11 @@
             this.message = message;
         }
 
-        public override DataType Request => new PlainArray(
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
+        {
             name,
-            new PlainBulkString(message)
-        );
+            factory.Utf8(message)
+        };
 
         public override Visitor<string> ResponseStructure => responseStructure;
     }
