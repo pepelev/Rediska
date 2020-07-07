@@ -13,7 +13,6 @@
         private static readonly PlainBulkString copySegment = new PlainBulkString("COPY");
         private static readonly PlainBulkString replaceSegment = new PlainBulkString("REPLACE");
         private static readonly PlainBulkString keysSegment = new PlainBulkString("KEYS");
-        private static readonly PlainBulkString emptyKeySegment = new PlainBulkString("");
         private readonly IPEndPoint ipEndPoint;
         private readonly IReadOnlyList<Key> keys;
         private readonly DatabaseNumber destinationDb;
@@ -81,7 +80,7 @@
             yield return factory.Create(ipEndPoint.Port);
             yield return keys.Count == 1
                 ? keys[0].ToBulkString()
-                : emptyKeySegment;
+                : PlainBulkString.Empty;
 
             yield return factory.Create(destinationDb.Value);
             yield return factory.Create(timeout.Milliseconds);
