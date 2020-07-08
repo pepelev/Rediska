@@ -26,7 +26,8 @@
                 ZRANGE.WITHSCORES.withscores
             };
 
-            public override Visitor<IReadOnlyList<(BulkString Member, double Score)>> ResponseStructure => ZRANGE.WITHSCORES.responseStructure;
+            public override Visitor<IReadOnlyList<(BulkString Member, double Score)>> ResponseStructure =>
+                CompositeVisitors.SortedSetEntryList;
         }
     }
 }

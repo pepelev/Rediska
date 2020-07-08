@@ -28,6 +28,15 @@
         public ZADD(Key key, Mode mode, IReadOnlyList<(double Score, BulkString Member)> members)
         {
             ValidateMode(mode);
+            if (members.Count == 0)
+                throw new ArgumentException("Must contain elements", nameof(members));
+
+            foreach (var (score, _) in members)
+            {
+                if (double.IsNaN(score))
+                    throw new ArgumentException("Score must be regular floating point value or infinity", nameof(members));
+            }
+
             this.key = key;
             this.mode = mode;
             this.members = members;

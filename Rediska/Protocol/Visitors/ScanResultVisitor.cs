@@ -9,6 +9,11 @@ namespace Rediska.Protocol.Visitors
 
     public static class ScanResultVisitor
     {
+        public static ScanResultVisitor<(BulkString Member, double Score)> SortedSetEntryList { get; } =
+            new ScanResultVisitor<(BulkString Member, double Score)>(
+                CompositeVisitors.SortedSetEntryList
+            );
+
         public static ScanResultVisitor<BulkString> BulkStringList { get; } = new ScanResultVisitor<BulkString>(
             CompositeVisitors.BulkStringList
         );

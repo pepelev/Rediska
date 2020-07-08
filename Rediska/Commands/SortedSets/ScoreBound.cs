@@ -4,6 +4,12 @@
     using System.Globalization;
     using Protocol;
 
+    public readonly struct LexBound
+    {
+        private readonly Kind kind;
+        private readonly BulkString value;
+    }
+
     public readonly struct ScoreBound
     {
         public static ScoreBound PositiveInfinity => new ScoreBound(Kind.PositiveInfinity, 0.0);

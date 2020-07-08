@@ -67,5 +67,15 @@
                     return (IReadOnlyList<(BulkString Field, BulkString Value)>) pairs;
                 }
             );
+
+        public static Visitor<IReadOnlyList<(BulkString Member, double Score)>> SortedSetEntryList { get; } =
+            BulkStringList.Then(
+                list => new ProjectingReadOnlyList<
+                    (BulkString Member, BulkString Score),
+                    (BulkString Member, double Score)>(
+                    new PairsList<BulkString>(list),
+                    pair => (pair.Member, pair.Score.ToDouble())
+                ) as IReadOnlyList<(BulkString Member, double Score)>
+            );
     }
 }

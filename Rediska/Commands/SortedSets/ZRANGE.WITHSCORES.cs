@@ -11,18 +11,6 @@
         {
             internal static readonly PlainBulkString withscores = new PlainBulkString("WITHSCORES");
 
-            internal static readonly Visitor<IReadOnlyList<(BulkString Member, double Score)>> responseStructure
-                = CompositeVisitors.BulkStringList.Then(
-                    list => new ProjectingReadOnlyList<
-                        (BulkString Member, BulkString Score),
-                        (BulkString Member, double Score)>(
-                        new PairsList<BulkString>(
-                            list
-                        ),
-                        pair => (pair.Member, pair.Score.ToDouble())
-                    ) as IReadOnlyList<(BulkString Member, double Score)>
-                );
-
             private readonly Key key;
             private readonly Range range;
 
@@ -41,7 +29,8 @@
                 withscores
             };
 
-            public override Visitor<IReadOnlyList<(BulkString Member, double Score)>> ResponseStructure => responseStructure;
+            public override Visitor<IReadOnlyList<(BulkString Member, double Score)>> ResponseStructure =>
+                CompositeVisitors.SortedSetEntryList;
         }
     }
 }

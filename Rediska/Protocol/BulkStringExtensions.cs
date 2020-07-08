@@ -5,6 +5,7 @@ namespace Rediska.Protocol
     using System;
     using System.Globalization;
     using System.Text;
+    using Commands.SortedSets;
 
     public static class BulkStringExtensions
     {
@@ -23,6 +24,12 @@ namespace Rediska.Protocol
             if (@string.IsNull)
                 return null;
 
+            if (ReferenceEquals(@string, Bounds.PositiveInfinity))
+                return double.PositiveInfinity;
+
+            if (ReferenceEquals(@string, Bounds.NegativeInfinity))
+                return double.NegativeInfinity;
+
             using var stream = new MemoryStream();
             @string.WriteContent(stream);
             var doubleString = Encoding.UTF8.GetString(
@@ -30,6 +37,13 @@ namespace Rediska.Protocol
                 0,
                 checked((int) stream.Length)
             );
+
+            // todo move to constants
+            if (doubleString == "+inf")
+                return double.PositiveInfinity;
+            if (doubleString == "-inf")
+                return double.NegativeInfinity;
+
             return double.Parse(doubleString, NumberStyles.Float, CultureInfo.InvariantCulture);
         }
 

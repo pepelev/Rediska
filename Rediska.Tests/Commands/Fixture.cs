@@ -66,6 +66,9 @@
 
         private async Task CleanupAsync()
         {
+            if (keys.Count == 0)
+                return;
+
             var command = new UNLINK(keys);
             await connection.ExecuteAsync(command).ConfigureAwait(false);
         }

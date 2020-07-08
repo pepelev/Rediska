@@ -13,12 +13,9 @@
         private readonly Match match;
         private readonly ScanCount count;
 
-        public HSCAN(Key key, Cursor cursor, Match match, ScanCount count)
+        public HSCAN(Key key, Cursor cursor)
+            : this(key, cursor, Match.All, ScanCount.Default)
         {
-            this.key = key;
-            this.cursor = cursor;
-            this.match = match;
-            this.count = count;
         }
 
         public HSCAN(Key key, Cursor cursor, Match match)
@@ -31,9 +28,12 @@
         {
         }
 
-        public HSCAN(Key key, Cursor cursor)
-            : this(key, cursor, Match.All, ScanCount.Default)
+        public HSCAN(Key key, Cursor cursor, Match match, ScanCount count)
         {
+            this.key = key;
+            this.cursor = cursor;
+            this.match = match;
+            this.count = count;
         }
 
         public override IEnumerable<BulkString> Request(BulkStringFactory factory) => Prefix(factory)

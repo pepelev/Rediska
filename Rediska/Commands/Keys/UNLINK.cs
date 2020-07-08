@@ -1,5 +1,6 @@
 ﻿namespace Rediska.Commands.Keys
 {
+    using System;
     using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
@@ -18,6 +19,9 @@
 
         public UNLINK(IReadOnlyList<Key> keys)
         {
+            if (keys.Count == 0)
+                throw new ArgumentException("Must contain elements", nameof(keys));
+
             this.keys = keys;
         }
 
