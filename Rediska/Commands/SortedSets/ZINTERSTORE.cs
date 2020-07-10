@@ -14,6 +14,10 @@
         private static readonly PlainBulkString aggregate = new PlainBulkString("AGGREGATE");
         private static readonly PlainBulkString min = new PlainBulkString("MIN");
         private static readonly PlainBulkString max = new PlainBulkString("MAX");
+
+        private static readonly Visitor<Response> responseStructure = IntegerExpectation.Singleton
+            .Then(numberOfMembers => new Response(numberOfMembers));
+
         private readonly Key destination;
         private readonly IReadOnlyList<Key> keys;
         private readonly IReadOnlyList<double> weights;
@@ -32,7 +36,8 @@
                 destination,
                 new ProjectingReadOnlyList<(double Weight, Key Key), Key>(sources, pair => pair.Key),
                 new ProjectingReadOnlyList<(double Weight, Key Key), double>(sources, pair => pair.Weight),
-                aggregation)
+                aggregation
+            )
         {
         }
 
@@ -47,24 +52,6 @@
             this.keys = keys;
             this.weights = weights;
             this.aggregation = aggregation;
-        }
-
-        private static void ValidateAggregation(Aggregation aggregation)
-        {
-            switch (aggregation)
-            {
-                case Aggregation.Sum:
-                case Aggregation.Minimum:
-                case Aggregation.Maximum:
-                    break;
-                default:
-                {
-                    throw new ArgumentException(
-                        $"Must be Sum, Minimum or Maximum, but {aggregation} found",
-                        nameof(aggregation)
-                    );
-                }
-            }
         }
 
         public override IEnumerable<BulkString> Request(BulkStringFactory factory)
@@ -99,8 +86,25 @@
             }
         }
 
-        public override Visitor<Response> ResponseStructure => IntegerExpectation.Singleton
-            .Then(numberOfMembers => new Response(numberOfMembers));
+        public override Visitor<Response> ResponseStructure => responseStructure;
+
+        private static void ValidateAggregation(Aggregation aggregation)
+        {
+            switch (aggregation)
+            {
+                case Aggregation.Sum:
+                case Aggregation.Minimum:
+                case Aggregation.Maximum:
+                    break;
+                default:
+                {
+                    throw new ArgumentException(
+                        $"Must be Sum, Minimum or Maximum, but {aggregation} found",
+                        nameof(aggregation)
+                    );
+                }
+            }
+        }
 
         public readonly struct Response
         {
