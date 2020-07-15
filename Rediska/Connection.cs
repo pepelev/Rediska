@@ -6,7 +6,6 @@
 
     public abstract class Connection
     {
-        // todo поддержать отмену
         public abstract Task<Response> SendAsync(DataType command, CancellationToken token);
 
         public abstract class Response
