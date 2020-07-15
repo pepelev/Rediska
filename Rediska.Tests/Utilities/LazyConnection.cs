@@ -2,6 +2,7 @@
 {
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading;
     using System.Threading.Tasks;
     using Protocol;
     using Utils;
@@ -16,7 +17,7 @@
             this.endPoint = endPoint;
         }
 
-        public override async Task<Resource<Response>> SendAsync(DataType command)
+        public override async Task<Response> SendAsync(DataType command, CancellationToken token)
         {
             if (connection == null)
             {
@@ -30,7 +31,7 @@
                 );
             }
 
-            return await connection.SendAsync(command).ConfigureAwait(false);
+            return await connection.SendAsync(command, token).ConfigureAwait(false);
         }
 
         public override string ToString() => connection == null

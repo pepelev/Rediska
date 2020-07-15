@@ -6,6 +6,7 @@ using Rediska.Commands;
 namespace Rediska.Tests.Tests
 {
     using System.Linq;
+    using System.Threading;
     using Protocol;
     using Rediska.Commands.Connection;
 
@@ -26,8 +27,8 @@ namespace Rediska.Tests.Tests
             var request = new PlainArray(
                 command.Request(BulkStringFactory.Plain).ToList()
             );
-            using var response = await sut.SendAsync(request).ConfigureAwait(false);
-            var dataType = await response.Value.ReadAsync().ConfigureAwait(false);
+            var response = await sut.SendAsync(request, CancellationToken.None).ConfigureAwait(false);
+            var dataType = await response.ReadAsync().ConfigureAwait(false);
             var echo = dataType.Accept(command.ResponseStructure);
             echo.Should().Be("foo");
         }

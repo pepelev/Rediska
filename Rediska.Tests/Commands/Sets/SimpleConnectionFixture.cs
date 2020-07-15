@@ -52,10 +52,7 @@
                 await connection.Value.ExecuteAsync(new DEL(keys.ToList())).ConfigureAwait(false);
             }
 
-            using (var resource = connection)
-            {
-                
-            }
+            connection.Dispose();
         }
     }
 }

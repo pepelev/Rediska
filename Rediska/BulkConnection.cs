@@ -1,6 +1,7 @@
 ﻿namespace Rediska
 {
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using Protocol;
     using Utils;
@@ -28,8 +29,7 @@
             for (var i = 0; i < commands.Count; i++)
             {
                 var command = commands[i];
-                // todo dispose
-                var response = await connection.SendAsync(command.Request).ConfigureAwait(false);
+                var response = await connection.SendAsync(command.Request, CancellationToken.None).ConfigureAwait(false);
                 command.Response.SetResponse(response);
             }
 

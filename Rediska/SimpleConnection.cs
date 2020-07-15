@@ -11,6 +11,8 @@ using Rediska.Utils;
 
 namespace Rediska
 {
+    using System.Threading;
+
     public sealed class SimpleConnection : Connection
     {
         private readonly Stream stream;
@@ -30,7 +32,7 @@ namespace Rediska
             this.stream = stream;
         }
 
-        public override async Task<Resource<Response>> SendAsync(DataType command)
+        public override async Task<Response> SendAsync(DataType command, CancellationToken token)
         {
             var bulkWriteStream = new BulkWriteStream(
                 stream,
@@ -43,11 +45,9 @@ namespace Rediska
                 )
             );
             command.Write(output);
-            await bulkWriteStream.FlushAsync().ConfigureAwait(false);
+            await bulkWriteStream.FlushAsync(token).ConfigureAwait(false);
             var input = await ReadResponseAsync().ConfigureAwait(false);
-            return new Resource<Response>(
-                new InputResponse(input)
-            );
+            return new InputResponse(input);
         }
 
         private async Task<Input> ReadResponseAsync()

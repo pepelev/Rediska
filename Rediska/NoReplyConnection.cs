@@ -6,6 +6,7 @@ using Rediska.Utils;
 
 namespace Rediska
 {
+    using System.Threading;
     using Commands;
     using Commands.Auxiliary;
 
@@ -20,7 +21,7 @@ namespace Rediska
             this.stream = stream;
         }
 
-        public override async Task<Resource<Response>> SendAsync(DataType command)
+        public override async Task<Response> SendAsync(DataType command, CancellationToken token)
         {
             var bulkWriteStream = new BulkWriteStream(
                 stream,
@@ -33,7 +34,7 @@ namespace Rediska
                 )
             );
             command.Write(output);
-            await bulkWriteStream.FlushAsync().ConfigureAwait(false);
+            await bulkWriteStream.FlushAsync(token).ConfigureAwait(false);
             return response;
         }
     }

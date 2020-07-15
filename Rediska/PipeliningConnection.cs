@@ -28,7 +28,7 @@
             this.stream = stream;
         }
 
-        public override async Task<Resource<Response>> SendAsync(DataType command)
+        public override async Task<Response> SendAsync(DataType command, CancellationToken token)
         {
             var temporaryStream = new MemoryStream();
             command.Write(new StreamOutput(temporaryStream));

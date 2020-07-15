@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading;
     using System.Threading.Tasks;
     using FluentAssertions;
     using NUnit.Framework;
@@ -40,18 +41,20 @@
             var firstCommand = new ECHO("foo");
             var secondCommand = new ECHO("bar");
 
-            using var firstResponse = await sut.SendAsync(
+            var firstResponse = await sut.SendAsync(
                 new PlainArray(
                     firstCommand.Request(BulkStringFactory.Plain).ToList()
-                )
+                ),
+                CancellationToken.None
             ).ConfigureAwait(false);
-            using var secondResponse = await sut.SendAsync(
+            var secondResponse = await sut.SendAsync(
                 new PlainArray(
                     secondCommand.Request(BulkStringFactory.Plain).ToList()
-                )
+                ),
+                CancellationToken.None
             ).ConfigureAwait(false);
-            var second = await secondResponse.Value.ReadAsync().ConfigureAwait(false);
-            var first = await firstResponse.Value.ReadAsync().ConfigureAwait(false);
+            var second = await secondResponse.ReadAsync().ConfigureAwait(false);
+            var first = await firstResponse.ReadAsync().ConfigureAwait(false);
             second.Accept(secondCommand.ResponseStructure).Should().Be("bar");
             first.Accept(firstCommand.ResponseStructure).Should().Be("foo");
         }
