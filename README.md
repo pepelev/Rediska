@@ -1,12 +1,28 @@
 # Rediska
 
-Rediska is [Redis](https://redis.io/) client for .NET. Focus of this library is flexibility and usability.
+Rediska is [Redis](https://redis.io/) client for .NET with a focus on flexibility and extensibility.
 
 ![Rediska](logo.svg)
 
 ## Features
 
+- [Keys](https://redis.io/commands#generic), [Strings](https://redis.io/commands#string), [Transactions](https://redis.io/commands#transactions), [Sets](https://redis.io/commands#set), [Server](https://redis.io/commands#server), [Lists](https://redis.io/commands#list), [HyperLogLog](https://redis.io/commands#hyperloglog), [Hashes](https://redis.io/commands#hash) commands
+- Async API
+- Easy way to handle command response differently
+- Easy way to write custom commands, e.g. for [Redis modules](https://redis.io/modules)
+- RESP 2 support, allows to build a proxy
+
+### Plans (not implemented yet)
+
+- Full set of [commands](https://redis.io/commands)
+- [Pipelining](https://redis.io/topics/pipelining)
+- [PubSub]() support 
+- [Redis Cluster](https://redis.io/topics/cluster-tutorial) support (not implemented yet)
+- [Redis Client Side Caching](https://redis.io/topics/client-side-caching) support (not implemented yet)
+
 ## Getting started
+
+NuGet package will be added soon.
 
 ## Project status
 
