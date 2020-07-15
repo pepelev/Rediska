@@ -16,9 +16,9 @@ Rediska is [Redis](https://redis.io/) client for .NET with a focus on flexibilit
 
 - Full set of [commands](https://redis.io/commands)
 - [Pipelining](https://redis.io/topics/pipelining)
-- [PubSub]() support 
-- [Redis Cluster](https://redis.io/topics/cluster-tutorial) support (not implemented yet)
-- [Redis Client Side Caching](https://redis.io/topics/client-side-caching) support (not implemented yet)
+- [Pub/Sub](https://redis.io/topics/pubsub) 
+- [Redis Cluster](https://redis.io/topics/cluster-tutorial)
+- [Redis Client Side Caching](https://redis.io/topics/client-side-caching)
 
 ## Getting started
 
