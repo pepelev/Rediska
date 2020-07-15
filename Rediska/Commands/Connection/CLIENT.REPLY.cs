@@ -1,4 +1,4 @@
-﻿namespace Rediska.Commands.Server
+﻿namespace Rediska.Commands.Connection
 {
     using System.Collections.Generic;
     using Protocol;

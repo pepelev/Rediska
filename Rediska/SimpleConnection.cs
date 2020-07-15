@@ -46,17 +46,17 @@ namespace Rediska
             );
             command.Write(output);
             await bulkWriteStream.FlushAsync(token).ConfigureAwait(false);
-            var input = await ReadResponseAsync().ConfigureAwait(false);
+            var input = await ReadResponseAsync(token).ConfigureAwait(false);
             return new InputResponse(input);
         }
 
-        private async Task<Input> ReadResponseAsync()
+        private async Task<Input> ReadResponseAsync(CancellationToken token)
         {
             var response = new TemporaryResponse();
             var buffer = new byte[1024 * 80];
             while (true)
             {
-                var count = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+                var count = await stream.ReadAsync(buffer, 0, buffer.Length, token).ConfigureAwait(false);
                 var inputs = response.Feed(new ArraySegment<byte>(buffer, 0, count));
                 if (inputs.Count > 0)
                 {

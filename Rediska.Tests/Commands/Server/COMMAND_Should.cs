@@ -6,7 +6,6 @@
     using Fixtures;
     using NUnit.Framework;
     using Rediska.Commands.Server;
-    using Sets;
 
     [TestFixtureSource(typeof(ConnectionCollection))]
     public class COMMAND_Should

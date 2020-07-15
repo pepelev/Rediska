@@ -79,11 +79,11 @@
             yield return factory.Utf8(ipEndPoint.ToString());
             yield return factory.Create(ipEndPoint.Port);
             yield return keys.Count == 1
-                ? keys[0].ToBulkString()
+                ? keys[0].ToBulkString(factory)
                 : PlainBulkString.Empty;
 
             yield return factory.Create(destinationDb.Value);
-            yield return factory.Create(timeout.Milliseconds);
+            yield return timeout.ToBulkString(factory);
             if (sourceKeyBehavior == SourceKeyBehavior.Copy)
             {
                 yield return copySegment;

@@ -21,6 +21,6 @@
         public override bool Equals(object obj) => obj is DatabaseNumber other && Equals(other);
         public override int GetHashCode() => Value.GetHashCode();
         public override string ToString() => Value.ToString(CultureInfo.InvariantCulture);
-        public BulkString ToBulkString() => Value.ToBulkString();
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Value);
     }
 }

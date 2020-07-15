@@ -10,11 +10,11 @@
 
         public MillisecondsTimeout(long milliseconds)
         {
-            if (milliseconds <= 0)
+            if (milliseconds < 0)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(milliseconds),
-                    "Seconds count must be non-negative"
+                    "Milliseconds count must be non-negative"
                 );
             }
 
@@ -46,7 +46,7 @@
             return new MillisecondsTimeout(seconds * 1_000);
         }
 
-        public BulkString ToBulkString() => Milliseconds.ToBulkString();
+        public BulkString ToBulkString(BulkStringFactory factory) => factory.Create(Milliseconds);
 
         public override string ToString()
         {

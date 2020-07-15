@@ -29,7 +29,7 @@
         {
             name,
             factory.Create(numReplicas),
-            factory.Create(timeout.Milliseconds)
+            timeout.ToBulkString(factory)
         };
 
         public override Visitor<long> ResponseStructure => IntegerExpectation.Singleton;

@@ -32,7 +32,7 @@
         public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return name;
-            yield return key.ToBulkString();
+            yield return key.ToBulkString(factory);
             foreach (var argument in by.Arguments(factory))
             {
                 yield return argument;
