@@ -1,5 +1,6 @@
-﻿namespace Rediska.Commands.Auxiliary
+﻿namespace Rediska.Commands
 {
+    using Auxiliary;
     using Protocol.Visitors;
     using Utils;
 
