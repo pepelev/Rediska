@@ -25,12 +25,9 @@
             this.unit = unit;
         }
 
-        public override IEnumerable<BulkString> Request(BulkStringFactory factory)
-        {
-            return unit == Unit.Meter
-                ? ShortRequest
-                : FullRequest;
-        }
+        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => unit == Unit.Meter
+            ? ShortRequest(factory)
+            : FullRequest(factory);
 
         public override Visitor<Distance?> ResponseStructure => BulkStringExpectation.Singleton
             .Then(
@@ -41,20 +38,20 @@
                 }
             );
 
-        private BulkString[] ShortRequest => new[]
+        private BulkString[] ShortRequest(BulkStringFactory factory) => new[]
         {
             name,
-            key.ToBulkString(),
-            member.ToBulkString(),
-            anotherMember.ToBulkString()
+            key.ToBulkString(factory),
+            member.ToBulkString(factory),
+            anotherMember.ToBulkString(factory)
         };
 
-        private BulkString[] FullRequest => new[]
+        private BulkString[] FullRequest(BulkStringFactory factory) => new[]
         {
             name,
-            key.ToBulkString(),
-            member.ToBulkString(),
-            anotherMember.ToBulkString(),
+            key.ToBulkString(factory),
+            member.ToBulkString(factory),
+            anotherMember.ToBulkString(factory),
             unit.ToBulkString()
         };
     }

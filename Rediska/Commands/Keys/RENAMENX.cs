@@ -20,8 +20,8 @@
         public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
         {
             name,
-            key.ToBulkString(),
-            newKey.ToBulkString()
+            key.ToBulkString(factory),
+            newKey.ToBulkString(factory)
         };
 
         // todo parse value and error

@@ -22,10 +22,10 @@
         {
             yield return name;
             yield return factory.Utf8(script);
-            yield return keys.Count.ToBulkString();
+            yield return factory.Create(keys.Count);
             foreach (var key in keys)
             {
-                yield return key.ToBulkString();
+                yield return key.ToBulkString(factory);
             }
 
             foreach (var argument in arguments)

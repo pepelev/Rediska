@@ -21,7 +21,7 @@
         public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
         {
             name,
-            key.ToBulkString(),
+            key.ToBulkString(factory),
             factory.Create(destinationDb.Value)
         };
 

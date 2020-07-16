@@ -25,7 +25,7 @@
             yield return factory.Create(keys.Count);
             foreach (var key in keys)
             {
-                yield return key.ToBulkString();
+                yield return key.ToBulkString(factory);
             }
 
             foreach (var argument in arguments)

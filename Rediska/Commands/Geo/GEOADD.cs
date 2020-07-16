@@ -28,12 +28,12 @@
         public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return name;
-            yield return key.ToBulkString();
+            yield return key.ToBulkString(factory);
             foreach (var item in items)
             {
                 yield return factory.Create(item.Location.Longitude);
                 yield return factory.Create(item.Location.Latitude);
-                yield return item.Name.ToBulkString();
+                yield return item.Name.ToBulkString(factory);
             }
         }
 

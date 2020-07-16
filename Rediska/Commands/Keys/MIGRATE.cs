@@ -104,7 +104,7 @@
                 yield return keysSegment;
                 foreach (var key in keys)
                 {
-                    yield return key.ToBulkString();
+                    yield return key.ToBulkString(factory);
                 }
             }
         }

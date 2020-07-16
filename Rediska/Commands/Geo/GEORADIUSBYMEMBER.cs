@@ -61,7 +61,7 @@
             public override IEnumerable<BulkString> Request(BulkStringFactory factory)
             {
                 yield return Name;
-                yield return key.ToBulkString();
+                yield return key.ToBulkString(factory);
                 yield return factory.Create(location.Longitude);
                 yield return factory.Create(location.Latitude);
                 yield return factory.Create(radius.Value);
@@ -75,7 +75,7 @@
                 else
                     yield return StoreDistance;
 
-                yield return target.ToBulkString();
+                yield return target.ToBulkString(factory);
             }
 
             public override Visitor<StoreResponse> ResponseStructure => IntegerExpectation.Singleton
@@ -114,8 +114,8 @@
         public override IEnumerable<BulkString> Request(BulkStringFactory factory)
         {
             yield return GEORADIUS.Name;
-            yield return key.ToBulkString();
-            yield return member.ToBulkString();
+            yield return key.ToBulkString(factory);
+            yield return member.ToBulkString(factory);
             yield return factory.Create(radius.Value);
             yield return radius.Unit.ToBulkString();
             foreach (var argument in format.AdditionalArguments)

@@ -19,7 +19,7 @@
         public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
         {
             name,
-            key.ToBulkString()
+            key.ToBulkString(factory)
         };
 
         public override Visitor<Response> ResponseStructure => responseStructure;

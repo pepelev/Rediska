@@ -16,7 +16,7 @@
             public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
             {
                 name,
-                destination.ToBulkString()
+                destination.ToBulkString(factory)
             };
 
             public override Visitor<Response> ResponseStructure { get; }
