@@ -13,6 +13,7 @@
     using Rediska.Commands.SortedSets;
     using Utilities;
     using static Rediska.Commands.SortedSets.ZADD.Mode;
+    using Range = Rediska.Commands.Range;
 
     [TestFixtureSource(typeof(ConnectionCollection))]
     public class ZADD_Should
