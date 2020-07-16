@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
-    using Utils;
 
     public static partial class CLIENT
     {
