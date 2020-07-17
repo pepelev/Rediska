@@ -11,7 +11,7 @@ namespace Rediska.Tests
         public void BeVerified()
         {
             var array = new PlainArray(
-                new PlainBulkString("bosya"),
+                new PlainBulkString("cat"),
                 new Integer(500)
             );
 
