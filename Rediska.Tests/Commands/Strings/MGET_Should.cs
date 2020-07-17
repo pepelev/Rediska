@@ -8,7 +8,6 @@
     using Protocol;
     using Rediska.Commands.Auxiliary;
     using Rediska.Commands.Strings;
-    using Sets;
 
     [TestFixtureSource(typeof(ConnectionCollection))]
     public sealed class MGET_Should

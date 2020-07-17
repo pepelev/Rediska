@@ -7,17 +7,11 @@
     using Protocol;
     using Rediska.Commands.Scripting;
     using Rediska.Commands.Strings;
+    using Array = System.Array;
 
     [TestFixtureSource(typeof(ConnectionCollection))]
     public class EVAL_Should
     {
-        private readonly Connection connection;
-
-        public EVAL_Should(Connection connection)
-        {
-            this.connection = connection;
-        }
-
         public static TestCaseData[] ReturnCases { get; } =
         {
             new TestCaseData("")
@@ -61,16 +55,24 @@
                 .SetName("Zero_When_False_Is_Returned"),
         };
 
+        private readonly Connection connection;
+
+        public EVAL_Should(Connection connection)
+        {
+            this.connection = connection;
+        }
+
         [Test]
         public async Task Run_Script_Server_Side()
         {
-            var command = new EVAL(@"
+            var command = new EVAL(
+                @"
 for i,key in ipairs(KEYS) do
     redis.call('SET', key, 'Hello ' .. key)
 end
 ",
-                new Key[] { "keys:1", "keys:2" },
-                System.Array.Empty<BulkString>()
+                new Key[] {"keys:1", "keys:2"},
+                Array.Empty<BulkString>()
             );
             await connection.ExecuteAsync(command).ConfigureAwait(false);
 
@@ -95,7 +97,7 @@ end
         public async Task Cause_Exists_To_Return_True()
         {
             const string script = "return redis.call('LOLWUT')";
-            var eval = new EVAL(script, System.Array.Empty<Key>(), System.Array.Empty<BulkString>());
+            var eval = new EVAL(script, Array.Empty<Key>(), Array.Empty<BulkString>());
             await connection.ExecuteAsync(eval).ConfigureAwait(false);
 
             var scriptHash = Sha1.Create(script);

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using NUnit.Framework;
-using Rediska.Commands.Keys;
-using Rediska.Tests.Fixtures;
-
-namespace Rediska.Tests.Commands.Keys
+﻿namespace Rediska.Tests.Commands.Keys
 {
-    using Protocol;
+    using System;
+    using System.Threading.Tasks;
+    using Fixtures;
+    using NUnit.Framework;
+    using Rediska.Commands.Keys;
 
     [TestFixtureSource(typeof(ConnectionCollection))]
     public sealed class UNLINK_Should

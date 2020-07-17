@@ -1,14 +1,13 @@
-﻿using System.Threading.Tasks;
-using FluentAssertions;
-using NUnit.Framework;
-using Rediska.Commands.Sets;
-using Rediska.Protocol;
-using Rediska.Protocol.Visitors;
-using Array = System.Array;
-
-namespace Rediska.Tests.Commands.Sets
+﻿namespace Rediska.Tests.Commands.Sets
 {
+    using System.Threading.Tasks;
     using Fixtures;
+    using FluentAssertions;
+    using NUnit.Framework;
+    using Protocol;
+    using Protocol.Visitors;
+    using Rediska.Commands.Sets;
+    using Array = System.Array;
 
     [TestFixtureSource(typeof(ConnectionCollection))]
     public sealed class SADD_Should

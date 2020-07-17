@@ -7,7 +7,6 @@
     using Protocol;
     using Rediska.Commands.Auxiliary;
     using Rediska.Commands.Strings;
-    using Sets;
 
     [TestFixtureSource(typeof(ConnectionCollection))]
     public sealed class GETBIT_Should
@@ -21,7 +20,7 @@
 
         [Test]
         [TestCase(-1L)]
-        [TestCase((long)uint.MaxValue + 1)]
+        [TestCase((long) uint.MaxValue + 1)]
         public async Task Deny_Out_Of_Range_Offsets(long offset)
         {
             var response = await connection.ExecuteAsync(

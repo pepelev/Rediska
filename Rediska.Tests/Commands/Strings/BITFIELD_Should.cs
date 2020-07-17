@@ -8,7 +8,7 @@
     using static Rediska.Commands.Strings.Offset;
     using static Rediska.Commands.Strings.Type;
 
-    // todo show what redis returns for zero operations 
+    // todo show what redis returns for zero operations
     // todo show what redis returns for zero size
     [TestFixtureSource(typeof(ConnectionCollection))]
     public sealed class BITFIELD_Should

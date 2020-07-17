@@ -1,7 +1,6 @@
 ﻿namespace Rediska.Tests.Commands.Utility
 {
     using System.Collections.Generic;
-    using System.Linq;
     using NUnit.Framework;
     using Protocol;
     using Rediska.Commands;

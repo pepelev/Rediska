@@ -29,18 +29,18 @@
             Case(new ZADD("key", AddMembersOnly, (10, "new-member"), (15, "another")), "ZADD key NX 10 new-member 15 another"),
         };
 
-        private static TestCaseData Case(ZADD command, string expectation)
-        {
-            var expectedBulkString = PlainCommand.Parse(expectation).Request(BulkStringFactory.Plain);
-            return new TestCaseData(command).Returns(expectedBulkString);
-        }
-
         private readonly Connection connection;
         private Fixture fixture;
 
         public ZADD_Should(Connection connection)
         {
             this.connection = connection;
+        }
+
+        private static TestCaseData Case(ZADD command, string expectation)
+        {
+            var expectedBulkString = PlainCommand.Parse(expectation).Request(BulkStringFactory.Plain);
+            return new TestCaseData(command).Returns(expectedBulkString);
         }
 
         [SetUp]
