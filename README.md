@@ -12,7 +12,7 @@ Rediska is [Redis](https://redis.io/) client for .NET with a focus on flexibilit
 - Async API
 - Easy way to handle command response differently
 - Easy way to write custom commands, e.g. for [Redis modules](https://redis.io/modules)
-- RESP 2 support, allows to build a proxy
+- RESP 2 support - allows to build a proxy
 
 ### Plans (not implemented yet)
 
