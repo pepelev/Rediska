@@ -12,7 +12,7 @@
         {
             yield return new TestFixtureData(
                 new LazyConnection(
-                    new IPEndPoint(IPAddress.Loopback, 6379)
+                    new IPEndPoint(IPAddress.Loopback, 50_605)
                 )
             ).SetArgDisplayNames("Redis-6-0-5");
         }
