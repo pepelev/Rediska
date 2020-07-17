@@ -8,6 +8,7 @@
     using Protocol;
     using Rediska.Commands;
 
+    [Explicit("Need to be fixed")]
     public class StaticBulkStringDuplicates
     {
         [Test]

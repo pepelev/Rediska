@@ -76,6 +76,7 @@ namespace Rediska.Tests
         }
 
         [Test]
+        [Explicit("investigation")]
         public void ReadArray()
         {
             var bytes = new Content(
@@ -117,6 +118,7 @@ namespace Rediska.Tests
         }
 
         [Test]
+        [Explicit("investigation")]
         public void ReadError()
         {
             var bytes = new Content(
@@ -159,6 +161,7 @@ namespace Rediska.Tests
         }
 
         [Test]
+        [Explicit("investigation")]
         public void ReadInteger()
         {
             var bytes = new Content(
@@ -179,6 +182,7 @@ namespace Rediska.Tests
         }
 
         [Test]
+        [Explicit("investigation")]
         public void ReadBulkString()
         {
             var bytes = new Content(

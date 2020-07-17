@@ -8,6 +8,7 @@
     using Rediska.Commands.Server;
 
     [TestFixtureSource(typeof(ConnectionCollection))]
+    [Explicit("SHUTDOWN redis")]
     public sealed class SHUTDOWN_Should
     {
         private readonly Connection connection;

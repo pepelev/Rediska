@@ -1,48 +1,42 @@
 ﻿namespace Rediska.Tests.Commands.Lists
 {
-    using System;
     using System.Threading.Tasks;
+    using Fixtures;
     using FluentAssertions;
     using NUnit.Framework;
     using Protocol;
     using Rediska.Commands.Lists;
-    using Sets;
-    using Utils;
 
-    [TestFixtureSource(typeof(LocalRedis))]
-    public sealed class LPUSHShould
+    [TestFixtureSource(typeof(ConnectionCollection))]
+    public sealed class LPUSH_Should
     {
-        private readonly ConnectionFixture fixture;
-        private Resource<Connection>? connection;
+        private readonly Connection connection;
+        private Fixture fixture;
 
-        public LPUSHShould(ConnectionFixture fixture)
+        public LPUSH_Should(Connection connection)
         {
-            this.fixture = fixture;
+            this.connection = connection;
         }
-
-        public Connection Connection => connection?.Value ?? throw new InvalidOperationException("connection is null");
 
         [SetUp]
-        public async Task SetUpAsync()
+        public void SetUp()
         {
-            connection = new Resource<Connection>(
-                await fixture.SetUpAsync().ConfigureAwait(false)
-            );
-        }
-
-        [Test]
-        public async Task Test()
-        {
-            var command = new LPUSH("dosya", new PlainBulkString("12313"));
-            var count = await Connection.ExecuteAsync(command).ConfigureAwait(false);
-            count.Should().Be(1);
+            fixture = new Fixture(connection);
         }
 
         [TearDown]
         public async Task TearDownAsync()
         {
-            connection?.Dispose();
             await fixture.TearDownAsync().ConfigureAwait(false);
+        }
+
+        [Test]
+        public async Task Return_Count_Of_What()
+        {
+            var key = fixture.NewKey();
+            var command = new LPUSH(key, new PlainBulkString("12313"));
+            var count = await fixture.ExecuteAsync(command).ConfigureAwait(false);
+            count.Should().Be(1);
         }
     }
 }

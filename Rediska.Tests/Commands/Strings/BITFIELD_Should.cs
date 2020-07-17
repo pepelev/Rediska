@@ -5,44 +5,45 @@
     using FluentAssertions;
     using NUnit.Framework;
     using Rediska.Commands.Strings;
-    using Sets;
     using static Rediska.Commands.Strings.Offset;
     using static Rediska.Commands.Strings.Type;
 
+    // todo show what redis returns for zero operations 
+    // todo show what redis returns for zero size
     [TestFixtureSource(typeof(ConnectionCollection))]
     public sealed class BITFIELD_Should
     {
         private readonly Connection connection;
+        private Fixture fixture;
 
         public BITFIELD_Should(Connection connection)
         {
             this.connection = connection;
         }
 
-        [Test]
-        public async Task Return_What_Set()
+        [SetUp]
+        public void SetUp()
         {
-            var result = await connection.ExecuteAsync(
-                new BITFIELD(
-                    "hello",
-                    new BITFIELD.SET(Unsigned(32), Zero, 2_000_000_000)
-                )
-            ).ConfigureAwait(false);
+            fixture = new Fixture(connection);
+        }
 
-            result.Should().Equal(2_000_000_000);
+        [TearDown]
+        public async Task TearDownAsync()
+        {
+            await fixture.TearDownAsync().ConfigureAwait(false);
         }
 
         [Test]
-        public async Task METHOD()
+        public async Task Return_Zero_On_Set_When_Key_Does_Not_Exists()
         {
-            var sut = new BITFIELD(
-                "hello",
-                new BITFIELD.INCRBY(Signed(32), Zero, 0, Overflow.Saturate),
-                new BITFIELD.SET(Signed(32), Zero, 4_000_000_000)
+            var key = fixture.NewKey();
+            var command = new BITFIELD(
+                key,
+                new BITFIELD.SET(Unsigned(32), Zero, 2_000_000_000)
             );
-            var result = await connection.ExecuteAsync(sut).ConfigureAwait(false);
+            var result = await fixture.ExecuteAsync(command).ConfigureAwait(false);
 
-            result.Should().Equal(2_000_000_000);
+            result.Should().Equal(0L);
         }
 
         [Test]

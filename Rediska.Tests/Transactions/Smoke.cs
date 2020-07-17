@@ -7,6 +7,7 @@ using Rediska.Tests.Utilities;
 
 namespace Rediska.Tests.Transactions
 {
+    [Explicit("smoke")]
     public sealed class Smoke
     {
         [Test]

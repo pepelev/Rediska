@@ -6,6 +6,7 @@ using Rediska.Protocol;
 namespace Rediska.Tests
 {
     [TestFixture]
+    [Explicit("not implemented")]
     public sealed class ResponseShould
     {
         [Test]

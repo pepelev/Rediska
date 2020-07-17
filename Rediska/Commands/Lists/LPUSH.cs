@@ -5,6 +5,7 @@
     using Protocol.Visitors;
     using Utils;
 
+    // todo make descriptive return value
     public sealed class LPUSH : Command<long>
     {
         private static readonly PlainBulkString name = new PlainBulkString("LPUSH");

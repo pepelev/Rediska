@@ -33,4 +33,9 @@
     <ProjectReference Include="..\Rediska\Rediska.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\PublishSubscribe\" />
+    <Folder Include="Tests\" />
+  </ItemGroup>
+
 </Project>

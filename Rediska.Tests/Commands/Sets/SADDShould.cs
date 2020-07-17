@@ -1,89 +1,51 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
-using Rediska.Commands.Keys;
 using Rediska.Commands.Sets;
 using Rediska.Protocol;
 using Rediska.Protocol.Visitors;
-using Rediska.Tests.Utilities;
 using Array = System.Array;
 
 namespace Rediska.Tests.Commands.Sets
 {
-    [Category("RealRedis")]
-    [TestFixtureSource(typeof(RedisCollection))]
-    public sealed class SADDShould
-    {
-        private readonly IPEndPoint endpoint;
-        private LoggingConnection connection;
-        private Key key;
-        private TcpClient tcp;
+    using Fixtures;
 
-        public SADDShould(IPEndPoint endpoint)
+    [TestFixtureSource(typeof(ConnectionCollection))]
+    public sealed class SADD_Should
+    {
+        private readonly Connection connection;
+        private Fixture fixture;
+
+        public SADD_Should(Connection connection)
         {
-            this.endpoint = endpoint;
+            this.connection = connection;
         }
 
         [SetUp]
-        public async Task SetUpAsync()
+        public void SetUp()
         {
-            tcp = new TcpClient
-            {
-                NoDelay = true
-            };
-            await tcp.ConnectAsync(endpoint.Address, endpoint.Port).ConfigureAwait(false);
-            connection = new LoggingConnection(
-                new SimpleConnection(tcp.GetStream())
-            );
-            key = TestContext.CurrentContext.Test.Name + Guid.NewGuid();
-        }
-
-        [Test]
-        public async Task AddNoElements()
-        {
-            var sut = new SADD(key, Array.Empty<BulkString>());
-
-            var exception = Assert.ThrowsAsync<VisitException>(
-                () => connection.ExecuteAsync(sut)
-            );
-
-            exception.Subject.Should().Be(
-                new Error("ERR wrong number of arguments for 'sadd' command")
-            );
+            fixture = new Fixture(connection);
         }
 
         [TearDown]
         public async Task TearDownAsync()
         {
-            var status = TestContext.CurrentContext.Result.Outcome.Status;
-            if (status == TestStatus.Passed)
-            {
-                await connection.ExecuteAsync(new DEL(key)).ConfigureAwait(false);
-                return;
-            }
+            await fixture.TearDownAsync().ConfigureAwait(false);
+        }
 
-            if (status == TestStatus.Failed)
-            {
-                tcp?.Dispose();
+        [Test]
+        public void AddNoElements()
+        {
+            var key = fixture.NewKey();
+            var sut = new SADD(key, Array.Empty<BulkString>());
 
-                if (key == null || connection == null)
-                    return;
+            var exception = Assert.ThrowsAsync<VisitException>(
+                () => fixture.ExecuteAsync(sut)
+            );
 
-                Console.WriteLine($"Key: {key}");
-
-                var index = 1;
-                foreach (var entry in connection.Log)
-                {
-                    Console.WriteLine($"{index}) {entry.RequestedAt:hh:mm:ss.zzz}: -> {entry.Request}");
-                    Console.WriteLine($"{index}) {entry.ResponseReceivedAt:hh:mm:ss.zzz}: <- {entry.Response}");
-
-                    index++;
-                }
-            }
+            exception.Subject.Should().Be(
+                new Error("ERR wrong number of arguments for 'sadd' command")
+            );
         }
     }
 }
