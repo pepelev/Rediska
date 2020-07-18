@@ -1,6 +1,5 @@
 ﻿namespace Rediska.Commands.Streams
 {
-    using System.Collections;
     using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
@@ -9,13 +8,14 @@
     {
         private static readonly PlainBulkString name = new PlainBulkString("XREAD");
         private static readonly PlainBulkString streamsArgument = new PlainBulkString("STREAMS");
-        private readonly Count count;
-        private readonly IReadOnlyList<(Key Key, Id Id)> streams;
 
         private static readonly ListVisitor<Entries> responseStructure = new ListVisitor<Entries>(
             ArrayExpectation.Singleton,
             ArrayExpectation2.Singleton.Then(array => new Entries(array))
         );
+
+        private readonly Count count;
+        private readonly IReadOnlyList<(Key Key, Id Id)> streams;
 
         public XREAD(Count count, params (Key Key, Id Id)[] streams)
             : this(count, streams as IReadOnlyList<(Key Key, Id Id)>)
