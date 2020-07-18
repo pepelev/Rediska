@@ -1,7 +1,6 @@
 ﻿namespace Rediska.Commands.Streams
 {
     using System;
-    using System.Collections.Generic;
     using Auxiliary;
     using Protocol;
 
@@ -22,7 +21,7 @@
 
         public long Count { get; }
 
-        public BulkString[] ToBulkStrings(BulkStringFactory factory)
+        public BulkString[] Arguments(BulkStringFactory factory)
         {
             return mode switch
             {
@@ -31,7 +30,7 @@
             };
         }
 
-        public override string ToString() => new PlainCommand(ToBulkStrings(BulkStringFactory.Plain)).ToString();
+        public override string ToString() => new PlainCommand(Arguments(BulkStringFactory.Plain)).ToString();
         public static MaximumLengthTrim Exact(long count) => new MaximumLengthTrim(Mode.Strict, count);
         public static MaximumLengthTrim Roughly(long count) => new MaximumLengthTrim(Mode.Lax, count);
 
@@ -40,22 +39,5 @@
             Lax = 0,
             Strict = 1
         }
-    }
-
-    public sealed class XREAD : Command<IReadOnlyList<Entry>>
-    {
-        private static readonly PlainBulkString name = new PlainBulkString("XREAD");
-        private readonly Count count;
-        private readonly IReadOnlyList<(Key Key, (Id | Dollar) Id)>
-
-        
-
-        public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
-        {
-            name,
-            key.ToBulkString(factory)
-        };
-
-        public override Visitor<IReadOnlyList<Entry>> ResponseStructure { get; }
     }
 }

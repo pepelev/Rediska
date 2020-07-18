@@ -51,8 +51,8 @@
             var entries = connection.Log.Select(
                 (entry, index) =>
                 {
-                    var request = $"{index + 1}) {entry.RequestedAt:hh:mm:ss.zzz}: -> {entry.Request}";
-                    var response = $"{index + 1}) {entry.ResponseReceivedAt:hh:mm:ss.zzz}: <- {entry.Response}";
+                    var request = $"{index + 1}) {entry.RequestedAt:HH:mm:ss.zzz}: -> {entry.Request}";
+                    var response = $"{index + 1}) {entry.ResponseReceivedAt:HH:mm:ss.zzz}: <- {entry.Response}";
                     return $"{request}{Environment.NewLine}{response}";
                 }
             );

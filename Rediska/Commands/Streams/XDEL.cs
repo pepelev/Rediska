@@ -42,7 +42,7 @@
             yield return key.ToBulkString(factory);
             foreach (var entryId in entryIds)
             {
-                yield return entryId.ToBulkString(factory);
+                yield return entryId.ToBulkString(factory, Id.Print.Full);
             }
         }
 

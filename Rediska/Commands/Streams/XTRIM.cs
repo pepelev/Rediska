@@ -29,7 +29,7 @@
                 name,
                 key.ToBulkString(factory)
             },
-            trim.ToBulkStrings(factory)
+            trim.Arguments(factory)
         );
 
         public override Visitor<Response> ResponseStructure => responseStructure;

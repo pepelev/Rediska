@@ -14,6 +14,21 @@
         private readonly Id id;
         private readonly IReadOnlyList<(BulkString Field, BulkString Value)> members;
 
+        public XADD(Key key, params (BulkString Field, BulkString Value)[] members)
+            : this(key, members as IReadOnlyList<(BulkString Field, BulkString Value)>)
+        {
+        }
+
+        public XADD(Key key, IReadOnlyList<(BulkString Field, BulkString Value)> members)
+            : this(key, Trim.None, Id.Auto, members)
+        {
+        }
+
+        public XADD(Key key, Trim trim, Id id, params (BulkString Field, BulkString Value)[] members)
+            : this(key, trim, id, members as IReadOnlyList<(BulkString Field, BulkString Value)>)
+        {
+        }
+
         public XADD(Key key, Trim trim, Id id, IReadOnlyList<(BulkString Field, BulkString Value)> members)
         {
             this.key = key ?? throw new ArgumentNullException(nameof(key));
@@ -80,7 +95,7 @@
                 this.trim = trim;
             }
 
-            public override BulkString[] Arguments(BulkStringFactory factory) => trim.ToBulkStrings(factory);
+            public override BulkString[] Arguments(BulkStringFactory factory) => trim.Arguments(factory);
         }
 
         public abstract class Id
@@ -104,7 +119,7 @@
                     this.value = value;
                 }
 
-                public override BulkString ToBulkString(BulkStringFactory factory) => value.ToBulkString(factory);
+                public override BulkString ToBulkString(BulkStringFactory factory) => value.ToBulkString(factory, Streams.Id.Print.Full);
             }
         }
     }
