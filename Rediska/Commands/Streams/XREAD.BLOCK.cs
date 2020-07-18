@@ -18,6 +18,11 @@
             private readonly MillisecondsTimeout blockTimeout;
             private readonly IReadOnlyList<(Key Key, Offset Offset)> streams;
 
+            public BLOCK(Count count, MillisecondsTimeout blockTimeout, params (Key Key, Offset Offset)[] streams)
+                : this(count, blockTimeout, streams as IReadOnlyList<(Key Key, Offset Offset)>)
+            {
+            }
+
             public BLOCK(
                 Count count,
                 MillisecondsTimeout blockTimeout,

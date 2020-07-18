@@ -1,6 +1,5 @@
 ﻿namespace Rediska.Tests.Commands.Streams
 {
-    using System;
     using System.Threading.Tasks;
     using Fixtures;
     using FluentAssertions;
