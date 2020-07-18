@@ -13,6 +13,11 @@
         public static Visitor<ExpireResponse> ExpireResult { get; } =
             IntegerExpectation.Singleton.Then(ParseExpireResult);
 
+        public static Visitor<IReadOnlyList<Protocol.Array>> ArrayList { get; } = new ListVisitor<Protocol.Array>(
+            ArrayExpectation.Singleton,
+            ArrayExpectation2.Singleton
+        );
+
         public static Visitor<IReadOnlyList<BulkString>> BulkStringList { get; } = new ListVisitor<BulkString>(
             ArrayExpectation.Singleton,
             BulkStringExpectation.Singleton
