@@ -5,6 +5,7 @@
 
     public readonly struct Offset
     {
+        private static readonly PlainBulkString dollar = new PlainBulkString("$");
         public static Offset EndOfStream => new Offset(Type.EndOfStream, default);
         private readonly Type type;
         private readonly Id id;
@@ -20,7 +21,7 @@
 
         public BulkString ToBulkString(BulkStringFactory factory) => type switch
         {
-            Type.EndOfStream => new PlainBulkString("$"),
+            Type.EndOfStream => dollar,
             _ => id.ToBulkString(factory, Id.Print.SkipMinimalLow)
         };
 

@@ -19,6 +19,7 @@ namespace Rediska.Protocol
 
         public override T Accept<T>(Visitor<T> visitor) => visitor.Visit(this);
         public static implicit operator BulkString(string value) => new PlainBulkString(value);
+        public static implicit operator BulkString(byte[] value) => new PlainBulkString(value);
 
         private sealed class NullBulkString : BulkString
         {

@@ -10,10 +10,6 @@
         public sealed class BLOCK : Command<BLOCK.Response>
         {
             private static readonly PlainBulkString block = new PlainBulkString("BLOCK");
-
-            private static readonly Visitor<Response> blockResponseStructure = Protocol.Visitors.Id.Singleton
-                .Then(reply => new Response(reply));
-
             private readonly Count count;
             private readonly MillisecondsTimeout blockTimeout;
             private readonly IReadOnlyList<(Key Key, Offset Offset)> streams;
@@ -56,7 +52,7 @@
                 }
             }
 
-            public override Visitor<Response> ResponseStructure => blockResponseStructure;
+            public override Visitor<Response> ResponseStructure => CompositeVisitors.StreamBlockingRead;
 
             public readonly struct Response : IReadOnlyList<Entries>
             {

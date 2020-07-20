@@ -17,6 +17,7 @@
         public bool Equals(GroupName other) => equality.Equals(Value, other.Value);
         public static bool operator ==(GroupName left, GroupName right) => left.Equals(right);
         public static implicit operator GroupName(string value) => new GroupName(value);
+        public static implicit operator string(GroupName name) => name.Value;
         public static bool operator !=(GroupName left, GroupName right) => !left.Equals(right);
         public BulkString ToBulkString(BulkStringFactory factory) => factory.Utf8(Value);
         public override bool Equals(object obj) => obj is GroupName other && Equals(other);

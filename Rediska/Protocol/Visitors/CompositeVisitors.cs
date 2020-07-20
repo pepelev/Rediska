@@ -6,14 +6,27 @@
     using System.Text;
     using Commands.Keys;
     using Commands.Lists;
+    using Commands.Streams;
     using Utils;
+    using Array = Protocol.Array;
 
     public static class CompositeVisitors
     {
+        public static Visitor<double> Double = BulkStringExpectation.Singleton
+            .Then(
+                @string => double.Parse(
+                    Encoding.UTF8.GetString(
+                        @string.ToBytes()
+                    ),
+                    NumberStyles.Float,
+                    CultureInfo.InvariantCulture
+                )
+            );
+
         public static Visitor<ExpireResponse> ExpireResult { get; } =
             IntegerExpectation.Singleton.Then(ParseExpireResult);
 
-        public static Visitor<IReadOnlyList<Protocol.Array>> ArrayList { get; } = new ListVisitor<Protocol.Array>(
+        public static Visitor<IReadOnlyList<Array>> ArrayList { get; } = new ListVisitor<Array>(
             ArrayExpectation.Singleton,
             ArrayExpectation2.Singleton
         );
@@ -40,30 +53,6 @@
 
         public static Visitor<PopResult> Pop { get; } = ArrayExpectation2.Singleton.Then(array => new PopResult(array));
 
-        public static Visitor<double> Double = BulkStringExpectation.Singleton
-            .Then(
-                @string => double.Parse(
-                    Encoding.UTF8.GetString(
-                        @string.ToBytes()
-                    ),
-                    NumberStyles.Float,
-                    CultureInfo.InvariantCulture
-                )
-            );
-
-        private static ExpireResponse ParseExpireResult(long integer)
-        {
-            switch (integer)
-            {
-                case 0:
-                    return Commands.Keys.ExpireResponse.KeyNotExists;
-                case 1:
-                    return Commands.Keys.ExpireResponse.TimeoutSet;
-                default:
-                    throw new Exception($"Expected 0 or 1, but '{integer}' received");
-            }
-        }
-
         public static Visitor<IReadOnlyList<(BulkString Field, BulkString Value)>> HashEntryList { get; } =
             BulkStringList.Then(
                 list =>
@@ -82,5 +71,29 @@
                     pair => (pair.Member, pair.Score.ToDouble())
                 ) as IReadOnlyList<(BulkString Member, double Score)>
             );
+
+        public static Visitor<Entries> StreamEntries { get; } = ArrayExpectation2.Singleton
+            .Then(array => new Entries(array));
+
+        public static Visitor<IReadOnlyList<Entries>> StreamEntriesList { get; } = new ListVisitor<Entries>(
+            ArrayExpectation.Singleton,
+            StreamEntries
+        );
+
+        public static Visitor<XREAD.BLOCK.Response> StreamBlockingRead { get; } = Id.Singleton
+            .Then(reply => new XREAD.BLOCK.Response(reply));
+
+        private static ExpireResponse ParseExpireResult(long integer)
+        {
+            switch (integer)
+            {
+                case 0:
+                    return ExpireResponse.KeyNotExists;
+                case 1:
+                    return ExpireResponse.TimeoutSet;
+                default:
+                    throw new Exception($"Expected 0 or 1, but '{integer}' received");
+            }
+        }
     }
 }

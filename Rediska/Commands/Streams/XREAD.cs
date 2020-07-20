@@ -11,7 +11,7 @@
 
         private static readonly ListVisitor<Entries> responseStructure = new ListVisitor<Entries>(
             ArrayExpectation.Singleton,
-            ArrayExpectation2.Singleton.Then(array => new Entries(array))
+            CompositeVisitors.StreamEntries
         );
 
         private readonly Count count;

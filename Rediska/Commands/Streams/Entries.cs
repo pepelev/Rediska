@@ -26,7 +26,7 @@
 
         public IEnumerator<Entry> GetEnumerator() => Content.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        public int Count => reply.Count;
+        public int Count => Content.Count;
         public Entry this[int index] => Content[index];
     }
 }
