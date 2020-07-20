@@ -10,7 +10,7 @@ namespace Rediska.Protocol
     public abstract class Array : DataType, IReadOnlyList<DataType>
     {
         public static Array Null { get; } = new NullArray();
-
+        public static Array Empty { get; } = new PlainArray();
         public abstract bool IsNull { get; }
         public abstract IEnumerator<DataType> GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

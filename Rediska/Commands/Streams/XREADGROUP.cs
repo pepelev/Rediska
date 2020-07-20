@@ -11,19 +11,18 @@
         private static readonly PlainBulkString group = new PlainBulkString("GROUP");
         private static readonly PlainBulkString streamsArgument = new PlainBulkString("STREAMS");
         private static readonly PlainBulkString noAck = new PlainBulkString("NOACK");
+        private static readonly PlainBulkString greaterThan = new PlainBulkString(">");
         private readonly GroupName groupName;
         private readonly ConsumerName consumerName;
         private readonly Count count;
-        private readonly Mode mode;
         private readonly IReadOnlyList<(Key Key, Id Id)> streams;
 
         public XREADGROUP(
             GroupName groupName,
             ConsumerName consumerName,
             Count count,
-            Mode mode,
             params (Key Key, Id Id)[] streams)
-            : this(groupName, consumerName, count, mode, streams as IReadOnlyList<(Key Key, Id Id)>)
+            : this(groupName, consumerName, count, streams as IReadOnlyList<(Key Key, Id Id)>)
         {
         }
 
@@ -31,17 +30,12 @@
             GroupName groupName,
             ConsumerName consumerName,
             Count count,
-            Mode mode,
             IReadOnlyList<(Key Key, Id Id)> streams)
         {
-            if (count == null) throw new ArgumentNullException(nameof(count));
-            if (streams == null) throw new ArgumentNullException(nameof(streams));
-            ValidateMode(mode);
             this.groupName = groupName;
             this.consumerName = consumerName;
-            this.count = count;
-            this.mode = mode;
-            this.streams = streams;
+            this.count = count ?? throw new ArgumentNullException(nameof(count));
+            this.streams = streams ?? throw new ArgumentNullException(nameof(streams));
         }
 
         public override IEnumerable<BulkString> Request(BulkStringFactory factory)
@@ -53,11 +47,6 @@
             foreach (var argument in count.Arguments(factory))
             {
                 yield return argument;
-            }
-
-            if (mode == Mode.NotRequireAcknowledgment)
-            {
-                yield return noAck;
             }
 
             yield return streamsArgument;

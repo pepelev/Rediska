@@ -1,8 +1,6 @@
 ﻿namespace Rediska.Tests.Commands.Streams
 {
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using Fixtures;
     using FluentAssertions;
@@ -40,7 +38,7 @@
         }
 
         [Test]
-        public async Task Test()
+        public async Task Return_Single_Entry()
         {
             var key = fixture.NewKey();
             var group = new GroupName("group-1");
@@ -49,7 +47,7 @@
             await fixture.ExecuteAsync(xadd).ConfigureAwait(false);
             await fixture.ExecuteAsync(xgroupCreate).ConfigureAwait(false);
 
-            var sut = new XREADGROUP(group, "consumer-1", Count.Unbound, RequireAcknowledgment, (key, Id.Minimum));
+            var sut = new XREADGROUP.New(group, "consumer-1", Count.Unbound, NotRequireAcknowledgment, key);
             var entries = await fixture.ExecuteAsync(sut).ConfigureAwait(false);
             Equals(entries, new Stream(key, new Entry(("name", "value"))));
         }
@@ -77,7 +75,7 @@
         [Test]
         public async Task Return_Error_When_Run_Against_Not_Existing_Stream()
         {
-            var sut = new XREADGROUP("group", "consumer", Count.Unbound, RequireAcknowledgment, ("key", Id.Minimum))
+            var sut = new XREADGROUP("group", "consumer", Count.Unbound, ("key", Id.Minimum))
                 .WithRawResponse();
             var response = await fixture.ExecuteAsync(sut).ConfigureAwait(false);
             response.Should().Be(
@@ -97,7 +95,6 @@
                 group,
                 "consumer",
                 Count.Unbound,
-                RequireAcknowledgment,
                 (key, Id.Minimum),
                 ("non-existing-key", Id.Minimum)
             ).WithRawResponse();
@@ -141,32 +138,66 @@
                 }
             }
         }
+    }
 
-        private sealed class Stream
+    [TestFixtureSource(typeof(ConnectionCollection))]
+    public sealed class XREADGROUP_BLOCK_Should
+    {
+        private readonly Connection connection;
+        private Fixture fixture;
+
+        public XREADGROUP_BLOCK_Should(Connection connection)
         {
-            public Key Key { get; }
-            public Entry[] Entries { get; }
-
-            public Stream(Key key, params Entry[] entries)
-            {
-                Key = key;
-                Entries = entries;
-            }
+            this.connection = connection;
         }
 
-        private sealed class Entry : IReadOnlyList<(BulkString Field, BulkString Value)>
+        [SetUp]
+        public void SetUp()
         {
-            private readonly (BulkString Field, BulkString Value)[] content;
+            fixture = new Fixture(connection);
+        }
 
-            public Entry(params (BulkString Field, BulkString Value)[] content)
+        [TearDown]
+        public async Task TearDownAsync()
+        {
+            await fixture.TearDownAsync().ConfigureAwait(false);
+        }
+
+        [Test]
+        public async Task Not_Block_If_One_Of_Ids_Is_Not_Greater_Than()
+        {
+            var key1 = fixture.NewKey("key1");
+            var key2 = fixture.NewKey("key2");
+            const string group = "group";
+
+            foreach (var key in new[] {key1, key2})
             {
-                this.content = content;
+                var xgroupCreate = new XGROUP.CREATE(key, group, Offset.FromId(Id.Minimum), CreateStreamIfNotExists);
+                await fixture.ExecuteAsync(xgroupCreate).ConfigureAwait(false);
             }
 
-            public IEnumerator<(BulkString Field, BulkString Value)> GetEnumerator() => content.AsEnumerable().GetEnumerator();
-            IEnumerator IEnumerable.GetEnumerator() => content.GetEnumerator();
-            public int Count => content.Length;
-            public (BulkString Field, BulkString Value) this[int index] => content[index];
+            var sut = new PlainCommand(
+                "XREADGROUP",
+                "GROUP",
+                "group",
+                "consumer",
+                "BLOCK",
+                "0",
+                "STREAMS",
+                key1.ToBytes(),
+                key2.ToBytes(),
+                ">",
+                "100"
+            );
+            var response = await fixture.ExecuteAsync(sut).ConfigureAwait(false);
+            response.Should().Be(
+                new PlainArray(
+                    new PlainArray(
+                        key2.ToBulkString(BulkStringFactory.Plain),
+                        Array.Empty
+                    ) as DataType
+                )
+            );
         }
     }
 }

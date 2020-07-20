@@ -52,7 +52,7 @@
             ).Should().Equal(
                 new
                 {
-                    Name = "group",
+                    Name = new GroupName("group"),
                     Consumers = 0L,
                     PendingEntries = 0L,
                     LastDelivered = Id.Minimum

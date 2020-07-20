@@ -1,48 +1,41 @@
 ﻿namespace Rediska.Commands.Streams
 {
-    using System;
     using System.Collections.Generic;
     using Protocol;
     using Protocol.Visitors;
 
     public sealed partial class XREADGROUP
     {
-        public sealed class BLOCK : Command<XREAD.BLOCK.Response>
+        public sealed class New : Command<IReadOnlyList<Entries>>
         {
-            private static readonly PlainBulkString block = new PlainBulkString("BLOCK");
             private readonly GroupName groupName;
             private readonly ConsumerName consumerName;
             private readonly Count count;
-            private readonly MillisecondsTimeout blockTimeout;
             private readonly Mode mode;
             private readonly IReadOnlyList<Key> streams;
 
-            public BLOCK(
+            public New(
                 GroupName groupName,
                 ConsumerName consumerName,
                 Count count,
-                MillisecondsTimeout blockTimeout,
                 Mode mode,
                 params Key[] streams)
-                : this(groupName, consumerName, count, blockTimeout, mode, streams as IReadOnlyList<Key>)
+                : this(groupName, consumerName, count, mode, streams as IReadOnlyList<Key>)
             {
             }
 
-            public BLOCK(
+            public New(
                 GroupName groupName,
                 ConsumerName consumerName,
                 Count count,
-                MillisecondsTimeout blockTimeout,
                 Mode mode,
                 IReadOnlyList<Key> streams)
             {
-                ValidateMode(mode);
                 this.groupName = groupName;
                 this.consumerName = consumerName;
-                this.count = count ?? throw new ArgumentNullException(nameof(count));
-                this.blockTimeout = blockTimeout;
-                this.streams = streams ?? throw new ArgumentNullException(nameof(streams));
+                this.count = count;
                 this.mode = mode;
+                this.streams = streams;
             }
 
             public override IEnumerable<BulkString> Request(BulkStringFactory factory)
@@ -55,9 +48,6 @@
                 {
                     yield return argument;
                 }
-
-                yield return block;
-                yield return blockTimeout.ToBulkString(factory);
 
                 if (mode == Mode.NotRequireAcknowledgment)
                     yield return noAck;
@@ -74,7 +64,7 @@
                 }
             }
 
-            public override Visitor<XREAD.BLOCK.Response> ResponseStructure => CompositeVisitors.StreamBlockingRead;
+            public override Visitor<IReadOnlyList<Entries>> ResponseStructure => CompositeVisitors.StreamEntriesList;
         }
     }
 }

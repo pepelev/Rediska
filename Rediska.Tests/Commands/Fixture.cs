@@ -24,6 +24,17 @@
         public Key NewKey()
         {
             var content = $"{TestContext.Test.FullName}:{Guid.NewGuid()}";
+            return Key(content);
+        }
+
+        public Key NewKey(string suffix)
+        {
+            var content = $"{TestContext.Test.FullName}:{Guid.NewGuid()}:{suffix}";
+            return Key(content);
+        }
+
+        private Key Key(string content)
+        {
             var key = new Key.Utf8(content);
             keys.Add(key);
             return key;
