@@ -41,8 +41,8 @@
             }
 
             public long FileDescriptor => Long("fd");
-            public TimeSpan Age => new TimeSpan(TimeSpan.TicksPerSecond * Long("age"));
-            public TimeSpan IdleTime => new TimeSpan(TimeSpan.TicksPerSecond * Long("idle"));
+            public TimeSpan Age => new TimeSpan(Long("age") * TimeSpan.TicksPerSecond);
+            public TimeSpan IdleTime => new TimeSpan(Long("idle") * TimeSpan.TicksPerSecond);
 
             public IReadOnlyList<Flag> Flags => new PrettyReadOnlyList<Flag>(
                 new ProjectingReadOnlyList<char, Flag>(

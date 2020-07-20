@@ -17,13 +17,13 @@
 
             private readonly Key key;
             private readonly GroupName groupName;
-            private readonly Consumer consumer;
+            private readonly ConsumerName consumerName;
 
-            public DELCONSUMER(Key key, GroupName groupName, Consumer consumer)
+            public DELCONSUMER(Key key, GroupName groupName, ConsumerName consumerName)
             {
                 this.key = key ?? throw new ArgumentNullException(nameof(key));
                 this.groupName = groupName;
-                this.consumer = consumer;
+                this.consumerName = consumerName;
             }
 
             public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
@@ -32,7 +32,7 @@
                 subName,
                 key.ToBulkString(factory),
                 groupName.ToBulkString(factory),
-                consumer.ToBulkString(factory)
+                consumerName.ToBulkString(factory)
             };
 
             public override Visitor<Response> ResponseStructure => responseStructure;
