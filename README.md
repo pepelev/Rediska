@@ -54,7 +54,7 @@ To interact with Redis server you need a [`Connection`](/Rediska/Connection.cs).
 
 ### Resource management
 
-The `Connection` class does not implements `IDisposable` interface, instead `factory.CreateAsync()` returns a [`Resource<Connection>`](/Utils/Resource.cs) that does. This resource tracks underlying `TcpClient`. So you need to close the resource when the connection is no longer needed.
+The `Connection` class does not implements `IDisposable` interface, instead `factory.CreateAsync()` returns a [`Resource<Connection>`](/Rediska/Utils/Resource.cs) that does. This resource tracks underlying `TcpClient`. So you need to close the resource when the connection is no longer needed.
 
 This approach clearly defines who owns the resource.
 
