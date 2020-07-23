@@ -8,7 +8,7 @@ Rediska is [Redis](https://redis.io/) client for .NET with a focus on flexibilit
 
 ## Features
 
-- [Keys](https://redis.io/commands#generic), [Strings](https://redis.io/commands#string), [Transactions](https://redis.io/commands#transactions), [Sets](https://redis.io/commands#set), [Server](https://redis.io/commands#server), [Lists](https://redis.io/commands#list), [HyperLogLog](https://redis.io/commands#hyperloglog), [Hashes](https://redis.io/commands#hash) commands
+- [Keys](https://redis.io/commands#generic), [Strings](https://redis.io/commands#string), [Transactions](https://redis.io/commands#transactions), [Sets](https://redis.io/commands#set), [Server](https://redis.io/commands#server), [Lists](https://redis.io/commands#list), [HyperLogLog](https://redis.io/commands#hyperloglog), [Hashes](https://redis.io/commands#hash) and [Streams](https://redis.io/commands#stream) commands
 - Async API
 - Easy way to handle command response differently
 - Easy way to write custom commands, e.g. for [Redis modules](https://redis.io/modules)
