@@ -1,13 +1,8 @@
 ﻿namespace Rediska.Commands.Streams
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
-    using System.Globalization;
     using Protocol;
     using Protocol.Visitors;
-    using Utils;
-    using Array = Protocol.Array;
 
     public sealed partial class XPENDING : Command<XPENDING.Summary>
     {
