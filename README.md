@@ -50,17 +50,17 @@ using (var connectionResource = await factory.CreateAsync(endPoint))
 }
 ```
 
-To interact with Redis server you need a [`Connection`](/blob/master/Rediska/Connection.cs). You can get one using a factory. In Rediska, each command represented by a separate class, so to run a command, you need to instantiate it and then execute it on the connection.
+To interact with Redis server you need a [`Connection`](/Rediska/Connection.cs). You can get one using a factory. In Rediska, each command represented by a separate class, so to run a command, you need to instantiate it and then execute it on the connection.
 
 ### Resource management
 
-The `Connection` class does not implements `IDisposable` interface, instead `factory.CreateAsync()` returns a [`Resource<Connection>`](/blob/master/Utils/Resource.cs) that does. This resource tracks underlying `TcpClient`. So you need to close the resource when the connection is no longer needed.
+The `Connection` class does not implements `IDisposable` interface, instead `factory.CreateAsync()` returns a [`Resource<Connection>`](/Utils/Resource.cs) that does. This resource tracks underlying `TcpClient`. So you need to close the resource when the connection is no longer needed.
 
 This approach clearly defines who owns the resource.
 
 ### A note about the type of `userScore`
 
-The [GET command](https://redis.io/commands/get) replies with a [bulk string](https://redis.io/topics/data-types#strings) - binary safe string. This kind of reply represented with the class [BulkString](/blob/master/Rediska/Protocol/BulkString.cs). If you are sure that reply contains a number you can get it's value as follows `var number = long.Parse(userScore.ToString())`.
+The [GET command](https://redis.io/commands/get) replies with a [bulk string](https://redis.io/topics/data-types#strings) - binary safe string. This kind of reply represented with the class [BulkString](/Rediska/Protocol/BulkString.cs). If you are sure that reply contains a number you can get it's value as follows `var number = long.Parse(userScore.ToString())`.
 
 ## Project status
 
