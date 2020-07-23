@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using Rediska.Protocol;
 using Rediska.Protocol.Inputs;
@@ -16,16 +14,6 @@ namespace Rediska
     public sealed class SimpleConnection : Connection
     {
         private readonly Stream stream;
-
-        public SimpleConnection()
-        {
-            var tcp = new TcpClient
-            {
-                NoDelay = true
-            };
-            tcp.Connect(IPAddress.Loopback, 6379);
-            stream = tcp.GetStream();
-        }
 
         public SimpleConnection(Stream stream)
         {
