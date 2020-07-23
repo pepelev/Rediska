@@ -19,4 +19,3 @@
   - with implicit owning
   - with explicit owning for blocking or connection mutating commands
 - implement Pub/Sub
-- implement Stream commands
