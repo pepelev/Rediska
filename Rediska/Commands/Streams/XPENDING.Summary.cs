@@ -18,14 +18,8 @@
             }
 
             public long PendingEntries => reply[0].Accept(IntegerExpectation.Singleton);
-
-            public Id SmallestPendingEntryId => Id.Parse(
-                reply[1].Accept(BulkStringExpectation.Singleton).ToString()
-            );
-
-            public Id GreatestPendingEntryId => Id.Parse(
-                reply[2].Accept(BulkStringExpectation.Singleton).ToString()
-            );
+            public Id SmallestPendingEntryId => reply[1].Accept(CompositeVisitors.StreamEntryId);
+            public Id GreatestPendingEntryId => reply[2].Accept(CompositeVisitors.StreamEntryId);
 
             public IReadOnlyList<(ConsumerName Consumer, long PendingMessages)> Consumers =>
                 new PrettyReadOnlyList<(ConsumerName Consumer, long PendingMessages)>(

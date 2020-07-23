@@ -15,9 +15,7 @@
                 this.reply = reply;
             }
 
-            public Id Id => Id.Parse(
-                reply[0].Accept(BulkStringExpectation.Singleton).ToString()
-            );
+            public Id Id => reply[0].Accept(CompositeVisitors.StreamEntryId);
 
             public ConsumerName Consumer => new ConsumerName(
                 reply[1].Accept(BulkStringExpectation.Singleton).ToString()

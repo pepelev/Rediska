@@ -15,9 +15,7 @@
             this.reply = reply;
         }
 
-        public Id Id => Id.Parse(
-            reply[0].Accept(BulkStringExpectation.Singleton).ToString()
-        );
+        public Id Id => reply[0].Accept(CompositeVisitors.StreamEntryId);
 
         private IReadOnlyList<(BulkString Field, BulkString Value)> Members => new PairsList<BulkString>(
             reply[1].Accept(CompositeVisitors.BulkStringList)

@@ -9,6 +9,11 @@
     public sealed class XADD : Command<XADD.Response>
     {
         private static readonly PlainBulkString name = new PlainBulkString("XADD");
+
+        private static readonly Visitor<Response> responseStructure = CompositeVisitors.StreamEntryId.Then(
+            entryId => new Response(entryId)
+        );
+
         private readonly Key key;
         private readonly Trim trim;
         private readonly Id id;
@@ -57,12 +62,7 @@
             }
         }
 
-        public override Visitor<Response> ResponseStructure => BulkStringExpectation.Singleton.Then(
-            bulkString =>
-                new Response(
-                    Streams.Id.Parse(bulkString.ToString())
-                )
-        );
+        public override Visitor<Response> ResponseStructure => responseStructure;
 
         public readonly struct Response
         {

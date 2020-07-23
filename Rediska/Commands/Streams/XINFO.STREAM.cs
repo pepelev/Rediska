@@ -27,10 +27,7 @@
             public long RadixTreeKeys => index["radix-tree-keys"].Accept(IntegerExpectation.Singleton);
             public long RadixTreeNodes => index["radix-tree-nodes"].Accept(IntegerExpectation.Singleton);
             public long Groups => index["groups"].Accept(IntegerExpectation.Singleton);
-
-            public Id LastGeneratedId => Id.Parse(
-                index["last-generated-id"].Accept(BulkStringExpectation.Singleton).ToString()
-            );
+            public Id LastGeneratedId => index["last-generated-id"].Accept(CompositeVisitors.StreamEntryId);
 
             public Entry FirstEntry => new Entry(
                 index["first-entry"].Accept(ArrayExpectation2.Singleton)

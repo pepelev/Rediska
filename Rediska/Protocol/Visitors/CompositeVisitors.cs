@@ -8,7 +8,7 @@
     using Commands.Lists;
     using Commands.Streams;
     using Utils;
-    using Array = Protocol.Array;
+    using Array = Array;
 
     public static class CompositeVisitors
     {
@@ -72,6 +72,9 @@
                 ) as IReadOnlyList<(BulkString Member, double Score)>
             );
 
+        public static Visitor<Commands.Streams.Id> StreamEntryId { get; } = BulkStringExpectation.Singleton
+            .Then(bulkString => Commands.Streams.Id.Parse(bulkString.ToString()));
+
         public static Visitor<Entries> StreamEntries { get; } = ArrayExpectation2.Singleton
             .Then(array => new Entries(array));
 
@@ -85,15 +88,12 @@
 
         private static ExpireResponse ParseExpireResult(long integer)
         {
-            switch (integer)
+            return integer switch
             {
-                case 0:
-                    return ExpireResponse.KeyNotExists;
-                case 1:
-                    return ExpireResponse.TimeoutSet;
-                default:
-                    throw new Exception($"Expected 0 or 1, but '{integer}' received");
-            }
+                0 => ExpireResponse.KeyNotExists,
+                1 => ExpireResponse.TimeoutSet,
+                _ => throw new Exception($"Expected 0 or 1, but '{integer}' received")
+            };
         }
     }
 }

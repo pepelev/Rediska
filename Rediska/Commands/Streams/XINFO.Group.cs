@@ -24,10 +24,7 @@
             public GroupName Name => index["name"].Accept(BulkStringExpectation.Singleton).ToString();
             public long Consumers => index["consumers"].Accept(IntegerExpectation.Singleton);
             public long PendingEntries => index["pending"].Accept(IntegerExpectation.Singleton);
-
-            public Id LastDelivered => Id.Parse(
-                index["last-delivered-id"].Accept(BulkStringExpectation.Singleton).ToString()
-            );
+            public Id LastDelivered => index["last-delivered-id"].Accept(CompositeVisitors.StreamEntryId);
 
             IEnumerator<KeyValuePair<string, DataType>> IEnumerable<KeyValuePair<string, DataType>>.GetEnumerator() =>
                 index.GetEnumerator();
