@@ -27,29 +27,24 @@
                 reply[2].Accept(BulkStringExpectation.Singleton).ToString()
             );
 
-            public IReadOnlyList<(ConsumerName Consumer, long PendingMessages)> Consumers
-            {
-                get
-                {
-                    return new PrettyReadOnlyList<(ConsumerName Consumer, long PendingMessages)>(
-                        new ProjectingReadOnlyList<DataType, (ConsumerName Consumer, long PendingMessages)>(
-                            reply[3].Accept(ArrayExpectation.Singleton),
-                            pair =>
-                            {
-                                var content = pair.Accept(ArrayExpectation.Singleton);
-                                var consumer = new ConsumerName(
-                                    content[0].Accept(BulkStringExpectation.Singleton).ToString()
-                                );
-                                var pendingMessages = long.Parse(
-                                    content[1].Accept(BulkStringExpectation.Singleton).ToString(),
-                                    CultureInfo.InvariantCulture
-                                );
-                                return (consumer, pendingMessages);
-                            }
-                        )
-                    );
-                }
-            }
+            public IReadOnlyList<(ConsumerName Consumer, long PendingMessages)> Consumers =>
+                new PrettyReadOnlyList<(ConsumerName Consumer, long PendingMessages)>(
+                    new ProjectingReadOnlyList<DataType, (ConsumerName Consumer, long PendingMessages)>(
+                        reply[3].Accept(ArrayExpectation.Singleton),
+                        pair =>
+                        {
+                            var content = pair.Accept(ArrayExpectation.Singleton);
+                            var consumer = new ConsumerName(
+                                content[0].Accept(BulkStringExpectation.Singleton).ToString()
+                            );
+                            var pendingMessages = long.Parse(
+                                content[1].Accept(BulkStringExpectation.Singleton).ToString(),
+                                CultureInfo.InvariantCulture
+                            );
+                            return (consumer, pendingMessages);
+                        }
+                    )
+                );
         }
     }
 }
