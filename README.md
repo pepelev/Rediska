@@ -50,7 +50,7 @@ using (var connectionResource = await factory.CreateAsync(endPoint))
 }
 ```
 
-To interact with Redis server you need a [`Connection`](/Rediska/Connection.cs). You can get one using a factory. In Rediska, each command represented by a separate class, so to run a command, you need to instantiate it and then execute it on the connection.
+To interact with Redis server you need a [`Connection`](/Rediska/Connection.cs). You can get one using a factory. In Rediska, each command represented by a separate class, so to run a command, you need to instantiate it and then execute it using the connection.
 
 ### Resource management
 
