@@ -70,7 +70,10 @@ The [GET command](https://redis.io/commands/get) replies with a
 [bulk string](https://redis.io/topics/data-types#strings) - binary safe string.
 This kind of reply represented with the class
 [BulkString](/Rediska/Protocol/BulkString.cs). If you are sure that reply contains
-a number you can get it's value as follows `var number = long.Parse(userScore.ToString())`.
+a number you can get it's value as follows
+```csharp
+var number = long.Parse(userScore.ToString())
+```
 
 ## Project status
 
