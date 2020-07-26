@@ -5,6 +5,33 @@
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
+  <!-- NuGet package -->
+  <PropertyGroup>
+    <PackageId>Rediska</PackageId>
+    <Title>Rediska</Title>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0</FileVersion>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Authors>Alexey Pepelev</Authors>
+    <Product>Rediska</Product>
+    <Description>Rediska is a Redis client for .NET with a focus on flexibility and extensibility.</Description>
+    <Summary>Rediska is a Redis client for .NET with a focus on flexibility and extensibility.</Summary>
+    <PackageTags>redis async</PackageTags>
+    <PackageIcon>logo128x128.png</PackageIcon>
+    <PackageIconFullPath>$(MSBuildThisFileDirectory)..\logo128x128.png</PackageIconFullPath>
+    <PackageProjectUrl>https://github.com/pepelev/Rediska</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <MinClientVersion>2.12</MinClientVersion>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <!-- Import icon -->
+  <ItemGroup>
+    <None Include="$(PackageIconFullPath)" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -17,7 +44,6 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
 
 </Project>
