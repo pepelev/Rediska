@@ -21,10 +21,10 @@
 
         public SORT(Key key, By by, Limit? limit, Select select, Order order, Mode mode)
         {
-            this.key = key;
-            this.by = by;
+            this.key = key ?? throw new ArgumentNullException(nameof(key));
+            this.by = by ?? throw new ArgumentNullException(nameof(by));
             this.limit = limit;
-            this.select = select;
+            this.select = select ?? throw new ArgumentNullException(nameof(select));
             this.order = order;
             this.mode = mode;
         }
