@@ -24,7 +24,11 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <MinClientVersion>2.12</MinClientVersion>
     <IncludeSymbols>true</IncludeSymbols>
+    <IncludeSource>true</IncludeSource>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <RepositoryUrl>https://github.com/pepelev/Rediska</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryBranch>master</RepositoryBranch>
   </PropertyGroup>
 
   <!-- Import icon -->
