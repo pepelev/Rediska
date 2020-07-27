@@ -34,7 +34,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: publish on version change
+    - name: Publish on version change
       id: publish_nuget
       uses: rohith/publish-nuget@v2
       with:
