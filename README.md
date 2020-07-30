@@ -24,7 +24,11 @@ Rediska is [Redis](https://redis.io/) client for .NET with a focus on flexibilit
 
 ## Getting started
 
-NuGet package will be added soon.
+Install [NuGet package](https://www.nuget.org/packages/Rediska/) using Package Manager
+
+```
+Install-Package Rediska -Version 0.1.0
+```
 
 ### Show me the code
 
