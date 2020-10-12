@@ -19,7 +19,8 @@
         public override IEnumerable<BulkString> Request(BulkStringFactory factory) => new[]
         {
             name,
-            key.ToBulkString(factory)
+            key.ToBulkString(factory),
+            field
         };
 
         public override Visitor<BulkString> ResponseStructure => BulkStringExpectation.Singleton;
