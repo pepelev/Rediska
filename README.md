@@ -5,6 +5,7 @@ Rediska is [Redis](https://redis.io/) client for .NET with a focus on flexibilit
 ![Rediska](logo.svg)
 
 ![](https://github.com/pepelev/Rediska/workflows/.NET%20Core%20build%20and%20test/badge.svg)
+![](https://img.shields.io/nuget/v/Rediska.svg?style=flat-square&label=nuget)
 
 ## Features
 
